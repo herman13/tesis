@@ -1,0 +1,426 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="52.08411mm"
+   height="44.262245mm"
+   viewBox="0 0 184.55 156.83473"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="metarouter_diagrama.svg"
+   inkscape:export-filename="/home/felipe/text4681.png"
+   inkscape:export-xdpi="151"
+   inkscape:export-ydpi="151">
+  <defs
+     id="defs4">
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="marker4550"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         id="path4552"
+         d="M 0,0 5,-5 -12.5,0 5,5 0,0 Z"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1"
+         transform="matrix(-0.8,0,0,-0.8,-10,0)"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrow1Lend"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         id="path4243"
+         d="M 0,0 5,-5 -12.5,0 5,5 0,0 Z"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1"
+         transform="matrix(-0.8,0,0,-0.8,-10,0)"
+         inkscape:connector-curvature="0" />
+    </marker>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.979899"
+     inkscape:cx="126.11014"
+     inkscape:cy="91.745446"
+     inkscape:document-units="px"
+     inkscape:current-layer="g4631"
+     showgrid="false"
+     showguides="false"
+     inkscape:window-width="1364"
+     inkscape:window-height="766"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="0"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Capa 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-36.135429,-197.92851)">
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 110.71429,208.79078 0,133.57142"
+       id="path4138"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="/home/felipe/text4761.png"
+       inkscape:export-xdpi="151"
+       inkscape:export-ydpi="151" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 177.85714,208.79078 0,134.99999"
+       id="path4138-8"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="/home/felipe/text4761.png"
+       inkscape:export-xdpi="151"
+       inkscape:export-ydpi="151" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:1, 1;stroke-dashoffset:0;stroke-opacity:1"
+       d="m 107.32871,208.79078 0,33.25011"
+       id="path4155"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="/home/felipe/text4761.png"
+       inkscape:export-xdpi="151"
+       inkscape:export-ydpi="151" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:1, 1;stroke-dashoffset:0;stroke-opacity:1"
+       d="m 181.57492,208.79078 0,33.69654"
+       id="path4155-8"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="/home/felipe/text4761.png"
+       inkscape:export-xdpi="151"
+       inkscape:export-ydpi="151" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:35px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="91.518684"
+       y="206.47588"
+       id="text4172"
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="/home/felipe/text4761.png"
+       inkscape:export-xdpi="151"
+       inkscape:export-ydpi="151"><tspan
+         sodipodi:role="line"
+         id="tspan4174"
+         x="91.518684"
+         y="206.47588"
+         style="font-size:11.25px">Nodo A</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:35px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="162.15033"
+       y="206.47588"
+       id="text4172-4"
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="/home/felipe/text4761.png"
+       inkscape:export-xdpi="151"
+       inkscape:export-ydpi="151"><tspan
+         sodipodi:role="line"
+         id="tspan4174-3"
+         x="162.15033"
+         y="206.47588"
+         style="font-size:11.25px">Nodo B</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:35px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="66.25"
+       y="231.1122"
+       id="text4212"
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="/home/felipe/text4761.png"
+       inkscape:export-xdpi="151"
+       inkscape:export-ydpi="151"><tspan
+         sodipodi:role="line"
+         id="tspan4214"
+         x="66.25"
+         y="231.1122"
+         style="font-size:7.5px">Conexión</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:35px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="186.39343"
+       y="231.1122"
+       id="text4212-3"
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="/home/felipe/text4761.png"
+       inkscape:export-xdpi="151"
+       inkscape:export-ydpi="151"><tspan
+         sodipodi:role="line"
+         id="tspan4214-3"
+         x="186.39343"
+         y="231.1122"
+         style="font-size:7.5px">Conexión</tspan></text>
+    <g
+       id="g4631">
+      <path
+         style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:normal;font-family:sans-serif;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;baseline-shift:baseline;text-anchor:start;white-space:normal;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
+         d="m 111.24609,250.4601 -0.25781,0.9668 64.30497,17.09004 0.25976,-0.96484 z"
+         id="path4234"
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="ccccc"
+         inkscape:export-filename="/home/felipe/text4761.png"
+         inkscape:export-xdpi="151"
+         inkscape:export-ydpi="151" />
+      <path
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.43998513pt;stroke-opacity:1"
+         d="m 171.9123,267.08457 -2.69435,1.55558 8.00676,-0.13212 -6.868,-4.11781 1.55559,2.69435 z"
+         id="path4635"
+         inkscape:connector-curvature="0"
+         inkscape:export-filename="/home/felipe/text4761.png"
+         inkscape:export-xdpi="151"
+         inkscape:export-ydpi="151" />
+      <path
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.43998513pt;stroke-opacity:1"
+         d="m 116.45141,286.01843 2.69435,1.55558 -8.00676,-0.13212 6.868,-4.11781 -1.55559,2.69435 z"
+         id="path4635-8"
+         inkscape:connector-curvature="0"
+         inkscape:export-filename="/home/felipe/text4761.png"
+         inkscape:export-xdpi="151"
+         inkscape:export-ydpi="151" />
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-weight:normal;font-size:35px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         x="80.714287"
+         y="261.64792"
+         id="text4652"
+         sodipodi:linespacing="125%"><tspan
+           sodipodi:role="line"
+           id="tspan4654"
+           x="80.714287"
+           y="261.64792" /></text>
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-weight:normal;font-size:35px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         x="134.93021"
+         y="257.42523"
+         id="text4656"
+         sodipodi:linespacing="125%"
+         transform="matrix(0.99996194,-0.00872494,0.00872494,0.99996194,0,0)"
+         inkscape:export-filename="/home/felipe/text4761.png"
+         inkscape:export-xdpi="151"
+         inkscape:export-ydpi="151"><tspan
+           sodipodi:role="line"
+           id="tspan4658"
+           x="134.93021"
+           y="257.42523"
+           style="font-size:5px">¿Tipo?</tspan></text>
+      <path
+         style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 177.7805,268.81383 -64.38035,17.92011"
+         id="path4660"
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="cc"
+         inkscape:export-filename="/home/felipe/text4761.png"
+         inkscape:export-xdpi="151"
+         inkscape:export-ydpi="151" />
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-weight:normal;font-size:35px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         x="131.92763"
+         y="273.45142"
+         id="text4677"
+         sodipodi:linespacing="125%"
+         inkscape:export-filename="/home/felipe/text4761.png"
+         inkscape:export-xdpi="151"
+         inkscape:export-ydpi="151"><tspan
+           sodipodi:role="line"
+           id="tspan4679"
+           x="131.92763"
+           y="273.45142"
+           style="font-size:5px">Tipo nodo</tspan></text>
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-weight:normal;font-size:35px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         x="122.98607"
+         y="352.42316"
+         id="text4681"
+         sodipodi:linespacing="125%"
+         inkscape:export-filename="/home/felipe/text4761.png"
+         inkscape:export-xdpi="151"
+         inkscape:export-ydpi="151"><tspan
+           sodipodi:role="line"
+           id="tspan4683"
+           x="122.98607"
+           y="352.42316"
+           style="font-size:11.25px">Tiempo</tspan></text>
+      <path
+         style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 113.4242,250.18417 62.96471,0.13393"
+         id="path4704"
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="cc"
+         inkscape:export-filename="/home/felipe/text4761.png"
+         inkscape:export-xdpi="151"
+         inkscape:export-ydpi="151" />
+      <path
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.43998513pt;stroke-opacity:1"
+         d="m 116.73607,250.098 2.19993,2.19993 -7.69974,-2.19992 7.69975,-2.19993 -2.19994,2.19992 z"
+         id="path4635-8-6"
+         inkscape:connector-curvature="0"
+         inkscape:export-filename="/home/felipe/text4761.png"
+         inkscape:export-xdpi="151"
+         inkscape:export-ydpi="151" />
+      <path
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.43998513pt;stroke-opacity:1"
+         d="m 172.06823,250.24729 -2.19993,2.19993 7.69974,-2.19992 -7.69975,-2.19993 2.19994,2.19992 z"
+         id="path4635-8-6-8"
+         inkscape:connector-curvature="0"
+         inkscape:export-filename="/home/felipe/text4761.png"
+         inkscape:export-xdpi="151"
+         inkscape:export-ydpi="151" />
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-weight:normal;font-size:35px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         x="117.67858"
+         y="245.57651"
+         id="text4736"
+         sodipodi:linespacing="125%"
+         inkscape:export-filename="/home/felipe/text4761.png"
+         inkscape:export-xdpi="151"
+         inkscape:export-ydpi="151"><tspan
+           sodipodi:role="line"
+           id="tspan4738"
+           x="117.67858"
+           y="245.57651"
+           style="font-size:5px">Intercambiar métricas</tspan></text>
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-weight:normal;font-size:35px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         x="35.714287"
+         y="298.53082"
+         id="text4740"
+         sodipodi:linespacing="125%"
+         inkscape:export-filename="/home/felipe/text4761.png"
+         inkscape:export-xdpi="151"
+         inkscape:export-ydpi="151"><tspan
+           sodipodi:role="line"
+           id="tspan4742"
+           x="35.714287"
+           y="298.53082"
+           style="font-size:7.5px">Convertir mensajes</tspan></text>
+      <path
+         style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 111.07143,304.32649 62.94349,16.71268"
+         id="path4744"
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="cc"
+         inkscape:export-filename="/home/felipe/text4761.png"
+         inkscape:export-xdpi="151"
+         inkscape:export-ydpi="151" />
+      <path
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.43998513pt;stroke-opacity:1"
+         d="m 172.02405,320.45609 -2.69435,1.55558 8.00676,-0.13212 -6.868,-4.11781 1.55559,2.69435 z"
+         id="path4635-5"
+         inkscape:connector-curvature="0"
+         inkscape:export-filename="/home/felipe/text4761.png"
+         inkscape:export-xdpi="151"
+         inkscape:export-ydpi="151" />
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-weight:normal;font-size:35px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         x="134.15173"
+         y="308.33029"
+         id="text4761"
+         sodipodi:linespacing="125%"
+         inkscape:export-filename="/home/felipe/text4761.png"
+         inkscape:export-xdpi="151"
+         inkscape:export-ydpi="151"
+         inkscape:transform-center-x="4.6428572"
+         inkscape:transform-center-y="1.6071429"><tspan
+           sodipodi:role="line"
+           id="tspan4763"
+           x="134.15173"
+           y="308.33029"
+           style="font-size:5px">Mensajes</tspan></text>
+      <path
+         style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:normal;font-family:sans-serif;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;baseline-shift:baseline;text-anchor:start;white-space:normal;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
+         d="m 177.87706,250.62693 0.25781,0.9668 -64.30496,17.09004 -0.25976,-0.96484 z"
+         id="path4234-6"
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="ccccc"
+         inkscape:export-filename="/home/felipe/text4761.png"
+         inkscape:export-xdpi="151"
+         inkscape:export-ydpi="151" />
+      <path
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.43998513pt;stroke-opacity:1"
+         d="m 117.21084,267.2514 2.69435,1.55558 -8.00674,-0.13212 6.86798,-4.11781 -1.55559,2.69435 z"
+         id="path4635-4"
+         inkscape:connector-curvature="0"
+         inkscape:export-filename="/home/felipe/text4761.png"
+         inkscape:export-xdpi="151"
+         inkscape:export-ydpi="151" />
+      <path
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.43998513pt;stroke-opacity:1"
+         d="m 172.67173,286.18526 -2.69435,1.55558 8.00677,-0.13212 -6.86801,-4.11781 1.55559,2.69435 z"
+         id="path4635-8-3"
+         inkscape:connector-curvature="0"
+         inkscape:export-filename="/home/felipe/text4761.png"
+         inkscape:export-xdpi="151"
+         inkscape:export-ydpi="151" />
+      <path
+         style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="M 111.34266,268.98066 175.723,286.90077"
+         id="path4660-8"
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="cc"
+         inkscape:export-filename="/home/felipe/text4761.png"
+         inkscape:export-xdpi="151"
+         inkscape:export-ydpi="151" />
+      <path
+         style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="M 178.05172,304.49332 115.10822,321.206"
+         id="path4744-4"
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="cc"
+         inkscape:export-filename="/home/felipe/text4761.png"
+         inkscape:export-xdpi="151"
+         inkscape:export-ydpi="151" />
+      <path
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.43998513pt;stroke-opacity:1"
+         d="m 117.09909,320.62292 2.69435,1.55558 -8.00674,-0.13212 6.86798,-4.11781 -1.55559,2.69435 z"
+         id="path4635-5-8"
+         inkscape:connector-curvature="0"
+         inkscape:export-filename="/home/felipe/text4761.png"
+         inkscape:export-xdpi="151"
+         inkscape:export-ydpi="151" />
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,274 @@
+\seccion{Antecedentes y motivación}
+
+
+Sistemas como el de alerta temprana de Japón permiten enviar datos sobre
+terremotos que estén en proceso mediante la red de telefonía para que la
+población pueda moverse a lugares seguros \cite{erika_yamasaki_what_2012}. Este
+sistema ha sido replicado en Chile por parte de la ONEMI (Oficina Nacional de
+Emergencias del Ministerio del Interior) y SUBTEL (Subsecretaría de
+Telecomunicaciones) para alertar sobre los riesgos de \textit{tsunamis}, sismos
+de mayor intensidad, erupciones volcánicas e incendios forestales
+\cite{gobierno_de_chile_sistema_????, subtel_onemi_2014}.  Sin embargo, este
+sistema de alerta temprana requiere de una infraestructura de comunicaciones
+para funcionar la cual puede resultar dañada luego de un desastre natural como
+terremotos o inundaciones haciendo difícil para las personas del lugar y
+autoridades recibir y enviar información que puede resultar de vital importancia
+para la toma de decisiones.
+
+Un ejemplo de los problemas que surgen frente a la falta de comunicaciones
+ocurrió en el terremoto del 2010 en Chile, donde durante cuatro días la región
+del Bío Bío tenía solamente un 27\% de operatividad en telefonía móvil y en
+telefonía fija un 45\%  \cite{subtel_reporte_2015} haciendo las comunicaciones
+inviables en esas zonas durante un largo periodo de tiempo.
+
+
+Una solución que se aplica en este contexto son las \textit{Delay Tolerant
+Networks} (DTNs) o redes tolerantes a disrupciones las cuales utilizan el
+movimiento de los nodos para encontrar posibles rutas en la red, esto se logra
+mediante el paradigma \textit{store-and-forward}  que consiste en almacenar los
+mensajes y utilizar el movimiento de las personas (nodos) para hacer llegar los
+mensajes a sus destinos \cite{fall_delay-tolerant_2003}. Cuando se aplica este
+tipo de redes en el contexto de desastres, generalmente son dispositivos móviles
+como teléfonos celulares los que ejecutan los distintos protocolos DTN los que
+tienen la responsabilidad de decidir si transmitir o no un mensaje a un nodo
+vecino.  Dado que el mayor consumo de energía ocurre mediante la transmisión de
+datos entre nodos y a que esta es un recurso escaso que limita la movilidad  de
+los nodos en el contexto de desastre, es importante encontrar una manera de
+reducir este consumo para que sea factible poder aplicar estas redes en estos
+escenarios.
+
+En el contexto del grupo de investigación RESPOND del Departamento de Ingeniería
+Informática de la Universidad de Santiago de Chile, existe un proyecto de
+detección de necesidades de las personas el cual requiere tanto de comunicación
+de dos vías como de robustez frente a un posible desastre en el país. Además,
+este trabajo de investigación corresponder a un proyecto DICYT.
+
+
+
+\seccion{Descripción del problema}
+
+Dado que este trabajo nace del alto gasto energético que surge al aplicar DTNs y
+a que la energía es un recurso escaso en escenarios de desastres, es importante
+tratar de encontrar formas en que un usuario participante de la red pueda enviar
+y recibir mensajes sin necesidad de recargar la batería de su dispositivo en
+espacios cortos de tiempo, lo que puede resultar imposible si el desastre afecta
+la infraestructura de energía. Además, dado que en un escenario de desastre
+participan usuarios que tienen distintos tipos de movimiento y dispositivos, se
+hace necesario encontrar una manera de explotar esta situación para mejorar el
+desempeño de la red.  Es por esta razón que nacen los siguientes problemas:
+
+
+\begin{itemize}
+    \item ¿Cómo reducir el consumo de energía en una red DTN utilizando los
+      protocolos del estado del arte como: \protocolos?
+    \item ¿Cómo afectan los distintos patrones de movilidad que existen en un
+    escenario de desastre al desempeño de los protocolos DTN?  
+    \item ¿Cómo comunicar a las personas en un escenario de desastre?
+\end{itemize}
+
+
+
+\seccion{Solución propuesta}
+
+Para dar solución al problema planteado se propone la creación de un protocolo
+híbrido dinámico que pueda generar y recolectar información del desempeño de la
+red para poder actuar en el mismo momento de la ejecución y poder seleccionar el
+protocolo más adecuado para reducir el consumo de energía de acuerdo a su
+movilidad interna. Este protocolo va a ser híbrido, dado que mezcla los
+algoritmos de encaminamiento protocolos del estado del arte en uno solo.
+
+
+
+
+
+\seccion{Objetivos y alcances del proyecto}
+
+
+
+\subseccion{Objetivo general}
+{
+Crear un protocolo de redes tolerante a disrupciones para dispositivos móviles
+en escenarios de desastre. 
+}
+
+\subseccion{Objetivos específicos}
+{
+\begin{enumerate}
+    \item Elaborar un estado del arte sobre redes tolerantes a disrupciones,
+      modelos de movilidad y modelos de energía para dispositivos móviles.
+    \item Adaptar el modelo de movilidad \textit{Post-Disaster Mobility Model}
+      (PDM) \cite{uddin_post-disaster_2009} a Chile.
+    \item \label{objetivo-diseno} Diseñar un protocolo para redes tolerantes a
+      disrupciones que se adapte las decisiones de enrutamiento en base a la
+      movilidad de los dispositivos móviles participantes.  
+    \item Implementar el protocolo en el simulador de redes tolerantes a
+      disrupciones \textit{The One}.
+    \item Evaluar el rendimiento del protocolo híbrido respecto a los protocolos
+      del estado del arte en diferentes modelos de movilidad.
+\end{enumerate}
+}
+
+
+\newpage
+\subseccion{Alcances}
+
+
+\begin{itemize}
+    \item Debido a las limitaciones de probar un nuevo protocolo en un ambiente
+    real, solamente se van a obtener resultados en forma de simulaciones sin
+    implementarlo en dispositivos reales.
+    \item El modelo de energía a utilizar es el propuesto por Martín-Campillo et
+      al. \cite{martin-campillo_energy-efficient_2012} el cual permite estimar
+      el consumo de energía de un dispositivo dentro de un simulador en base a
+      la cantidad de copias de mensajes efectuadas.
+    \item La adaptación del modelo de movilidad PDM a Chile no está validada con
+      trazas reales de una ciudad chilena.
+    \item Debido a los altos tiempos de simulación, no es posible realizar
+      experimentos con todos los posibles valores de las variables, por lo que
+      solo se utiliza aquellos valores más interesantes.
+\end{itemize}
+
+
+
+
+%%% FIN OBJETIVOS
+
+
+\seccion{Metodologías y herramientas utilizadas}
+
+
+\subseccion{Metodología}
+
+
+Como metodología de desarrollo se va a utilizar una mezcla entre el método
+científico y una metodología de desarrollo de software y testing
+\cite{hernandez_sampieri_metodologiinvestigacion_2010}:
+
+La hipótesis de este trabajo es: "Utilizando información sobre la movilidad de
+un nodo y el desempeño de los protocolos, se puede seleccionar el protocolo más
+adecuado para reducir el consumo de energía en comparación con la utilización de
+un solo protocolo en la red". La metodología tiene los siguientes pasos:
+
+
+
+\begin{enumerate}
+    \item Plantear el problema de investigación: Establecimiento de los
+      objetivos de la investigación.
+    \item Elaborar un estado del arte y marco teórico.
+    \item Formulación/Reformulación de la hipótesis: Averiguar cuales son los
+        factores que podrían reducir el consumo de energía en el protocolo.
+    \item Probar la hipótesis mediante experimentación:
+        \begin{enumerate}
+            \item Definir los cambios/requisitos del software de acuerdo a la
+                hipótesis.
+            \item Crear pruebas unitarias a partir de los cambios requisitos,
+                probarlas y esperar a que fallen. Esto es aplicar Test-Driven
+                Development \cite{ble_jurado_diseno_2010} (TDD) al diseño del software.
+            \item Implementar el software para que pasen las pruebas unitarias.
+            \item Realizar las simulaciones.
+        \end{enumerate}
+    \item Interpretar los datos del experimento y sacar conclusiones: Comparar
+        con simulaciones de otros protocolos.
+    \item Presentar los resultados.
+\end{enumerate}
+
+
+
+La parte iterativa de esta metodología es entre la etapa 3 y la 5, si se
+encuentra que los resultados no son lo que se esperaba de la hipótesis, entonces
+se debe volver al paso 3 para volver a reformular las formas de reducir el
+consumo de energía. Se terminará cuando el protocolo creado implemente una
+métrica basada en la energía y en los vecinos que mejore el consumo de energía
+comparado con los protocolos originales.
+
+
+Como estrategia empírica se va a utilizar la técnica de la experimentación
+\cite{wohlin_experimentation_2012} donde se manipula una variable  del conjunto
+(cantidad de nodos, tamaño de los mensajes, cantidad de mensajes en la
+simulación, destinos de los mensajes, tamaño de \textit{buffers} y velocidad de
+comunicación) estudiada. Estos experimentos son comúnmente efectuado en
+ambientes controlados o, como en este caso, un simulador.
+
+
+
+\subseccion{Herramientas de desarrollo}
+
+El protocolo fue desarrollado y probado utilizando el simulador \theone{}
+\cite{keranen_one_2009} versión 1.5.1 RC2 en los lenguajes de programación Java
+1.8 \footnote{https://www.java.com/es/} y Scala 2.11
+\footnote{https://www.scala-lang.org/}. 
+
+
+Como editor de texto tanto para el protocolo como para el informe se utilizó
+\textit{VIM} 8.0 \footnote{http://www.vim.org/} y como sistema de composición de
+texto de este documento se utilizó \LaTeX
+\footnote{https://www.latex-project.org/} con el motor XeLaTeX
+\footnote{http://xetex.sourceforge.net/}.
+
+Para la generación de gráficos se utilizó \textit{PGFPlots}
+\footnote{http://pgfplots.sourceforge.net/} en su versión 1.13 y para la
+generación de figuras y diagramas Ti$k$Z 3.0.1
+\footnote{https://sourceforge.net/projects/pgf/}, ambos para \LaTeX. Diagramas
+adicionales fueron creados utilizando \textit{Inkscape}
+\footnote{https://inkscape.org/es/}. Para el procesamiento de los resultados
+obtenidos de las simulaciones se utilizó Python 2.7
+\footnote{https://www.python.org} y GNU Awk 4.1
+\footnote{https://www.gnu.org/software/gawk/}.
+
+Las simulaciones se ejecutaron en un servidor GNU/Linux Ubuntu con 32 núcleos y
+125 GB de RAM que permite ejecutar las simulaciones en paralelo.
+
+
+\seccion{Organización del documento}
+
+En los siguientes capítulos de esta tesis se presentan los resultados obtenidos
+respecto a la reducción del consumo de energía de protocolos DTN en escenarios
+de desastres, así como tambien problemas de seguridad que aparecen en este tipo
+de redes y un nuevo modelo de movilidad basado en Chile para la evaluación del
+protocolo creado.
+
+En el \ref{chp:arte} se presenta un estado del arte y marco teórico abarcando
+conceptos de DTN, consumo de energía, modelos de movilidad y seguridad
+explicando aquellas publicaciones y soluciones relacionadas con la propuesta en
+este trabajo. El \ref{chp:pasado} presenta un protocolo híbrido estático, es
+decir, cada nodo puede ejecutar más de un protocolo pero no puede cambiarlo ni
+reaccionar ante cambios en la red. Esta es una solución preliminar que se
+utiliza como base para plantar la hipótesis y para la creación del protocolo
+híbrido dinámico.
+
+Debido a que PDM no fue diseñado para simular un ambiente como el chileno, con
+sus propias ciudades y desastres naturales, es que es necesario adaptarlo al
+contexto nacional. En el \ref{chp:movilidad} se presenta un nuevo modelo de
+movilidad basado en PDM llamado \textit{Valparaíso Mobility Model} que modela la
+situación luego de un terremoto en una ciudad costera como Valparaíso donde las
+personas deben evacuar hacia las alturas. Este modelo de movilidad se utiliza
+para evaluar el desempeño del protocolo híbrido dinámico.
+
+Utilizando el protocolo híbrido estático como base, se presenta en el
+\ref{chp:dinamico} un protocolo híbrido dinámico que puede reaccionar ante
+cambios en la red y selecionar el protocolo del estado del arte más adecuado
+para reducir el consumo de energía relacionado con la comunicación.
+
+Debido a que las DTNs son redes abiertas donde cualquier dispositivo puede
+participar es que se debe abordar el problema de la seguridad. El
+\ref{chp:seguridad} se trata el problema de los ataques de denegación de
+servicio y como mitigar su efecto en escenarios de desastres.
+
+Finalmente, en el \ref{chp:conclusiones} se presentan las conclusiones de las
+soluciones propuestas presentando un análisis final de los resultados
+experimentales y trabajo futuro que puede ser abordado como continuación.
+
+
+
+
+
+\seccion{Otros resultados}
+
+Partes de este trabajo se presentaron en conferencias internacionales,
+específicamente la propuesta de un protocolo híbrido estático DTN fue presentada
+en una publicacion titulada \textit{Mobility-aware DTN protocols for
+post-disaster scenarios} \cite{paper_evaluacion_nosotros} y la capa de seguridad
+fue propuesta en el trabajo titulado \textit{Reliable Routing Protocol for Delay
+Tolerant Networks} \cite{DBLP:conf/icpads/GarayRH15}.
+
+Ambos trabajos fueron co-creados por el autor de esta tesis.

@@ -1,0 +1,21 @@
+\begin{tikzpicture}
+  \begin{umlpackage}{Movement}
+
+    \umlclass[x=2]{AmbulanceMovement}{
+      MapNode home\\
+      DijkstraPathFinder pathFinder\\
+      SimMap  map
+    }{
+      MapNode getHome()\\
+      Path getPath()
+    }
+
+    \umlclass[y=-4, x=2]{MapBasedMovement}{}{}
+
+    \umlclass[x=-3]{ValpoConfig}{}{}
+
+    \umlinherit[geometry=-|]{AmbulanceMovement}{MapBasedMovement}
+    \umlaggreg[]{AmbulanceMovement}{ValpoConfig}
+
+  \end{umlpackage}
+\end{tikzpicture}

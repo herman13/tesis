@@ -1,0 +1,59 @@
+\pgfplotsset{cycle list/Dark2}
+\renewcommand{\colorscheme}{Dark2}
+
+\begin{tikzpicture}
+\begin{axis}[
+    xlabel={Tasa de copias de mensajes locales},
+    ylabel={Grado de pertenencia},
+    xmin=0, xmax=1,
+    ymin=0, ymax=1,
+    legend style = {
+      legend pos = outer north east,
+    },
+    cycle list name=Dark2,
+    width=0.7\textwidth
+]
+
+\legend{Bajo,Medio,Alto,Altísimo}
+
+
+
+
+\addplot+[
+  cycle list name=Dark2,
+  very thick
+  ]
+    coordinates {
+      (0,0)(0.2,1)(0.4,0)
+    };
+
+
+\addplot+[
+  cycle list name=Dark2,
+  very thick
+  ]
+    coordinates {
+      (0.2, 0)(0.4, 1)(0.6, 0)
+    };
+
+
+\addplot+[
+  cycle list name=Dark2,
+  very thick
+  ]
+    coordinates {
+      (0.4, 0)(0.6, 1)(0.8, 0)
+    };
+
+\addplot+[
+  cycle list name=Dark2,
+  very thick
+  ]
+    coordinates {
+      (0.6, 0)(0.8, 1)(1.0, 0)
+    };
+
+ 
+\end{axis}
+\end{tikzpicture}
+

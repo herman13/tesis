@@ -1,0 +1,23 @@
+Movement classes and their configrations
+
+CenterMovement
+- Used for placing *static* centers/locations, such as maincenter, evacuationcamp, reliefcenter, houses, etc.
+- Provide an appropriate type by setting 'centerType' attribute
+
+InCenterVehicleMovement
+- Vehicle moving between centers (back and forth) [i.e., between home and target]
+- Specified by homeCenterType and targetCenterType (can be a comma seperated list) 
+- If there are multiple home centers, one is taken at random at the beginning
+- If multiple target centers are specified, one target is chosen at random at each round
+
+VolunteerMovement
+- Volunteers are deployed within a given neighborhood
+- The neighborhood is specified by 'neighborhood' field (indexed from 0) 
+  [Note that, neighborhoods (specified by CenterMovement of centerType 'neighborhood') must be established before invoking this movement]
+- Volunteers randomly move inside the assigned neighborhood (within a specified radius)
+- Volunteers occassionally visit the neighborhood center
+
+PDMConfig
+- Contains locations of centers that are used by agent movements
+
+

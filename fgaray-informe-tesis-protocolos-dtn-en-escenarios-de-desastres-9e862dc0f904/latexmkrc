@@ -1,0 +1,3 @@
+$latex = 'xelatex --shell-escape';
+$pdflatex = 'xelatex -shell-scape';
+@default_files = ("informe");

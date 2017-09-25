@@ -1,0 +1,103 @@
+De acuerdo a los desarrolladores de \theone{} \cite{keranen_one_2009}, el
+simulador presenta un problema de rendimiento cuando se utilizan ciertos
+protocolos. Ellos reportan que \maxprop{} es un protocolo del cual se tiene
+conocimiento que presenta un bajo rendimiento en el simulador logrando
+ejecuciones de $10:1$, es decir, cada $1$ segundo real se simulan $10$ en el
+computador de prueba de los desarrolladores. 
+
+\seccion{Paralelismo de granularidad gruesa}
+
+
+Cuando se realizaron las primeras pruebas del protocolo híbrido estático,
+\textit{MetaRouter}, se encontró con problemas de rendimiento en los protocolos
+\maxprop, \epidemic{} y \prophet. Debido a la necesidad de ejecutar cada uno de
+estos protocolos con distintos parámetros ya sea tamaño de mensaje o cantidad de
+nodos en la red. Esto aumenta la cantidad de ejecuciones que se deben hacer del
+simulador, pero también tiene la propiedad que cada una de las ejecuciones es
+independiente de las otras permitiendo la ejecución paralela.
+
+Esta ejecución corresponde a paralelismo de granularidad gruesa dado que una
+gran porción del cálculo, la ejecución completa de un protocolo con un parámetro
+en particular, es realizada de forma paralela con muy poca comunicación entre
+las instancias.
+
+
+Se utiliza un programa en \textit{Python} para la ejecución paralela de
+simulaciones en \theone{} mediante la librería \textit{multiprocessing}
+\footnote{https://docs.python.org/2/library/multiprocessing.html}, la cual
+permite la ejecución de programas paralelos. Por cada protocolo y parámetro que
+se quiera probar, se lanza una ejecución de \theone{} hasta alcanzar un límite
+máximo ajustado de acuerdo a la memoria disponible por el usuario. En un
+computador con OSX, $24$ cores y $64$ GB de memoria, es posible utilizar todos
+los cores para el procesamiento de simulaciones sin alcanzar el máximo uso de
+RAM.
+
+
+
+%\seccion{Paralelismo de granularidad fina}
+
+
+%En el caso de esta tesis, el protocolo dinámico comenzó a tener simulaciones
+%lentas que hacía que terminara de ejecutar $80000$ segundos de simulación en más
+%de $36$ horas, es decir, por cada segundo real se simulaban $0.61$ segundos.
+%Este rendimiento impedía poder realizar pruebas interesantes e incluso iterar de
+%una manera rápida las distintas versiones de los protocolos, es por esta razón
+%que se decidió tratar de encontrar la fuente de los cuellos de botella de las
+%simulaciones.
+
+%Utilizando el analizador de la \textit{Java Virtual Machine}, \textit{visualvm}
+%\footnote{https://visualvm.java.net/}, se descubrió que el cuello de botella más
+%importante de las simulaciones se encontraba en los métodos \textit{update} de
+%los protocolos implementados, especialmente \prophet{} y \maxprop{}, siendo
+%ambos los responsables de un 80\% del tiempo de CPU.
+
+%Realizar simulaciones paralelas no es trivial debido a que requiere de
+%sincronización entre las entidades o el uso de \textit{roll-backs} para volver a
+%estados previos cuando partes de la simulación avanzan más que otras. Sin
+%embargo, es posible avanzar la simulación de forma paralela un ciclo a la vez,
+%es decir, calcular cada \textit{tick} de la simulación de forma paralela pero
+%sin permitir que las entidades avancen más de un \textit{tick}.
+
+%Cabe aclarara que el objetivo de hacer paralela parte de la simulación es para
+%obtener resultados más rápido para la tesis, no un objeto de la tesis en si.
+
+%Primero se analizaron los métodos \textit{update} de los protocolos para
+%averiguar donde y si es que es necesario tener zonas de exclusión mutua. Se
+%llegó a la conclusión de que en el método \textit{update}, los protocolos o
+%nodos solamente interactúan con aquellos con los cuales tienen una conexión,
+%por lo tanto los hilos que vayan a ejecutar los métodos \textit{update} deberían
+%evitar ejecutar concurrentemente aquellos nodos que tienen una conexión de
+%comunicación activa entre ellos.
+
+
+%En la clase \textit{World} se utilizó \textit{ExecutorService} que permite crear
+%\textit{pools} de hilos para evitar el costo de crear nuevos hilos cada vez que
+%se quiera ejecutar un proceso en paralelo. Para encontrar cuales son aquellos
+%protocolos que deben ser ejecutados en conjuntos para evitar tener que utilizar
+%\textit{locks} se construyó un grafo de las conexiones entre nodos de manera tal
+%de poder encontrar las dependencias entre ellas.
+
+%Luego se recorre el grafo utilizando \textit{Deep First Search} para generar
+%listas de trabajos que deben ser ejecutadas secuencialmente. Cada una de estas
+%listas es un trabajo que es distribuido en los hilos creados en el
+%\textit{ExecutorService}. Utilizar un conjunto de hilos creados con
+%\textit{ExecutorService} permite reducir el costo de crear nuevos hilos cada vez
+%que se quiera ejecutar alguna tarea en paralelo.
+
+%A pesar del costo de crear el grafo y las listas de trabajos puede ser
+%perjudicial para el desempeño del sistema, igual se experimenta una mejora en el
+%procesamiento paralelo de los \textit{update} debido a que cada uno de ellos es
+%lo suficientemente costoso como para beneficiarse de todo el proceso.
+
+%En general, utilizando este método, el simulador utiliza entre $1.2$ y $4.5$
+%núcleos en su ejecución, siendo el promedio $1.8$ y reduciendo el tiempo de
+%ejecución de $800000$ segundos de simulación de $36$ horas a $9$ horas que
+%consistía en el protocolo dinámico y en el modelo de movilidad PDM en un
+%computador con OSX y 24 núcleos Intel(R) Xeon(R) CPU E5645 corriendo a 2.40GHz
+%con 64 GB de RAM. En el modelo de movilidad WDMM hay un uso de hasta $6$
+%núcleos, indicando que el paralelismo logrado depende del modelo de movilidad
+%utilizado. Esto se explica debido a que es el modelo de movilidad el que dicta
+%la interacción entre los nodos, que nodos están conectados con quien. Un modelo
+%de movilidad que tiene dispersas a las personas permite mayor paralelismo dado
+%que el método \textit{update} puede ser llamado en cualquier orden al no tener
+%interacción con otros nodos de la red.

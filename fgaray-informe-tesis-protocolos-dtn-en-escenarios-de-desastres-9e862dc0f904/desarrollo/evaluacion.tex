@@ -1,0 +1,22 @@
+
+
+Debido a cada uno de los tipos de movimientos provistos por PDM, es posible
+definir protocolos que puedan utilizar estas diferencias en la decisión de
+encaminaminamiento. Una clasificación que se ha realizado ha sido la que se
+muestra en la \ref{tabla:clasificacion}. Aquellos nodos que tienen una alta
+movilidad, es decir, que recorren grandes extensiones de la ciudad en un corto
+tiempo son llamados exploradores mientras que aquellos que tienen una movilidad
+más limitada se llaman explotadores y además se proponen
+\cite{paper_evaluacion_nosotros} los protocolos más adecuados para cada
+situación.
+
+
+\tabla{Clasificación de nodos según su movilidad en PDM (Basado en \cite{paper_evaluacion_nosotros})}{
+    \begin{tabularx}{\textwidth}{|l|l|X|}
+            \hline
+            Nodo       & Tipo          & Protocolo Preferido \\ \hline \hline
+            Persona/Voluntario & Explotador    & \syw \\ \hline
+            Rescatista & Explotador    & \syw, \syf \\ \hline
+            Vehículo   & Explorador    & \epidemic, \maxprop, \prophet \\ \hline
+    \end{tabularx}
+}{tabla:clasificacion}

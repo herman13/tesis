@@ -1,0 +1,37 @@
+\begin{tikzpicture}
+
+  \begin{scope}[
+     xshift=-7.5cm
+    ,yshift=-5cm
+    ,very thick
+    ,node distance=1.6cm
+    ,on grid
+    ,>=stealth'
+    ,block/.style={rectangle,draw,fill=cyan!20}
+    ,comp/.style={circle,draw,fill=orange!40}
+    ]
+
+  \node [comp] (centro1) [xshift=-1cm] { Centro 1}
+    edge [<->] (a)
+    edge [<->] (b)
+    edge [<->] (c);
+
+  \node [comp] (centro2) [right=of centro1, xshift=1cm] { Centro 2}
+    edge [<->] (centro1)
+    edge [<->] (a)
+    edge [<->] (b)
+    edge [<->] (c);
+
+  \node [comp] (a) [above=of centro1, yshift=0.5cm] {A}
+    edge [<->, bend right=50] (b)
+    edge [<->] (c);
+
+  \node [comp] (b) [below=of centro1, yshift=-0.5cm] {B};
+
+  \node [comp] (c) [above=of centro2, yshift=0.5cm] {C};
+  
+  \draw[<->] (c) .. controls +(right:3cm) and +(right:4cm) ..  (b);
+
+  \end{scope}
+
+\end{tikzpicture}

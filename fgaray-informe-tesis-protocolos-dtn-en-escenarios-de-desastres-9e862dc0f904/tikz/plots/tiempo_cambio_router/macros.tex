@@ -1,0 +1,161 @@
+\newcommand{\graficoTiempoCambioDelivery}[2]{
+
+\pgfplotsset{cycle list/Dark2}
+\renewcommand{\colorscheme}{Dark2}
+
+\begin{tikzpicture}
+\begin{axis}[
+    ylabel={#1},
+    xlabel={Tiempo cambio de protocolo (segundos)},
+    ymin=0,
+    ymax=1,
+    xmin=0,
+    grid=major,
+    legend style = {
+      legend pos = outer north east,
+    },
+    cycle list name=Dark2,
+    width=0.7\textwidth,
+    mark repeat={5}
+]
+
+
+\pgfplotstableread{#2}\data;
+
+
+\addplot+ [
+  very thick,
+  cycle list name=Dark2,
+  %mark=square*
+  ] table []{\data};
+
+
+
+
+\end{axis}
+\end{tikzpicture}
+}
+
+
+\newcommand{\graficoTiempoCambio}[2]{
+
+\pgfplotsset{cycle list/Dark2}
+\renewcommand{\colorscheme}{Dark2}
+
+\begin{tikzpicture}
+\begin{axis}[
+    ylabel={#1},
+    xlabel={Tiempo cambio de protocolo (segundos)},
+    ymin=0,
+    xmin=0,
+    grid=major,
+    legend style = {
+      legend pos = outer north east,
+    },
+    cycle list name=Dark2,
+    width=0.7\textwidth,
+    mark repeat={5}
+]
+
+
+\pgfplotstableread{#2}\data;
+
+
+\addplot+ [
+  very thick,
+  cycle list name=Dark2,
+  %mark=square*
+  ] table []{\data};
+
+\end{axis}
+\end{tikzpicture}
+}
+
+
+
+\newcommand{\graficoTiempoCambioDeliverySmooth}[3]{
+
+\pgfplotsset{cycle list/Dark2}
+\renewcommand{\colorscheme}{Dark2}
+
+\begin{tikzpicture}
+\begin{axis}[
+    ylabel={#1},
+    xlabel={Tiempo cambio de protocolo (segundos)},
+    ymin=0,
+    ymax=1,
+    xmin=0,
+    grid=major,
+    legend style = {
+      legend pos = outer north east,
+    },
+    cycle list name=Dark2,
+    width=0.7\textwidth,
+]
+
+\legend{Tasa de entrega, \textit{smooth.spline}(Tasa de entrega)}
+
+\pgfplotstableread{#2}\data;
+\pgfplotstableread{#3}\smooth;
+
+
+\addplot+ [
+  very thick,
+  cycle list name=Dark2,
+  mark=square*,
+  ] table []{\data};
+
+
+\addplot+ [
+  very thick,
+  cycle list name=Dark2,
+  mark=*,
+  ] table []{\smooth};
+
+
+\end{axis}
+\end{tikzpicture}
+}
+
+
+\newcommand{\graficoTiempoCambioSmooth}[3]{
+
+\pgfplotsset{cycle list/Dark2}
+\renewcommand{\colorscheme}{Dark2}
+
+\begin{tikzpicture}
+\begin{axis}[
+    ylabel={#1},
+    xlabel={Tiempo cambio de protocolo (segundos)},
+    ymin=0,
+    xmin=0,
+    grid=major,
+    legend style = {
+      legend pos = outer north east,
+    },
+    cycle list name=Dark2,
+    width=0.7\textwidth,
+]
+
+\legend{Tasa de entrega, \textit{smooth.spline}(Tasa de entrega)}
+
+\pgfplotstableread{#2}\data;
+\pgfplotstableread{#3}\smooth;
+
+
+\addplot+ [
+  very thick,
+  cycle list name=Dark2,
+  mark=square*,
+  ] table []{\data};
+
+
+\addplot+ [
+  very thick,
+  cycle list name=Dark2,
+  mark=*,
+  ] table []{\smooth};
+
+\end{axis}
+\end{tikzpicture}
+}

@@ -1,0 +1,31 @@
+\begin{tikzpicture}
+
+  \begin{scope}[
+     xshift=-7.5cm
+    ,yshift=-5cm
+    ,very thick
+    ,node distance=1.6cm
+    ,on grid
+    ,>=stealth'
+    ,block/.style={rectangle,draw,fill=cyan!20}
+    ,comp/.style={circle,draw,fill=orange!40}
+    ]
+
+
+  \node [comp] (comisaria) [yshift=-3cm] { Comisaría };
+
+  \node [block] (evento1) [yshift=-3cm, xshift=-5cm] { Vecindario aleatorio 1 }
+    edge [<-, bend right] node[below] {1} (comisaria)
+    edge [->, bend left] node[above] {2}  (comisaria)
+    ;
+
+
+  \node [block] (evento2) [yshift=-3cm, xshift=5cm] { Vecindario aleatorio 2 }
+    edge [<-, bend right] node[above] {3} (comisaria)
+    edge [->, bend left] node[below] {4}  (comisaria)
+    ;
+
+
+  \end{scope}
+
+\end{tikzpicture}

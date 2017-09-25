@@ -1,0 +1,436 @@
+#
+# Default settings for the simulation
+#
+
+## Scenario settings
+Scenario.name = pdm_scenario_prueba
+Scenario.simulateConnections = true
+Scenario.updateInterval = 1
+# 43k ~= 12h
+
+# Son 96 horas => 344k
+Scenario.endTime = 10k
+#Scenario.endTime = 50k
+
+
+Scenario.nrofHostGroups = 24
+
+## Group-specific settings:
+# groupID : Group's identifier. Used as the prefix of host names
+# nrofHosts: number of hosts in the group
+# transmitRange: range of the hosts' radio devices (meters)
+# transmitSpeed: transmit speed of the radio devices (bytes per second)
+# movementModel: movement model of the hosts (valid class name from movement package)
+# waitTime: minimum and maximum wait times (seconds) after reaching destination
+# speed: minimum and maximum speeds (m/s) when moving on a path
+# bufferSize: size of the message buffer (bytes)
+# router: router used to route messages (valid class name from routing package)
+# activeTimes: Time intervals when the nodes in the group are active (start1, end1, start2, end2, ...)
+# msgTtl : TTL (minutes) of the messages created by this host group, default=infinite
+
+## Group and movement model specific settings
+# pois: Points Of Interest indexes and probabilities (poiIndex1, poiProb1, poiIndex2, poiProb2, ... ) - for ShortestPathMapBasedMovement
+# okMaps : which map nodes are OK for the group (map file indexes), default=all - for all MapBasedMovent models
+# routeFile: route's file path - for MapRouteMovement
+# routeType: route's type - for MapRouteMovement
+
+MovementModel.rngSeed = 129302
+
+# Rango de transmisión es de 50 metros
+# Bluetooth 4 con 25 Mbps
+Group.transmitRange = 50
+Group.transmitSpeed = 3125000
+Group.waitTime = 5, 10
+Group.router = ProphetRouter
+Group.bufferSize = 25M
+
+# Solo un centro principal
+# ID = 1
+Group1.groupID = maincenter_
+Group1.nrofHosts = 1
+Group1.movementModel = pdm.CenterMovement
+Group1.centerType = mainreliefcenter
+Group1.okMaps = 1
+Group1.speed = 0.0, 0.0
+
+
+
+
+# Son 10 vecindarios
+# 11
+Group2.groupID = neighborhood_
+Group2.nrofHosts = 10
+Group2.movementModel = pdm.CenterMovement
+Group2.centerType = neighborhood
+Group2.minDistanceFromOthers = 500m
+Group2.neighborhoodRadius = 100m
+Group2.okMaps = 1
+Group2.speed = 0.0, 0.0
+Group2.waitTime = 0.0, 0.0
+# Los vecindarios no tienen router
+Group2.bufferSize = 0
+Group2.transmitRange = 0
+
+
+
+
+# Cada vecindario necesita tener casas, son 60 en total
+# 71
+Group3.groupID = CASA_
+Group3.nrofHosts = 60
+Group3.movementModel = pdm.CenterMovement
+Group3.okMaps = 1
+Group3.centerType = house
+# Las casas no tienen router
+Group3.bufferSize = 0
+Group3.transmitRange = 0
+
+
+
+######## CENTROSSSSSSS
+# 73
+Group4.groupID = CENTRO_COORDINACION_
+Group4.nrofHosts = 2
+Group4.movementModel = pdm.CenterMovement
+Group4.okMaps = 1
+Group4.centerType = coord
+#Group4.transmitRange = 0
+
+
+# 83
+Group5.groupID = RELIEF_SUPPLY_CENTER_
+Group5.nrofHosts = 10
+Group5.movementModel = pdm.CenterMovement
+Group5.okMaps = 1
+Group5.centerType = reliefcenter_SUPLY
+#Group5.transmitRange = 0
+
+# 84
+Group6.groupID = POLICE_CENTER_
+Group6.nrofHosts = 1
+Group6.movementModel = pdm.CenterMovement
+Group6.okMaps = 1
+Group6.centerType = police
+#Group6.transmitRange = 0
+
+
+# 89
+Group7.groupID = EVACUATION_CENTER_
+Group7.nrofHosts = 5
+Group7.movementModel = pdm.CenterMovement
+Group7.okMaps = 1
+Group7.centerType = evacuationcenter
+#Group7.transmitRange = 0
+
+
+# 90
+Group8.groupID = MEDICAL_CENTER_
+Group8.nrofHosts = 1
+Group8.movementModel = pdm.CenterMovement
+Group8.okMaps = 1
+Group8.centerType = medical
+#Group8.transmitRange = 0
+
+
+# 95
+Group9.groupID = COORD_SUPPLY_VEHICLE_CENTER_
+Group9.nrofHosts = 5
+Group9.movementModel = pdm.CenterMovement
+Group9.okMaps = 1
+Group9.centerType = coord_supply
+#Group9.transmitRange = 0
+
+
+# 100
+Group10.groupID = RELIF_CENTER_VEHICLE_
+Group10.nrofHosts = 5
+Group10.movementModel = pdm.CenterMovement
+Group10.okMaps = 1
+Group10.centerType = relif_center
+#Group10.transmitRange = 0
+
+
+
+################ FIN CENTROS
+
+
+
+
+############## Vehiculos
+
+# 102
+Group11.groupID = AMBULANCE_
+Group11.nrofHosts = 2
+Group11.movementModel = pdm.InCenterVehicleMovement
+Group11.homeCenterType = medical
+Group11.targetCenters = neighborhood, medical
+Group11.okMaps=1
+Group11.speed = 45, 55
+Group11.waitTime = 1200, 3600
+
+
+# 103
+Group12.groupID = ROAD_REPAIR_VEHICLE_
+Group12.nrofHosts = 1
+Group12.movementModel = pdm.InCenterVehicleMovement
+Group12.homeCenterType = reliefcenter_SUPLY
+Group12.targetCenters = neighborhood, reliefcenter_SUPLY
+Group12.okMaps=1
+Group12.speed = 45, 55
+Group12.waitTime = 1200, 3600
+
+
+# 104
+Group13.groupID = POLICE_VEHICLE_
+Group13.nrofHosts = 1
+Group13.movementModel = pdm.InCenterVehicleMovement
+Group13.homeCenterType = police
+Group13.targetCenters = neighborhood
+Group13.okMaps=1
+Group13.speed = 45, 55
+Group13.waitTime = 1200, 3600
+
+
+
+############### LOS RESCATISTAS
+
+# 124
+Group14.groupID = RESCUE_WORKER_
+Group14.nrofHosts = 20
+Group14.movementModel = pdm.InCenterVehicleMovement
+Group14.homeCenterType = reliefcenter_SUPLY
+Group14.targetCenters = neighborhood, house
+Group14.okMaps = 1
+Group14.speed = 1.111, 1.389
+Group14.waitTime = 5, 10
+
+
+######## AHORA LAS PERSONAS NORMALES, estos son voluntarios que se mueven por el
+# vecindario para ayudar a los rescatistas
+
+# 144
+Group15.groupID = PERSONA_
+Group15.nrofHosts = 20
+Group15.movementModel = pdm.VolunteerMovement
+Group15.neighborhood = 0
+Group15.radius = 500
+Group15.okMaps = 1
+Group15.speed = 1.111, 1.389
+Group15.waitTime = 5, 10
+
+# 164
+Group16.groupID = PERSONA_
+Group16.nrofHosts = 20
+Group16.movementModel = pdm.VolunteerMovement
+Group16.neighborhood = 1
+Group16.radius = 500
+Group16.okMaps = 1
+Group16.speed = 1.111, 1.389
+Group16.waitTime = 5, 10
+
+# 184
+Group17.groupID = PERSONA_
+Group17.nrofHosts = 20
+Group17.movementModel = pdm.VolunteerMovement
+Group17.neighborhood = 2
+Group17.radius = 500
+Group17.okMaps = 1
+Group17.speed = 1.111, 1.389
+Group17.waitTime = 5, 10
+
+# 204
+Group18.groupID = PERSONA_
+Group18.nrofHosts = 20
+Group18.movementModel = pdm.VolunteerMovement
+Group18.neighborhood = 3
+Group18.radius = 500
+Group18.okMaps = 1
+Group18.speed = 1.111, 1.389
+Group18.waitTime = 5, 10
+
+# 224
+Group19.groupID = PERSONA_
+Group19.nrofHosts = 20
+Group19.movementModel = pdm.VolunteerMovement
+Group19.neighborhood = 4
+Group19.radius = 500
+Group19.okMaps = 1
+Group19.speed = 1.111, 1.389
+Group19.waitTime = 5, 10
+
+# 244
+Group20.groupID = PERSONA_
+Group20.nrofHosts = 20
+Group20.movementModel = pdm.VolunteerMovement
+Group20.neighborhood = 5
+Group20.radius = 500
+Group20.okMaps = 1
+Group20.speed = 1.111, 1.389
+Group20.waitTime = 5, 10
+
+# 264
+Group21.groupID = PERSONA_
+Group21.nrofHosts = 20
+Group21.movementModel = pdm.VolunteerMovement
+Group21.neighborhood = 6
+Group21.radius = 500
+Group21.okMaps = 1
+Group21.speed = 1.111, 1.389
+Group21.waitTime = 5, 10
+
+# 284
+Group22.groupID = PERSONA_
+Group22.nrofHosts = 20
+Group22.movementModel = pdm.VolunteerMovement
+Group22.neighborhood = 7
+Group22.radius = 500
+Group22.okMaps = 1
+Group22.speed = 1.111, 1.389
+Group22.waitTime = 5, 10
+
+
+# 304
+Group23.groupID = PERSONA_
+Group23.nrofHosts = 20
+Group23.movementModel = pdm.VolunteerMovement
+Group23.neighborhood = 8
+Group23.radius = 500
+Group23.okMaps = 1
+Group23.speed = 1.111, 1.389
+Group23.waitTime = 5, 10
+
+
+# 324
+Group24.groupID = PERSONA_
+Group24.nrofHosts = 20
+Group24.movementModel = pdm.VolunteerMovement
+Group24.neighborhood = 9
+Group24.radius = 500
+Group24.okMaps = 1
+Group24.speed = 1.111, 1.389
+Group24.waitTime = 5, 10
+
+
+
+
+
+
+
+
+
+
+#Group4.groupID = CASA_v2
+#Group4.nrofHosts = 6
+#Group4.movementModel = pdm.CenterMovement
+#Group4.okMaps = 1
+#Group4.centerType = house
+#Group4.neighborhood = 2
+
+
+#Group5.groupID = CASA_v3
+#Group5.nrofHosts = 6
+#Group5.movementModel = pdm.CenterMovement
+#Group5.okMaps = 1
+#Group5.centerType = house
+#Group5.neighborhood = 3
+
+#Group6.groupID = CASA_v3
+#Group6.nrofHosts = 6
+#Group6.movementModel = pdm.CenterMovement
+#Group6.okMaps = 1
+#Group6.centerType = house
+#Group6.neighborhood = 4
+
+
+#Group3.groupID = VOLUNTARIOv0_
+#Group3.nrofHosts = 15
+#Group3.movementModel = pdm.VolunteerMovement
+#Group3.neighborhood = 0
+#Group3.radius = 500
+#Group3.okMaps = 1
+#Group3.speed = 1.111, 1.389
+#Group3.waitTime = 5, 10
+#
+#Group4.groupID = VOLUNTARIOv1_
+#Group4.nrofHosts = 5
+#Group4.movementModel = pdm.VolunteerMovement
+#Group4.neighborhood = 1
+#Group4.radius = 500
+#Group4.okMaps = 1
+#Group4.speed = 1.111, 1.389
+#Group4.waitTime = 5, 10
+#
+#Group5.groupID = VOLUNTARIOv2_
+#Group5.nrofHosts = 5
+#Group5.movementModel = pdm.VolunteerMovement
+#Group5.neighborhood = 2
+#Group5.radius = 500
+#Group5.okMaps = 1
+#Group5.speed = 1.111, 1.389
+#Group5.waitTime = 5, 10
+#
+#Group6.groupID = VOLUNTARIOv3_
+#Group6.nrofHosts = 20
+#Group6.movementModel = pdm.VolunteerMovement
+#Group6.neighborhood = 3
+#Group6.radius = 500
+#Group6.okMaps = 1
+#Group6.speed = 1.111, 1.389
+#Group6.waitTime = 5, 10
+#
+#Group7.groupID = VOLUNTARIOv4_
+#Group7.nrofHosts = 5
+#Group7.movementModel = pdm.VolunteerMovement
+#Group7.neighborhood = 4
+#Group7.radius = 500
+#Group7.okMaps = 1
+#Group7.speed = 1.111, 1.389
+#Group7.waitTime = 5, 10
+
+
+
+# Estos son los que llama el paper "supply vehicles". Hay 10 de ellos. Se mueven
+# a una velocidad de 50 km/h con una desviación estandar de 5 km/h. EL tiempo de
+# espera de los vehiculos es entre 20 a 60 minutos
+#Group8.groupID = VEHICULO
+#Group8.nrofHosts = 10
+#Group8.movementModel = pdm.InCenterVehicleMovement
+#Group8.homeCenterType = mainreliefcenter
+#Group8.targetCenters = neighborhood
+#Group8.okMaps=1
+#Group8.speed = 45, 55
+#Group8.waitTime = 1200, 3600
+
+
+## Message creation parameters 
+# How many event generators
+Events.nrof = 1
+# Class of the first event generator
+Events1.class = MessageEventGenerator
+
+
+# (following settings are specific for the MessageEventGenerator class)
+# Creation interval in seconds (one new message every 25 to 35 seconds)
+#Events1.interval = 120, 120
+Events1.interval = 1, 5
+# Message sizes (500kB - 1MB)
+Events1.size = 500k, 1M
+# range of message source/destination addresses
+# Los mensajes son de centro a centro
+Events1.hosts = 70, 99
+# Message ID prefix
+Events1.prefix = M
+
+
+
+Report.nrofReports = 5
+# length of the warm up period (simulated seconds)
+Report.warmup = 0
+# default directory of reports (can be overridden per Report with output setting)
+Report.reportDir = reports/
+# Report classes to load
+Report.report1 = NeighborsReport
+Report.report2 = UddinDeliveryReport
+Report.report3 = MessageStatsReport
+Report.report4 = TiempoConexion
+Report.report5 = RelayedReport

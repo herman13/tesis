@@ -1,0 +1,1671 @@
+
+La \ref{tbl:cpuinfo} muestra las características del servidor donde se
+ejecutaron las simulaciones destacando el procesador y el tamaño de cache.
+
+
+\tablaApendice{Salida de "cat /proc/cpuinfo" para el procesador 31.}{
+\begin{center}
+\pgfplotstabletypeset[
+  columns/A/.style={column name=Característica, string type},
+  columns/B/.style={column name=Valor, string type},
+  every even row/.style={
+  before row={\rowcolor[gray]{0.9}}},
+  every head row/.style={ before row=\toprule,after row=\midrule},
+  every last row/.style={ after row=\bottomrule},
+  row sep=\\,
+  col sep=&
+]{
+A & B \\
+\textit{processor}      & 31 \\
+  \textit{vendor\_id}       & GenuineIntel \\
+  \textit{cpu family}      & 6 \\
+  \textit{model}          & 62 \\
+  \textit{model name}      & Intel(R) Xeon(R) CPU E5-2650 v2 @ 2.60GHz \\
+  \textit{stepping}       & 4 \\
+  \textit{microcode}       & 0x417 \\
+  \textit{cpu MHz}         & 1200.000 \\
+  \textit{cache size}      & 20480 KB \\
+  \textit{physical id}     & 1 \\
+  \textit{siblings}        & 16 \\
+  \textit{apicid}          & 47 \\
+  \textit{initial apicid}  & 47 \\
+  \textit{fpu}             & yes \\
+  \textit{fpu\_exception}  & yes \\
+  \textit{cpuid level}     & 13 \\
+  \textit{wp}              & yes \\
+  \textit{bogomips}        & 5188.97 \\
+  \textit{clflush size}    & 64 \\
+  \textit{cache\_alignment} & 64 \\
+  \textit{address sizes}   & 46 bits physical, 48 bits virtual \\
+}
+\end{center}
+}{tbl:cpuinfo}
+{Elaboración propia, (2017)}
+
+
+
+
+
+
+\seccion{Valores máximos}
+ 
+La \ref{fig:tasa-entrega-maximo-pdm-2}, \ref{fig:tasa-entrega-maximo-wdmm-2},
+\ref{fig:tasa-entrega-maximo-vmm-2}, \ref{fig:copias-maximo-pdm-2},
+\ref{fig:copias-maximo-wdmm-2} y \ref{fig:copias-maximo-vmm} muestran
+simulaciones adicionales para los valores máximos de \overhead{} y tasa de
+entrega con las siguientes \textit{seeds}: 8297015 como \textit{seed} del modelo
+de movilidad, 5760138 como \textit{seed} de la red y 4226480 como \textit{seed}
+del generador de mensajes.
+
+
+\figuraApendice{Máximo de la tasa de entrega estimada en el protocolo dinámico en PDM.}
+{
+\graficoMaximos{Tasa de entrega}
+{data/maximos/delivery_PDM_2syw.txt}
+{data/maximos/delivery_PDM_2syf.txt}
+{data/maximos/delivery_PDM_2epidemic.txt}
+{data/maximos/delivery_PDM_2prophet.txt}
+{data/maximos/delivery_PDM_2maxprop.txt}
+}{fig:tasa-entrega-maximo-pdm-2}
+
+
+\figuraApendice{Máximo de la tasa de entrega estimada en el protocolo dinámico en WDMM.}
+{
+\graficoMaximos{Tasa de entrega}
+{data/maximos/delivery_wdmm_2syw.txt}
+{data/maximos/delivery_wdmm_2syf.txt}
+{data/maximos/delivery_wdmm_2epidemic.txt}
+{data/maximos/delivery_wdmm_2prophet.txt}
+{data/maximos/delivery_wdmm_2maxprop.txt}
+}{fig:tasa-entrega-maximo-wdmm-2}
+
+
+
+\figuraApendice{Máximo de la tasa de entrega estimada en el protocolo dinámico en VMM.}
+{
+\graficoMaximos{Tasa de entrega}
+{data/maximos/delivery_valpo_2syw.txt}
+{data/maximos/delivery_valpo_2syf.txt}
+{data/maximos/delivery_valpo_2epidemic.txt}
+{data/maximos/delivery_valpo_2prophet.txt}
+{data/maximos/delivery_valpo_2maxprop.txt}
+}{fig:tasa-entrega-maximo-vmm-2}
+
+
+\figuraApendice{Máximo de la cantidad de copias estimada en el protocolo dinámico en PDM.}
+{
+\graficoMaximos{Copias de mensajes por hora}
+{data/maximos/overhead_PDM_2syw.txt}
+{data/maximos/overhead_PDM_2syf.txt}
+{data/maximos/overhead_PDM_2epidemic.txt}
+{data/maximos/overhead_PDM_2prophet.txt}
+{data/maximos/overhead_PDM_2maxprop.txt}
+}{fig:copias-maximo-pdm-2}
+
+
+\figuraApendice{Máximo de la cantidad de copias estimada en el protocolo dinámico en WDMM.}
+{
+\graficoMaximos{Copias de mensajes por hora}
+{data/maximos/overhead_wdmm_2syw.txt}
+{data/maximos/overhead_wdmm_2syf.txt}
+{data/maximos/overhead_wdmm_2epidemic.txt}
+{data/maximos/overhead_wdmm_2prophet.txt}
+{data/maximos/overhead_wdmm_1maxprop.txt}
+}{fig:copias-maximo-wdmm-2}
+
+
+
+\figuraApendice{Máximo de la cantidad de copias estimada en el protocolo dinámico en VMM.}
+{
+\graficoMaximos{Copias de mensajes por hora}
+{data/maximos/overhead_valpo_2syw.txt}
+{data/maximos/overhead_valpo_2syf.txt}
+{data/maximos/overhead_valpo_2epidemic.txt}
+{data/maximos/overhead_valpo_2prophet.txt}
+{data/maximos/overhead_valpo_2maxprop.txt}
+}{fig:copias-maximo-vmm-2}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\seccion{Resultados adicionales de $\alpha$}
+
+La \ref{fig:latencia-alpha-pdm}, \ref{fig:latencia-alpha-wdmm} y
+\ref{fig:latencia-alpha-vmm} muestran las latencias para varios valores de
+$\alpha$.
+
+\figuraApendice{Latencia de la red para distintos valores de $\alpha$ en PDM.}
+{
+\graficoAlpha{Latencia (minutos)}
+{data/alpha/PDM_meta_latencia_min.txt}
+}{fig:latencia-alpha-pdm}
+
+
+\figuraApendice{Latencia de la red para distintos valores de $\alpha$ en WDMM.}
+{
+\graficoAlpha{Latencia (minutos)}
+{data/alpha/WDMM_meta_latencia_min.txt}
+}{fig:latencia-alpha-wdmm}
+
+
+\figuraApendice{Latencia de la red para distintos valores de $\alpha$ en VMM.}
+{
+\graficoAlpha{Latencia (minutos)}
+{data/alpha/VALPO_meta_latencia_min.txt}
+}{fig:latencia-alpha-vmm}
+
+
+La \ref{fig:nota-alpha-pdm}, \ref{fig:nota-alpha-wdmm}, \ref{fig:nota-alpha-vmm}
+muestran las evaluaciones obtenidas de $0.5*entrega + 0.5*overhead$ que unen las
+métricas de tasa de entrega y \overhead{} en un solo gráfico.
+
+
+\figuraApendice{Función objetivo de la tasa de entrega y el \overhead{} para PDM
+para distintos valores de $\alpha$.}
+{
+\graficoAlphaDelivery{Nota}
+{data/alpha/PDM_meta_funcion.txt}
+}{fig:nota-alpha-pdm}
+
+
+\figuraApendice{Función objetivo de la tasa de entrega y el \overhead{} para
+WDMM para distintos valores de $\alpha$.}
+{
+\graficoAlphaDelivery{Nota}
+{data/alpha/WDMM_meta_funcion.txt}
+}{fig:nota-alpha-wdmm}
+
+\figuraApendice{Función objetivo de la tasa de entrega y el \overhead{} para VMM
+para distintos valores de $\alpha$.}
+{
+\graficoAlphaDelivery{Nota}
+{data/alpha/VALPO_meta_funcion.txt}
+}{fig:nota-alpha-vmm}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+La \ref{tbl:tiempo-pdm-alpha}, \ref{tbl:tiempo-wdmm-alpha} y
+\ref{tbl:tiempo-vmm-alpha} muestran los tiempos de ejecución de las simulaciones
+en distintos valores de $\alpha$. En la \ref{fig:comparacion-alpha-tiempos} se
+pueden comparar los tiempos de ejecución de los tres modelos de movilidad: PDM,
+WDMM y VMM mostrando que PDM es el modelo de movilidad más costoso de ejecutar.
+
+
+\tablaApendice{Tiempo de ejecución de las simulaciones para PDM para varios
+$\alpha$.}{
+\tablaTiempos
+{data/alpha/tiempos_pdm.dat}
+{$\alpha$}
+}{tbl:tiempo-pdm-alpha}
+{Elaboración propia, (2017)}
+
+
+\tablaApendice{Tiempo de ejecución de las simulaciones para WDMM para varios
+valores de $\alpha$.}{
+\tablaTiempos
+{data/alpha/tiempos_wdmm.dat}
+{$\alpha$}
+}{tbl:tiempo-wdmm-alpha}
+{Elaboración propia, (2017)}
+
+
+
+\tablaApendice{Tiempo de ejecución de las simulaciones con VMM para varios
+valores de $\alpha$.}{
+\tablaTiempos
+{data/alpha/tiempos_valpo.dat}
+{$\alpha$}
+}{tbl:tiempo-vmm-alpha}
+{Elaboración propia, (2017)}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\figuraApendice{Comparación de los tiempos de las simulaciones para encontrar valores de $\alpha$.}
+{
+\begin{tikzpicture}
+\begin{axis}[
+  boxplot/draw direction=y,
+  xtick={1, 2, 3},
+  xticklabels={PDM, WDMM, VMM},
+  ymin=0,
+  ylabel={Tiempo de ejecución (horas)},
+  xlabel={Modelo de movilidad},
+]
+
+\addplot+ [boxplot] 
+  table[row sep=\\, y index = 0] {
+    11.514\\
+    10.9356\\
+    10.7889\\
+    13.0374\\
+    11.9286\\
+    12.4326\\
+    11.1359\\
+  };
+
+\addplot+ [boxplot] 
+  table[row sep=\\, y index = 0] {
+    data\\
+    3.59196\\
+    3.50866\\
+    3.5844\\
+    3.01993\\
+    3.53728\\
+    3.38364\\
+    1.63269\\
+  };
+
+\addplot+ [boxplot] 
+  table[row sep=\\, y index = 0] {
+    data\\
+    7.78573\\
+    7.66079\\
+    6.32163\\
+    8.35422\\
+    9.34556\\
+    8.52478\\
+    4.05735\\
+  };
+
+\end{axis}
+\end{tikzpicture}
+}{fig:comparacion-alpha-tiempos}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\seccion{Tamaño de la ventana de las métricas}
+
+La \ref{fig:latencia-ventana-metricas-pdm},
+\ref{fig:latencia-ventana-metricas-wdmm} y
+\ref{fig:latencia-ventana-metricas-vmm} muestran las latencias de red para
+distintos tamaños de la ventana de métricas.
+
+\figuraApendice{Latencia de la red para distintos tamaños de ventanas de las
+métricas en PDM.}
+{
+\graficoTamanoVentana{Latencia (minutos)}
+{data/ventana_historia/PDM_meta_latencia.txt}
+}{fig:latencia-ventana-metricas-pdm}
+
+\figuraApendice{Latencia de la red para distintos tamaños de ventanas de las
+métricas en WDMM.}
+{
+\graficoTamanoVentana{Latencia (minutos)}
+{data/ventana_historia/WDMM_meta_latencia.txt}
+}{fig:latencia-ventana-metricas-wdmm}
+
+\figuraApendice{Latencia de la red para distintos tamaños de ventanas de las
+métricas VMM.}
+{
+\graficoTamanoVentana{Latencia (minutos)}
+{data/ventana_historia/VALPO_meta_latencia.txt}
+}{fig:latencia-ventana-metricas-vmm}
+
+
+
+En la \ref{fig:nota-ventana-metricas-pdm}, \ref{fig:nota-ventana-metricas-wdmm}
+y \ref{fig:nota-ventana-metricas-wdmm} se muestran las notas del protocolo para
+distintos tamaños de ventanas de las métricas utiliando la fórmula $0.5*entrega
++ 0.5*overhead$ para poder visualizar estas dos métricas en un solo gráfico.
+
+
+
+\figuraApendice{Función objetivo de la tasa de entrega y el \overhead{} para distintos
+tamaños de la ventana de métricas en PDM.}
+{
+\graficoTamanoVentanaDelivery{Nota}
+{data/ventana_historia/PDM_meta_funcion.txt}
+}{fig:nota-ventana-metricas-pdm}
+
+
+\figuraApendice{Función objetivo de la tasa de entrega y el \overhead{} para distintos
+tamaños de la ventana de métricas en WDMM.}
+{
+\graficoTamanoVentanaDelivery{Nota}
+{data/ventana_historia/WDMM_meta_funcion.txt}
+}{fig:nota-ventana-metricas-wdmm}
+
+
+\figuraApendice{Función objetivo de la tasa de entrega y el \overhead{} para distintos
+tamaños de la ventana de métricas en VMM.}
+{
+\graficoTamanoVentanaDelivery{Nota}
+{data/ventana_historia/VALPO_meta_funcion.txt}
+}{fig:nota-ventana-metricas-vmm}
+
+
+
+Los tiempos de ejecución de las simulaciones pueden ser vistos en la
+\ref{tbl:tiempo-metricas-pdm}, \ref{tbl:tiempo-metricas-wdmm} y
+\ref{tbl:tiempo-metricas-vmm}, y una comparación entre los tiempos se muestra en
+la \ref{fig:comparacion-ventana-metricas}.
+
+
+\tablaApendice{Tiempo de ejecución de las simulaciones para distintos tamaños de
+ventana de métricas en PDM.}{
+\tablaTiempos
+{data/ventana_historia/tiempos_pdm.dat}
+{Tamaño de la ventana de métricas (segundos)}
+}{tbl:tiempo-metricas-pdm}
+{Elaboración propia.}
+
+
+\tablaApendice{Tiempo de ejecución de las simulaciones para distintos tamaños de
+ventana de métricas en WDMM.}{
+\tablaTiempos
+{data/ventana_historia/tiempos_wdmm.dat}
+{Tamaño de la ventana de métricas (segundos)}
+}{tbl:tiempo-metricas-wdmm}
+{Elaboración propia.}
+
+
+
+\tablaApendice{Tiempo de ejecución de las simulaciones para distintos
+tamaños de ventana de métricas en VMM.}{
+\tablaTiempos
+{data/ventana_historia/tiempos_valpo.dat}
+{Tamaño de la ventana de métricas (segundos)}
+}{tbl:tiempo-metricas-vmm}
+{Elaboración propia.}
+
+
+\figuraApendice{Comparación de los tiempos de las simulaciones para encontrar el
+tamaño de la ventana de métricas.}
+{
+\boxplotTiempos
+{data/ventana_historia/tiempos_boxplot_pdm.txt}
+{data/ventana_historia/tiempos_boxplot_wdmm.txt}
+{data/ventana_historia/tiempos_boxplot_valpo.txt}
+}{fig:comparacion-ventana-metricas}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\seccion{Tamaño de la ventana de los contextos}
+
+La lantencia de la red de estas simulaciones para distintos tamaños de la
+ventana de contextos se puede ver en la
+\ref{fig:latencia-ventana-contextos-pdm},
+\ref{fig:latencia-ventana-contextos-wdmm} y
+\ref{fig:latencia-ventana-contextos-vmm}.
+
+
+\figuraApendice{Latencia de la red para distintos tamaños de ventana de los
+contextos en PDM.}
+{
+\graficoVentanaContexto{Latencia (minutos)}
+{data/ventana_contextos/PDM_meta_latencia.txt}
+}{fig:latencia-ventana-contextos-pdm}
+
+\figuraApendice{Latencia de la red para distintos tamaños de ventana de los
+contextos en WDMM.}
+{
+\graficoVentanaContexto{Latencia (minutos)}
+{data/ventana_contextos/WDMM_meta_latencia.txt}
+}{fig:latencia-ventana-contextos-wdmm}
+
+\figuraApendice{Latencia de la red para distintos tamaños de ventana de los
+contextos en VMM.} {
+\graficoVentanaContexto{Latencia (minutos)}
+{data/ventana_contextos/VALPO_meta_latencia.txt}
+}{fig:latencia-ventana-contextos-vmm}
+
+
+
+Utilizando la ecuación $0.5*entrega + 0.5*overhead$ se generan los gráficos de
+la \ref{fig:nota-ventana-contextos-pdm}, \ref{fig:nota-ventana-contextos-wdmm} y
+\ref{fig:nota-ventana-contextos-vmm}.  
+
+
+
+
+
+\figuraApendice{Función objetivo de la tasa de entrega y el \overhead{} para distintos
+tamaños de la ventana de contextos en PDM.}
+{
+\graficoVentanaContextoDelivery{Nota}
+{data/ventana_contextos/PDM_meta_funcion.txt}
+}{fig:nota-ventana-contextos-pdm}
+
+
+
+\figuraApendice{Función objetivo de la tasa de entrega y el \overhead{} para distintos
+tamaños de la ventana de contextos en WDMM.}
+{
+\graficoVentanaContextoDelivery{Nota}
+{data/ventana_contextos/WDMM_meta_funcion.txt}
+}{fig:nota-ventana-contextos-wdmm}
+
+
+\figuraApendice{Función objetivo de la tasa de entrega y el \overhead{} para distintos
+tamaños de la ventana de contextos en VMM.}
+{
+\graficoVentanaContextoDelivery{Nota}
+{data/ventana_contextos/VALPO_meta_funcion.txt}
+}{fig:nota-ventana-contextos-vmm}
+
+
+Los tiempos de ejecución de estas simulaciones pueden ser vistas en la
+\ref{tbl:tiempos-contextos-pdm}, \ref{tbl:tiempos-contextos-wdmm} y
+\ref{tbl:tiempos-contextos-vmm}. Una comparación de estos tiempos se presenta en
+la \ref{fig:comparacion-ventana-contextos}.
+
+
+
+\tablaApendice{Tiempo de ejecución de las simulaciones para distintos tamaños de
+ventana de contextos en PDM}{
+\tablaTiempos
+{data/ventana_contextos/tiempos_pdm.dat}
+{Tamaño de la ventana de contextos (segundos)}
+}{tbl:tiempos-contextos-pdm}
+{Elaboración propia.}
+
+
+\tablaApendice{Tiempo de ejecución de las simulaciones para distintos tamaños de
+ventana de contextos en WDMM}{
+\tablaTiempos
+{data/ventana_contextos/tiempos_wdmm.dat}
+{Tamaño de la ventana de contextos (segundos)}
+}{tbl:tiempos-contextos-wdmm}
+{Elaboración propia.}
+
+
+
+\tablaApendice{Tiempo de ejecución de las simulaciones para distintos
+tamaños de ventana de contextos en VMM}{
+\tablaTiempos
+{data/ventana_contextos/tiempos_valpo.dat}
+{Tamaño de la ventana de contextos (segundos)}
+}{tbl:tiempos-contextos-vmm}
+{Elaboración propia.}
+
+
+\figuraApendice{Comparación de los tiempos de las simulaciones para encontrar el
+tamaño de la ventana de contextos.}
+{
+\boxplotTiempos
+{data/ventana_contextos/tiempos_boxplot_pdm.txt}
+{data/ventana_contextos/tiempos_boxplot_wdmm.txt}
+{data/ventana_contextos/tiempos_boxplot_valpo.txt}
+}{fig:comparacion-ventana-contextos}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\seccion{Tiempo cambio de protocolo}
+
+La \ref{fig:latencia-tiempo-cambio-pdm}, \ref{fig:latencia-tiempo-cambio-wdmm} y
+\ref{fig:latencia-tiempo-cambio-vmm} muestran las latencias en la red para
+distintos tiempos de cambio de protocolo.
+
+\figuraApendice{Latencia de la red para distintos tiempos de cambio de protocolo
+en PDM.}
+{
+\graficoVentanaContexto{Latencia (minutos)}
+{data/tiempo_cambio_router/VALPO_meta_latencia.txt}
+}{fig:latencia-tiempo-cambio-pdm}
+
+\figuraApendice{Latencia de la red para distintos tiempos de cambio de protocolo  en WDMM.}
+{
+\graficoVentanaContexto{Latencia (minutos)}
+{data/tiempo_cambio_router/WDMM_meta_latencia.txt}
+}{fig:latencia-tiempo-cambio-wdmm}
+
+\figuraApendice{Latencia de la red para distintos tiempos de cambio de protocolo en VMM.} {
+\graficoVentanaContexto{Latencia (minutos)}
+{data/tiempo_cambio_router/VALPO_meta_latencia.txt}
+}{fig:latencia-tiempo-cambio-vmm}
+
+
+La \ref{tbl:spine-delivery-pdm}, \ref{tbl:delivery-spine-vmm},
+\ref{tbl:overhead-spine-pdm} y \ref{tbl:overhead-spine-vmm} muestran las salidas
+de la función \textit{smooth.spline} en el lenguaje de programación R para
+obtener una interpolación de la tasa de entrega (\textit{delivery}) y del
+\overhead{} para el análisis de beneficio/costo.
+
+  
+
+\tablaApendice{Salida de \textit{smooth.spline(x = tableDelivery\$variable, y =
+tableDelivery\$delivery)} para PDM.}{
+\begin{center}
+\pgfplotstabletypeset[
+  columns/A/.style={column name=Salida, string type},
+  columns/B/.style={column name=Valor, string type},
+  every even row/.style={
+  before row={\rowcolor[gray]{0.9}}},
+  every head row/.style={ before row=\toprule,after row=\midrule},
+  every last row/.style={ after row=\bottomrule},
+  row sep=\\,
+  col sep=&
+]{
+A & B \\
+\textit{Smoothing Parameter spar} & 1 \\
+\textit{Lambda} & 5.366908 \\
+\textit{Equivalent Degrees of Freedom (Df)} & 2.00738 \\
+\textit{Penalized Criterion} &  0.004252406 \\
+\textit{GCV} & 0.0004574837 \\
+}
+\end{center}
+}{tbl:spine-delivery-pdm}
+{Elaboración propia, (2017)}
+
+
+\tablaApendice{Salida de \textit{smooth.spline(x = tableDelivery\$variable, y =
+tableDelivery\$delivery)} para VMM.}{
+\begin{center}
+\pgfplotstabletypeset[
+  columns/A/.style={column name=Salida, string type},
+  columns/B/.style={column name=Valor, string type},
+  every even row/.style={
+  before row={\rowcolor[gray]{0.9}}},
+  every head row/.style={ before row=\toprule,after row=\midrule},
+  every last row/.style={ after row=\bottomrule},
+  row sep=\\,
+  col sep=&
+]{
+A & B \\
+\textit{Smoothing Parameter spar} & 1 \\
+\textit{Lambda} & 5.366908 \\
+\textit{Equivalent Degrees of Freedom (Df)} & 2.00738 \\
+\textit{Penalized Criterion} &  0.006199004 \\
+\textit{GCV} & 0.0006669033 \\
+}
+\end{center}
+}{tbl:delivery-spine-vmm}
+{Elaboración propia, (2017)}
+
+
+\tablaApendice{Salida de \textit{smooth.spline(x = tableOverhead\$variable, y =
+tableOverhead\$overhead)} para PDM.}{
+\begin{center}
+\pgfplotstabletypeset[
+  columns/A/.style={column name=Salida, string type},
+  columns/B/.style={column name=Valor, string type},
+  every even row/.style={
+  before row={\rowcolor[gray]{0.9}}},
+  every head row/.style={ before row=\toprule,after row=\midrule},
+  every last row/.style={ after row=\bottomrule},
+  row sep=\\,
+  col sep=&
+]{
+A & B \\
+\textit{Smoothing Parameter spar} & 1 \\
+\textit{Lambda} & 5.366908 \\
+\textit{Equivalent Degrees of Freedom (Df)} & 2.00738 \\
+\textit{Penalized Criterion} &  2960.899 \\
+\textit{GCV} & 318.5404 \\
+}
+\end{center}
+}{tbl:overhead-spine-pdm}
+{Elaboración propia, (2017)}
+
+\tablaApendice{Salida de \textit{smooth.spline(x = tableOverhead\$variable, y =
+tableOverhead\$overhead)} para PDM.}{
+\begin{center}
+\pgfplotstabletypeset[
+  columns/A/.style={column name=Salida, string type},
+  columns/B/.style={column name=Valor, string type},
+  every even row/.style={
+  before row={\rowcolor[gray]{0.9}}},
+  every head row/.style={ before row=\toprule,after row=\midrule},
+  every last row/.style={ after row=\bottomrule},
+  row sep=\\,
+  col sep=&
+]{
+A & B \\
+\textit{Smoothing Parameter spar} & 1 \\
+\textit{Lambda} & 5.366908 \\
+\textit{Equivalent Degrees of Freedom (Df)} & 2.00738 \\
+\textit{Penalized Criterion} &  17939.68 \\
+\textit{GCV} & 1929.993 \\
+}
+\end{center}
+}{tbl:overhead-spine-vmm}
+{Elaboración propia, (2017)}
+
+
+
+
+La \ref{fig:nota-tiempo-cambio-pdm}, \ref{fig:nota-tiempo-cambio-wdmm} y
+\ref{fig:nota-tiempo-cambio-vmm} muestran los resultados de la ecuación
+$0.5*entrega + 0.5*overhead$ para varios tiempos de cambios de protocolos. 
+
+
+\figuraApendice{Función objetivo de la tasa de entrega y el \overhead{} para distintos
+tiempos de cambio de protocolo en PDM.}
+{
+\graficoTiempoCambioDelivery{Nota}
+{data/tiempo_cambio_router/PDM_meta_funcion.txt}
+}{fig:nota-tiempo-cambio-pdm}
+
+
+
+\figuraApendice{Función objetivo de la tasa de entrega y el \overhead{} para distintos
+tiempos de cambio de protocolo en WDMM.}
+{
+\graficoTiempoCambioDelivery{Nota}
+{data/tiempo_cambio_router/WDMM_meta_funcion.txt}
+}{fig:nota-tiempo-cambio-wdmm}
+
+
+\figuraApendice{Función objetivo de la tasa de entrega y el \overhead{} para distintos
+tiempos de cambio de protocolo en VMM.}
+{
+\graficoTiempoCambioDelivery{Nota}
+{data/tiempo_cambio_router/VALPO_meta_funcion.txt}
+}{fig:nota-tiempo-cambio-vmm}
+
+
+Los tiempos de ejecución se encuentran en la \ref{tbl:tiempos-cambio-pdm},
+\ref{tbl:tiempos-cambio-wdmm} y \ref{tbl:tiempos-cambio-vmm}, y una comparación
+entre estos tiempos se encuentra en la \ref{fig:comparacion-tiempo-cambio-vmm}.
+
+
+
+\tablaApendice{Tiempo de ejecución de las simulaciones para distintos tiempos de
+cambio de protocolos en PDM}{
+\tablaTiempos
+{data/tiempo_cambio_router/tiempos_pdm.dat}
+{Tiempo de cambio de protocolo (segundos)}
+}{tbl:tiempos-cambio-pdm}
+{Elaboración propia.}
+
+
+\tablaApendice{Tiempo de ejecución de las simulaciones para distintos tiempos de
+cambio de protocolo en WDMM}{
+\tablaTiempos
+{data/tiempo_cambio_router/tiempos_wdmm.dat}
+{Tiempo de cambio de protocolo (segundos)}
+}{tbl:tiempos-cambio-wdmm}
+{Elaboración propia.}
+
+
+
+\tablaApendice{Tiempo de ejecución de las simulaciones para distintos
+tiempos de cambio de protocolo en VMM}{
+\tablaTiempos
+{data/tiempo_cambio_router/tiempos_valpo.dat}
+{Tiempo de cambio de protocolo (segundos)}
+}{tbl:tiempos-cambio-vmm}
+{Elaboración propia.}
+
+
+\figuraApendice{Comparación de los tiempos de las simulaciones para encontrar el
+tiempo de cambio de protocolo.}
+{
+\boxplotTiempos
+{data/tiempo_cambio_router/tiempos_boxplot_pdm.txt}
+{data/tiempo_cambio_router/tiempos_boxplot_wdmm.txt}
+{data/tiempo_cambio_router/tiempos_boxplot_valpo.txt}
+}{fig:comparacion-tiempo-cambio-vmm}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\seccion{Tamaños de mensajes}
+
+En la \ref{fig:latencia-tamano-pdm}, \ref{fig:latencia-tamano-wdmm} y
+\ref{fig:latencia-tamano-vmm}, se pueden ver las latencias obtenidas en la red
+para los mensajes entregados para distintos mensajes en la red.
+
+\figuraApendice{Latencia de la red para \mensajes{} en PDM.}
+{
+\graficoProtocolos
+{Latencia (segundos)}
+{Tamaño de mensaje (kilobytes)}
+{data/tamano_mensaje/PDM_syw_latencia.txt}
+{data/tamano_mensaje/PDM_syf_latencia.txt}
+{data/tamano_mensaje/PDM_epidemic_latencia.txt}
+{data/tamano_mensaje/PDM_prophet_latencia.txt}
+{data/tamano_mensaje/PDM_maxprop_latencia.txt}
+{data/tamano_mensaje/PDM_meta_latencia.txt}
+}{fig:latencia-tamano-pdm}
+
+
+\figuraApendice{Latencia de la red para \mensajes{} en WDMM.}
+{
+\graficoProtocolos
+{Latencia (segundos)}
+{Tamaño de mensaje (kilobytes)}
+{data/tamano_mensaje/WDMM_syw_latencia.txt}
+{data/tamano_mensaje/WDMM_syf_latencia.txt}
+{data/tamano_mensaje/WDMM_epidemic_latencia.txt}
+{data/tamano_mensaje/WDMM_prophet_latencia.txt}
+{data/tamano_mensaje/WDMM_maxprop_latencia.txt}
+{data/tamano_mensaje/WDMM_meta_latencia.txt}
+}{fig:latencia-tamano-wdmm}
+
+
+\figuraApendice{Latencia de la red para \mensajes{} en VMM.}
+{
+\graficoProtocolos
+{Latencia (segundos)}
+{Tamaño de mensaje (kilobytes)}
+{data/tamano_mensaje/VALPO_syw_latencia.txt}
+{data/tamano_mensaje/VALPO_syf_latencia.txt}
+{data/tamano_mensaje/VALPO_epidemic_latencia.txt}
+{data/tamano_mensaje/VALPO_prophet_latencia.txt}
+{data/tamano_mensaje/VALPO_maxprop_latencia.txt}
+{data/tamano_mensaje/VALPO_meta_latencia.txt}
+}{fig:latencia-tamano-vmm}
+
+En la \ref{fig:energia-tamano-pdm}, \ref{fig:energia-tamano-WDMM} y 
+\ref{fig:energia-tamano-vmm} se pueden ver los consumos de energía de cada uno
+de los protocolos del estado del arte más el protocolo híbrido dinámico.
+
+
+\figuraApendice{Energía consumida total para \mensajes{} en PDM.}
+{
+\graficoProtocolos
+{Energía (J)}
+{Tamaño de mensaje (kilobytes)} 
+{data/tamano_mensaje/PDM_syw_energia.txt}
+{data/tamano_mensaje/PDM_syf_energia.txt}
+{data/tamano_mensaje/PDM_epidemic_energia.txt}
+{data/tamano_mensaje/PDM_prophet_energia.txt}
+{data/tamano_mensaje/PDM_maxprop_energia.txt}
+{data/tamano_mensaje/PDM_meta_energia.txt}
+}{fig:energia-tamano-pdm}
+
+
+
+\figuraApendice{Energía consumida total para \mensajes{} en WDMM.}
+{
+\graficoProtocolos
+{Energía (J)}
+{Tamaño de mensaje (kilobytes)}
+{data/tamano_mensaje/WDMM_syw_energia.txt}
+{data/tamano_mensaje/WDMM_syf_energia.txt}
+{data/tamano_mensaje/WDMM_epidemic_energia.txt}
+{data/tamano_mensaje/WDMM_prophet_energia.txt}
+{data/tamano_mensaje/WDMM_maxprop_energia.txt}
+{data/tamano_mensaje/WDMM_meta_energia.txt}
+}{fig:energia-tamano-WDMM}
+
+
+
+\figuraApendice{Energía consumida total para \mensajes{} en VMM.}
+{
+\graficoProtocolos
+{Energía (J)}
+{Tamaño de mensaje (kilobytes)}
+{data/tamano_mensaje/VALPO_syw_energia.txt}
+{data/tamano_mensaje/VALPO_syf_energia.txt}
+{data/tamano_mensaje/VALPO_epidemic_energia.txt}
+{data/tamano_mensaje/VALPO_prophet_energia.txt}
+{data/tamano_mensaje/VALPO_maxprop_energia.txt}
+{data/tamano_mensaje/VALPO_meta_energia.txt}
+}{fig:energia-tamano-vmm}
+
+
+La \ref{fig:piggybacking-tamano-pdm}, la
+\ref{fig:metricas-tamano-pdm} y la
+\ref{fig:piggybacking-tamano-WDMM}, muestran el espacio requerido para almacenar
+dentro de un mensaje el \textit{piggyback} de los mensajes que han llegado al
+destino para poder notificar a los nodos de sus tasas de entrega.
+
+
+
+\figuraApendice{Almacenamiento adicional para el \textit{piggybacking} dentro de
+un mensaje para \mensajes{} en PDM.}
+{
+\graficoProtocolo
+{Bytes para \textit{piggybacking}}
+{Tamaño de mensaje (kilobytes)}
+{data/tamano_mensaje/PDM_meta_piggyback.txt}
+}{fig:piggybacking-tamano-pdm}
+
+
+
+\figuraApendice{Almacenamiento adicional para las métricas y contextos dentro de
+un mensaje para \mensajes{} en PDM.}
+{
+\graficoProtocolo
+{Bytes para métricas y contextos}
+{Tamaño de mensaje (kilobytes)}
+{data/tamano_mensaje/PDM_meta_mensaje.txt}
+}{fig:metricas-tamano-pdm}
+
+
+\figuraApendice{Almacenamiento adicional para el \textit{piggybacking} dentro de
+un mensaje para \mensajes{}  en WDMM.}
+{
+\graficoProtocolo
+{Bytes para \textit{piggybacking}}
+{Tamaño de mensaje (kilobytes)}
+{data/tamano_mensaje/WDMM_meta_piggyback.txt}
+}{fig:piggybacking-tamano-WDMM}
+
+
+La \ref{fig:metricas-tamano-wdmm}, \ref{fig:piggybacking-tamano-VMM}
+\ref{fig:metricas-tamano-vmm} muestran el almacenamiento adicional requerido
+para transportar las métricas que se agregan a un mensaje en cada uno de los
+saltos entre nodos.
+
+\figuraApendice{Almacenamiento adicional para las métricas y contextos dentro de
+un mensaje para \mensajes{} WDMM.}
+{
+\graficoProtocolo
+{Bytes para métricas y contextos}
+{Tamaño de mensaje (kilobytes)}
+{data/tamano_mensaje/WDMM_meta_mensaje.txt}
+}{fig:metricas-tamano-wdmm}
+
+
+\figuraApendice{Almacenamiento adicional para el \textit{piggybacking} dentro de
+un mensaje para \mensajes{} en VMM.}
+{
+\graficoProtocolo
+{Bytes para \textit{piggybacking}}
+{Tamaño de mensaje (kilobytes)}
+{data/tamano_mensaje/VALPO_meta_piggyback.txt}
+}{fig:piggybacking-tamano-VMM}
+
+
+
+\figuraApendice{Almacenamiento adicional para las métricas y contextos dentro de
+un mensaje para \mensajes{} en VMM.}
+{
+\graficoProtocolo
+{Bytes para métricas y contextos}
+{Tamaño de mensaje (kilobytes)}
+{data/tamano_mensaje/VALPO_meta_mensaje.txt}
+}{fig:metricas-tamano-vmm}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\seccion{Densidad de personas}
+
+\newcommand{\densidades}{distintas densidades de personas}
+
+
+La \ref{fig:latencia-densidad-pdm},
+\ref{fig:latencia-densidad-wdmm} y 
+\ref{fig:latencia-densidad-vmm} presentan las latencias de la red para distintas
+densidades de personas que participan en la red.
+
+
+
+\figuraApendice{Latencia de la red para \densidades{} en PDM.}
+{
+\graficoProtocolos
+{Latencia (segundos)}
+{Densidad de personas (\%)}
+{data/personas/PDM_syw_latencia.txt}
+{data/personas/PDM_syf_latencia.txt}
+{data/personas/PDM_epidemic_latencia.txt}
+{data/personas/PDM_prophet_latencia.txt}
+{data/personas/PDM_maxprop_latencia.txt}
+{data/personas/PDM_meta_latencia.txt}
+}{fig:latencia-densidad-pdm}
+
+
+\figuraApendice{Latencia de la red para \densidades{} en WDMM.}
+{
+\graficoProtocolos
+{Latencia (segundos)}
+{Densidad de personas (\%)}
+{data/personas/WDMM_syw_latencia.txt}
+{data/personas/WDMM_syf_latencia.txt}
+{data/personas/WDMM_epidemic_latencia.txt}
+{data/personas/WDMM_prophet_latencia.txt}
+{data/personas/WDMM_maxprop_latencia.txt}
+{data/personas/WDMM_meta_latencia.txt}
+}{fig:latencia-densidad-wdmm}
+
+
+\figuraApendice{Latencia de la red para \densidades{} en VMM.}
+{
+\graficoProtocolos
+{Latencia (segundos)}
+{Densidad de personas (\%)}
+{data/personas/VALPO_syw_latencia.txt}
+{data/personas/VALPO_syf_latencia.txt}
+{data/personas/VALPO_epidemic_latencia.txt}
+{data/personas/VALPO_prophet_latencia.txt}
+{data/personas/VALPO_maxprop_latencia.txt}
+{data/personas/VALPO_meta_latencia.txt}
+}{fig:latencia-densidad-vmm}
+
+
+La \ref{fig:energia-personas-pdm},
+\ref{fig:energia-personas-WDMM} y 
+\ref{fig:energia-personas-vmm} muestran la energía consumida por los nodos
+participantes de la red.
+
+\figuraApendice{Energía consumida total para \densidades{} en PDM.}
+{
+\graficoProtocolos
+{Energía (J)}
+{Densidad de personas (\%)} 
+{data/personas/PDM_syw_energia.txt}
+{data/personas/PDM_syf_energia.txt}
+{data/personas/PDM_epidemic_energia.txt}
+{data/personas/PDM_prophet_energia.txt}
+{data/personas/PDM_maxprop_energia.txt}
+{data/personas/PDM_meta_energia.txt}
+}{fig:energia-personas-pdm}
+
+
+
+\figuraApendice{Energía consumida total para \densidades{} en WDMM.}
+{
+\graficoProtocolos
+{Energía (J)}
+{Densidad de personas (\%)}
+{data/personas/WDMM_syw_energia.txt}
+{data/personas/WDMM_syf_energia.txt}
+{data/personas/WDMM_epidemic_energia.txt}
+{data/personas/WDMM_prophet_energia.txt}
+{data/personas/WDMM_maxprop_energia.txt}
+{data/personas/WDMM_meta_energia.txt}
+}{fig:energia-personas-WDMM}
+
+
+
+\figuraApendice{Energía consumida total para \densidades{} en VMM.}
+{
+\graficoProtocolos
+{Energía (J)}
+{Densidad de personas (\%)}
+{data/personas/VALPO_syw_energia.txt}
+{data/personas/VALPO_syf_energia.txt}
+{data/personas/VALPO_epidemic_energia.txt}
+{data/personas/VALPO_prophet_energia.txt}
+{data/personas/VALPO_maxprop_energia.txt}
+{data/personas/VALPO_meta_energia.txt}
+}{fig:energia-personas-vmm}
+
+
+
+La \ref{fig:piggybacking-densidad-pdm},
+\ref{fig:piggybacking-densidad-WDMM} y
+\ref{fig:piggybacking-densidad-VMM} muestran el almacenamiento adicional
+requerido para enviar el \textit{piggybacking} de los mensajes entregados a los
+nodos.
+
+\figuraApendice{Almacenamiento adicional para el \textit{piggybacking} dentro de
+un mensaje para \densidades{} en PDM.}
+{
+\graficoProtocolo
+{Bytes para \textit{piggybacking}}
+{Densidad de personas (\%)}
+{data/personas/PDM_meta_piggyback.txt}
+}{fig:piggybacking-densidad-pdm}
+
+\figuraApendice{Almacenamiento adicional para el \textit{piggybacking} dentro de
+un mensaje para \densidades{}  en WDMM.}
+{
+\graficoProtocolo
+{Bytes para \textit{piggybacking}}
+{Densidad de personas (\%)}
+{data/personas/WDMM_meta_piggyback.txt}
+}{fig:piggybacking-densidad-WDMM}
+
+
+\figuraApendice{Almacenamiento adicional para el \textit{piggybacking} dentro de
+un mensaje para \densidades{} en VMM.}
+{
+\graficoProtocolo
+{Bytes para \textit{piggybacking}}
+{Densidad de personas (\%)}
+{data/personas/VALPO_meta_piggyback.txt}
+}{fig:piggybacking-densidad-VMM}
+
+
+
+La \ref{fig:metricas-densidad-pdm}, 
+\ref{fig:metricas-densidad-wdmm} y
+\ref{fig:metricas-densidad-vmm} muestran el almacenamiento adicional requerido
+en los mensajes para transportar los contextos y métricas entre los nodos.
+
+\figuraApendice{Almacenamiento adicional para las métricas y contextos dentro de
+un mensaje para \densidades{} en PDM.}
+{
+\graficoProtocolo
+{Bytes para métricas y contextos}
+{Densidad de personas (\%)}
+{data/personas/PDM_meta_mensaje.txt}
+}{fig:metricas-densidad-pdm}
+
+\figuraApendice{Almacenamiento adicional para las métricas y contextos dentro de
+un mensaje para \densidades{} WDMM.}
+{
+\graficoProtocolo
+{Bytes para métricas y contextos}
+{Densidad de personas (\%)}
+{data/personas/WDMM_meta_mensaje.txt}
+}{fig:metricas-densidad-wdmm}
+
+\figuraApendice{Almacenamiento adicional para las métricas y contextos dentro de
+un mensaje para \densidades{} en VMM.}
+{
+\graficoProtocolo
+{Bytes para métricas y contextos}
+{Densidad de personas (\%)}
+{data/personas/VALPO_meta_mensaje.txt}
+}{fig:metricas-densidad-vmm}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\seccion{Generación de mensajes}
+
+
+La \ref{fig:latencia-generacion-pdm}, 
+\ref{fig:latencia-generacion-wdmm} y
+\ref{fig:latencia-generacion-vmm} muestran la latencia de la red obtenido por
+los experimentos de distintos intervalos de generación de mensajes.
+
+
+\figuraApendice{Latencia de la red distintos tiempos de generación de mensajes en PDM.}
+{
+\graficoProtocolos
+{Latencia (segundos)}
+{Segundos por mensaje generado}
+{data/generacion_mensajes/PDM_syw_latencia.txt}
+{data/generacion_mensajes/PDM_syf_latencia.txt}
+{data/generacion_mensajes/PDM_epidemic_latencia.txt}
+{data/generacion_mensajes/PDM_prophet_latencia.txt}
+{data/generacion_mensajes/PDM_maxprop_latencia.txt}
+{data/generacion_mensajes/PDM_meta_latencia.txt}
+}{fig:latencia-generacion-pdm}
+
+
+\figuraApendice{Latencia de la red para distintos tiempos de generación de mensajes en WDMM.}
+{
+\graficoProtocolos
+{Latencia (segundos)}
+{Segundos por mensaje generado}
+{data/generacion_mensajes/WDMM_syw_latencia.txt}
+{data/generacion_mensajes/WDMM_syf_latencia.txt}
+{data/generacion_mensajes/WDMM_epidemic_latencia.txt}
+{data/generacion_mensajes/WDMM_prophet_latencia.txt}
+{data/generacion_mensajes/WDMM_maxprop_latencia.txt}
+{data/generacion_mensajes/WDMM_meta_latencia.txt}
+}{fig:latencia-generacion-wdmm}
+
+
+\figuraApendice{Latencia de la red para distintos tiempos de generación de mensajes en
+VMM.}
+{
+\graficoProtocolos
+{Latencia (segundos)}
+{Segundos por mensaje generado}
+{data/generacion_mensajes/VALPO_syw_latencia.txt}
+{data/generacion_mensajes/VALPO_syf_latencia.txt}
+{data/generacion_mensajes/VALPO_epidemic_latencia.txt}
+{data/generacion_mensajes/VALPO_prophet_latencia.txt}
+{data/generacion_mensajes/VALPO_maxprop_latencia.txt}
+{data/generacion_mensajes/VALPO_meta_latencia.txt}
+}{fig:latencia-generacion-vmm}
+
+
+
+
+La \ref{fig:energia-generacion-pdm}, 
+\ref{fig:energia-generacion-WDMM} y
+\ref{fig:energia-generacion-vmm} muestran la energía consumida por los nodos de
+la red para distintos tiempos de generación en PDM, WDMM y VMM.
+
+
+
+
+\figuraApendice{Energía consumida total para distintos tiempos de generación de
+mensajes en PDM.}
+{
+\graficoProtocolos
+{Energía (J)}
+{Segundos por mensaje generado} 
+{data/generacion_mensajes/PDM_syw_energia.txt}
+{data/generacion_mensajes/PDM_syf_energia.txt}
+{data/generacion_mensajes/PDM_epidemic_energia.txt}
+{data/generacion_mensajes/PDM_prophet_energia.txt}
+{data/generacion_mensajes/PDM_maxprop_energia.txt}
+{data/generacion_mensajes/PDM_meta_energia.txt}
+}{fig:energia-generacion-pdm}
+
+
+
+\figuraApendice{Energía consumida total para distintos tiempos de generación de
+mensajes en WDMM.}
+{
+\graficoProtocolos
+{Energía (J)}
+{Segundos por mensaje generado}
+{data/generacion_mensajes/WDMM_syw_energia.txt}
+{data/generacion_mensajes/WDMM_syf_energia.txt}
+{data/generacion_mensajes/WDMM_epidemic_energia.txt}
+{data/generacion_mensajes/WDMM_prophet_energia.txt}
+{data/generacion_mensajes/WDMM_maxprop_energia.txt}
+{data/generacion_mensajes/WDMM_meta_energia.txt}
+}{fig:energia-generacion-WDMM}
+
+
+
+\figuraApendice{Energía consumida total para distintos tiempos de generación de
+mensajes en VMM.}
+{
+\graficoProtocolos
+{Energía (J)}
+{Segundos por mensaje generado}
+{data/generacion_mensajes/VALPO_syw_energia.txt}
+{data/generacion_mensajes/VALPO_syf_energia.txt}
+{data/generacion_mensajes/VALPO_epidemic_energia.txt}
+{data/generacion_mensajes/VALPO_prophet_energia.txt}
+{data/generacion_mensajes/VALPO_maxprop_energia.txt}
+{data/generacion_mensajes/VALPO_meta_energia.txt}
+}{fig:energia-generacion-vmm}
+
+
+La \ref{fig:descartados-generacion-pdm}, \ref{fig:descartados-generacion-WDMM} y
+\ref{fig:descartados-generacion-vmm} muestran la cantidad de mensajes que han
+sido descartados de los \textit{buffers}, es decir, cuando un nodo crea un
+mensaje o recibe un mensaje, descarta aquel mensaje más antiguo que tenga
+almacenado en el \textit{buffer} interno.
+
+
+\figuraApendice{Mensajes descartados en los \textit{buffers} para distintos tiempos de generación de mensajes en PDM.}
+{
+\graficoProtocolosLog
+{Número de mensajes descartados (log)}
+{Segundos por mensaje generado} 
+{data/generacion_mensajes/PDM_syw_dropped.txt}
+{data/generacion_mensajes/PDM_syf_dropped.txt}
+{data/generacion_mensajes/PDM_epidemic_dropped.txt}
+{data/generacion_mensajes/PDM_prophet_dropped.txt}
+{data/generacion_mensajes/PDM_maxprop_dropped.txt}
+{data/generacion_mensajes/PDM_meta_dropped.txt}
+}{fig:descartados-generacion-pdm}
+
+
+
+\figuraApendice{Mensajes descartados en los \textit{buffers} para distintos tiempos de generación de mensajes en WDMM.}
+{
+\graficoProtocolosLog
+{Número de mensajes descartados (log)}
+{Segundos por mensaje generado}
+{data/generacion_mensajes/WDMM_syw_dropped.txt}
+{data/generacion_mensajes/WDMM_syf_dropped.txt}
+{data/generacion_mensajes/WDMM_epidemic_dropped.txt}
+{data/generacion_mensajes/WDMM_prophet_dropped.txt}
+{data/generacion_mensajes/WDMM_maxprop_dropped.txt}
+{data/generacion_mensajes/WDMM_meta_dropped.txt}
+}{fig:descartados-generacion-WDMM}
+
+
+
+\figuraApendice{Mensajes descartados en los \textit{buffers} para distintos tiempos de generación de mensajes en VMM.}
+{
+\graficoProtocolosLog
+{Número de mensajes descartados (log)}
+{Segundos por mensaje generado}
+{data/generacion_mensajes/VALPO_syw_dropped.txt}
+{data/generacion_mensajes/VALPO_syf_dropped.txt}
+{data/generacion_mensajes/VALPO_epidemic_dropped.txt}
+{data/generacion_mensajes/VALPO_prophet_dropped.txt}
+{data/generacion_mensajes/VALPO_maxprop_dropped.txt}
+{data/generacion_mensajes/VALPO_meta_dropped.txt}
+}{fig:descartados-generacion-vmm}
+
+
+
+La \ref{fig:piggybacking-generacion-mensajes-pdm}, 
+\ref{fig:piggybacking-generacion-WDMM} y
+\ref{fig:piggybacking-generacion-VMM} muestran el almacenamiento adicional que
+debe utilizar un mensaje para poder transportar el \textit{piggyback} hacia los
+nodos participantes de la red.
+
+
+\figuraApendice{Almacenamiento adicional para el \textit{piggybacking} dentro de
+un mensaje para distintos tiempos de generación de  mensajes en PDM.}
+{
+\graficoProtocolo
+{Bytes para \textit{piggybacking}}
+{Segundos por mensaje generado}
+{data/generacion_mensajes/PDM_meta_piggyback.txt}
+}{fig:piggybacking-generacion-mensajes-pdm}
+
+
+\figuraApendice{Almacenamiento adicional para el \textit{piggybacking} dentro de
+un mensaje para distintos tiempos de generación de mensajes en WDMM.}
+{
+\graficoProtocolo
+{Bytes para \textit{piggybacking}}
+{Segundos por mensaje generado}
+{data/generacion_mensajes/WDMM_meta_piggyback.txt}
+}{fig:piggybacking-generacion-WDMM}
+
+
+\figuraApendice{Almacenamiento adicional para el \textit{piggybacking} dentro de
+un mensaje para distintos tiempos de generación de mensajes en VMM.}
+{
+\graficoProtocolo
+{Bytes para \textit{piggybacking}}
+{Segundos por mensaje generado}
+{data/generacion_mensajes/VALPO_meta_piggyback.txt}
+}{fig:piggybacking-generacion-VMM}
+
+
+La \ref{fig:metricas-generacion-pdm}, 
+\ref{fig:metricas-generacion-wdmm} y
+\ref{fig:metricas-generacion-vmm} muestran el almacenamiento adicional que
+requiere un mensaje para poder transportar las métricas y contextos entre los
+nodos de la red.
+
+\figuraApendice{Almacenamiento adicional para las métricas y contextos dentro de
+un mensaje para distintos tiempos de generación de mensajes en PDM}
+{
+\graficoProtocolo
+{Bytes para métricas y contextos}
+{Segundos por mensaje generado}
+{data/generacion_mensajes/PDM_meta_mensaje.txt}
+}{fig:metricas-generacion-pdm}
+
+\figuraApendice{Almacenamiento adicional para las métricas y contextos dentro de
+un mensaje para distintos tiempos de generación de mensajes en WDMM.}
+{
+\graficoProtocolo
+{Bytes para métricas y contextos}
+{Segundos por mensaje generado}
+{data/generacion_mensajes/WDMM_meta_mensaje.txt}
+}{fig:metricas-generacion-wdmm}
+
+
+
+\figuraApendice{Almacenamiento adicional para las métricas y contextos dentro de
+un mensaje para distintos tiempos de generación de mensajes en VMM.}
+{
+\graficoProtocolo
+{Bytes para métricas y contextos}
+{Segundos por mensaje generado}
+{data/generacion_mensajes/VALPO_meta_mensaje.txt}
+}{fig:metricas-generacion-vmm}
+
+
+La \ref{fig:seleccion-generacion-pdm-1}, la
+\ref{fig:seleccion-generacion-pdm-30} y la
+\ref{fig:seleccion-generacion-pdm-120} muestran el porcentaje de nodos que han
+seleccionado uno de los protocolos del estado del arte en la simulaciones de
+generación de mensajes.
+
+
+\figuraApendice{Protocolo del estado del arte seleccionados por el protocolo híbrido
+dinámico en el tiempo de simulación en PDM para 1 segundo por mensaje generado.}
+{
+\graficoProtocolosTiempo
+{\% de nodos que han seleccionado el protocolo}
+{Tiempo de simulación (segundos)}
+{data/protocolos/PERSONA_syw_routers_true_nodos_pdm1.txt}
+{data/protocolos/PERSONA_syf_routers_true_nodos_pdm1.txt}
+{data/protocolos/PERSONA_epidemic_routers_true_nodos_pdm1.txt}
+{data/protocolos/PERSONA_prophet_routers_true_nodos_pdm1.txt}
+{data/protocolos/PERSONA_maxprop_routers_true_nodos_pdm1.txt}
+}{fig:seleccion-generacion-pdm-1}
+
+
+\figuraApendice{Protocolo del estado del arte seleccionados por el protocolo híbrido
+dinámico en el tiempo de simulación en PDM para 30 segundos por mensaje generado.}
+{
+\graficoProtocolosTiempo
+{\% de nodos que han seleccionado el protocolo}
+{Tiempo de simulación (segundos)}
+{data/protocolos/PERSONA_syw_routers_true_nodos_pdm30.txt}
+{data/protocolos/PERSONA_syf_routers_true_nodos_pdm30.txt}
+{data/protocolos/PERSONA_epidemic_routers_true_nodos_pdm30.txt}
+{data/protocolos/PERSONA_prophet_routers_true_nodos_pdm30.txt}
+{data/protocolos/PERSONA_maxprop_routers_true_nodos_pdm30.txt}
+}{fig:seleccion-generacion-pdm-30}
+
+
+\figuraApendice{Protocolo del estado del arte seleccionados por el protocolo híbrido
+dinámico en el tiempo de simulación en PDM para 120 segundos por mensaje generado.}
+{
+\graficoProtocolosTiempo
+{\% de nodos que han seleccionado el protocolo}
+{Tiempo de simulación (segundos)}
+{data/protocolos/PERSONA_syw_routers_true_nodos_pdm120.txt}
+{data/protocolos/PERSONA_syf_routers_true_nodos_pdm120.txt}
+{data/protocolos/PERSONA_epidemic_routers_true_nodos_pdm120.txt}
+{data/protocolos/PERSONA_prophet_routers_true_nodos_pdm120.txt}
+{data/protocolos/PERSONA_maxprop_routers_true_nodos_pdm120.txt}
+}{fig:seleccion-generacion-pdm-120}
+
+
+La \ref{fig:overhead-generacion-pdm-1}
+\ref{fig:overhead-generacion-pdm-30} y
+\ref{fig:overhead-generacion-pdm-120} muestran las estimaciones de la cantidad
+de copias por hora dentro del protocolo híbrido dinámico para cada uno de los
+protocolos del estado del arte en el modelo de movilidad PDM.
+
+
+
+\figuraApendice{Cantidad de copias por hora estimada por el protocolo híbrido
+dinámico en el tiempo de simulación en PDM para 1 segundo por mensaje generado.}
+{
+\graficoEstimacio
+{Copias por segundo estimada}
+{Tiempo de simulación (segundos)}
+{data/protocolos/overhead_pdm_1syw.txt}
+{data/protocolos/overhead_pdm_1syf.txt}
+{data/protocolos/overhead_pdm_1epidemic.txt}
+{data/protocolos/overhead_pdm_1prophet.txt}
+{data/protocolos/overhead_pdm_1maxprop.txt}
+}{fig:overhead-generacion-pdm-1}
+
+
+
+\figuraApendice{Cantidad de copias por hora estimada por el protocolo híbrido
+dinámico en el tiempo de simulación en PDM para 30 segundo por mensaje generado.}
+{
+\graficoEstimacio
+{Copias por segundo estimada}
+{Tiempo de simulación (segundos)}
+{data/protocolos/overhead_pdm_30syw.txt}
+{data/protocolos/overhead_pdm_30syf.txt}
+{data/protocolos/overhead_pdm_30epidemic.txt}
+{data/protocolos/overhead_pdm_30prophet.txt}
+{data/protocolos/overhead_pdm_30maxprop.txt}
+}{fig:overhead-generacion-pdm-30}
+
+
+
+\figuraApendice{Cantidad de copias por hora estimada por el protocolo híbrido
+dinámico en el tiempo de simulación en PDM para 120 segundo por mensaje generado.}
+{
+\graficoEstimacio
+{Copias por segundo estimada}
+{Tiempo de simulación (segundos)}
+{data/protocolos/overhead_pdm_120syw.txt}
+{data/protocolos/overhead_pdm_120syf.txt}
+{data/protocolos/overhead_pdm_120epidemic.txt}
+{data/protocolos/overhead_pdm_120prophet.txt}
+{data/protocolos/overhead_pdm_120maxprop.txt}
+}{fig:overhead-generacion-pdm-120}
+
+
+
+
+La \ref{fig:overhead-generacion-wdmm-1},
+\ref{fig:overhead-generacion-wdmm-30} y
+\ref{fig:overhead-generacion-wdmm-120} muestran la cantidad de copias por horas
+estimadas por el protocolo híbrido dinámico para cada uno de los protocolos del
+estado del arte en el tiempo de simulación..
+
+
+\figuraApendice{Cantidad de copias por hora estimada por el protocolo híbrido
+dinámico en el tiempo de simulación en WDMM para 1 segundo por mensaje generado.}
+{
+\graficoEstimacio
+{Copias por segundo estimada}
+{Tiempo de simulación (segundos)}
+{data/protocolos/overhead_wdmm_1syw.txt}
+{data/protocolos/overhead_wdmm_1syf.txt}
+{data/protocolos/overhead_wdmm_1epidemic.txt}
+{data/protocolos/overhead_wdmm_1prophet.txt}
+{data/protocolos/overhead_wdmm_1maxprop.txt}
+}{fig:overhead-generacion-wdmm-1}
+
+
+
+\figuraApendice{Cantidad de copias por hora estimada por el protocolo híbrido
+dinámico en el tiempo de simulación en WDMM para 30 segundo por mensaje generado.}
+{
+\graficoEstimacio
+{Copias por segundo estimada}
+{Tiempo de simulación (segundos)}
+{data/protocolos/overhead_wdmm_30syw.txt}
+{data/protocolos/overhead_wdmm_30syf.txt}
+{data/protocolos/overhead_wdmm_30epidemic.txt}
+{data/protocolos/overhead_wdmm_30prophet.txt}
+{data/protocolos/overhead_wdmm_30maxprop.txt}
+}{fig:overhead-generacion-wdmm-30}
+
+
+\figuraApendice{Cantidad de copias por hora estimada por el protocolo híbrido
+dinámico en el tiempo de simulación en WDMM para 120 segundo por mensaje generado.}
+{
+\graficoEstimacio
+{Copias por segundo estimada}
+{Tiempo de simulación (segundos)}
+{data/protocolos/overhead_wdmm_120syw.txt}
+{data/protocolos/overhead_wdmm_120syf.txt}
+{data/protocolos/overhead_wdmm_120epidemic.txt}
+{data/protocolos/overhead_wdmm_120prophet.txt}
+{data/protocolos/overhead_wdmm_120maxprop.txt}
+}{fig:overhead-generacion-wdmm-120}
+
+
+
+\seccion{Tamaño de \textit{buffer}}
+
+
+
+La \ref{fig:latencia-buffer-pdm},
+\ref{fig:latencia-buffer-wdmm} y 
+\ref{fig:latencia-buffer-vmm} presentan las latencias de la red para distintos
+tamaños de \textit{buffer} de los nodos que participan en la red.
+
+
+
+\figuraApendice{Latencia de la red para \buffers{} en PDM.}
+{
+\graficoProtocolos
+{Latencia (segundos)}
+{Tamaño del \textit{buffer} (megabytes)}
+{data/buffer/PDM_syw_latencia.txt}
+{data/buffer/PDM_syf_latencia.txt}
+{data/buffer/PDM_epidemic_latencia.txt}
+{data/buffer/PDM_prophet_latencia.txt}
+{data/buffer/PDM_maxprop_latencia.txt}
+{data/buffer/PDM_meta_latencia.txt}
+}{fig:latencia-buffer-pdm}
+
+
+\figuraApendice{Latencia de la red para \buffers{} en WDMM.}
+{
+\graficoProtocolos
+{Latencia (segundos)}
+{Tamaño del \textit{buffer} (megabytes)}
+{data/buffer/WDMM_syw_latencia.txt}
+{data/buffer/WDMM_syf_latencia.txt}
+{data/buffer/WDMM_epidemic_latencia.txt}
+{data/buffer/WDMM_prophet_latencia.txt}
+{data/buffer/WDMM_maxprop_latencia.txt}
+{data/buffer/WDMM_meta_latencia.txt}
+}{fig:latencia-buffer-wdmm}
+
+
+\figuraApendice{Latencia de la red para \buffers{} en VMM.}
+{
+\graficoProtocolos
+{Latencia (segundos)}
+{Tamaño del \textit{buffer} (megabytes)}
+{data/buffer/VALPO_syw_latencia.txt}
+{data/buffer/VALPO_syf_latencia.txt}
+{data/buffer/VALPO_epidemic_latencia.txt}
+{data/buffer/VALPO_prophet_latencia.txt}
+{data/buffer/VALPO_maxprop_latencia.txt}
+{data/buffer/VALPO_meta_latencia.txt}
+}{fig:latencia-buffer-vmm}
+
+La \ref{fig:descartados-buffer-pdm},
+\ref{fig:descartados-buffer-WDMM} y
+\ref{fig:descartados-buffer-vmm} muestran la cantidad de mensajes descartados de
+los \textit{buffers} para hacer espacio a mensajes nuevos en los tres modelos de
+movilidad utilizados.
+
+\figuraApendice{Mensajes descartados en los \textit{buffers} para distintos
+tamaños de \textit{buffers} en PDM.}
+{
+\graficoProtocolosLog
+{Número de mensajes descartados (log)}
+{Tamaño del \textit{buffer} (megabytes)} 
+{data/buffer/PDM_syw_dropped.txt}
+{data/buffer/PDM_syf_dropped.txt}
+{data/buffer/PDM_epidemic_dropped.txt}
+{data/buffer/PDM_prophet_dropped.txt}
+{data/buffer/PDM_maxprop_dropped.txt}
+{data/buffer/PDM_meta_dropped.txt}
+}{fig:descartados-buffer-pdm}
+
+
+
+\figuraApendice{Mensajes descartados en los \textit{buffers} para distintos
+tamaños de \textit{buffers} en WDMM.}
+{
+\graficoProtocolosLog
+{Número de mensajes descartados (log)}
+{Tamaño del \textit{buffer} (megabytes)}
+{data/buffer/WDMM_syw_dropped.txt}
+{data/buffer/WDMM_syf_dropped.txt}
+{data/buffer/WDMM_epidemic_dropped.txt}
+{data/buffer/WDMM_prophet_dropped.txt}
+{data/buffer/WDMM_maxprop_dropped.txt}
+{data/buffer/WDMM_meta_dropped.txt}
+}{fig:descartados-buffer-WDMM}
+
+
+
+\figuraApendice{Mensajes descartados en los \textit{buffers} para distintos
+tamaños de \textit{buffers} en VMM.}
+{
+\graficoProtocolosLog
+{Número de mensajes descartados (log)}
+{Tamaño del \textit{buffer} (megabytes)}
+{data/buffer/VALPO_syw_dropped.txt}
+{data/buffer/VALPO_syf_dropped.txt}
+{data/buffer/VALPO_epidemic_dropped.txt}
+{data/buffer/VALPO_prophet_dropped.txt}
+{data/buffer/VALPO_maxprop_dropped.txt}
+{data/buffer/VALPO_meta_dropped.txt}
+}{fig:descartados-buffer-vmm}
+
+
+
+
+
+
+La \ref{fig:energia-buffer-pdm},
+\ref{fig:energia-buffer-WDMM} y 
+\ref{fig:energia-buffer-vmm} muestran la energía consumida por los nodos
+participantes de la red para distintos tamaños de \textit{buffers}.
+
+\figuraApendice{Energía consumida total para \buffers{} en PDM.}
+{
+\graficoProtocolos
+{Energía (J)}
+{Tamaño del \textit{buffer} (megabytes)} 
+{data/buffer/PDM_syw_energia.txt}
+{data/buffer/PDM_syf_energia.txt}
+{data/buffer/PDM_epidemic_energia.txt}
+{data/buffer/PDM_prophet_energia.txt}
+{data/buffer/PDM_maxprop_energia.txt}
+{data/buffer/PDM_meta_energia.txt}
+}{fig:energia-buffer-pdm}
+
+
+
+\figuraApendice{Energía consumida total para \buffers{} en WDMM.}
+{
+\graficoProtocolos
+{Energía (J)}
+{Tamaño del \textit{buffer} (megabytes)}
+{data/buffer/WDMM_syw_energia.txt}
+{data/buffer/WDMM_syf_energia.txt}
+{data/buffer/WDMM_epidemic_energia.txt}
+{data/buffer/WDMM_prophet_energia.txt}
+{data/buffer/WDMM_maxprop_energia.txt}
+{data/buffer/WDMM_meta_energia.txt}
+}{fig:energia-buffer-WDMM}
+
+
+
+\figuraApendice{Energía consumida total para \buffers{} en VMM.}
+{
+\graficoProtocolos
+{Energía (J)}
+{Tamaño del \textit{buffer} (megabytes)}
+{data/buffer/VALPO_syw_energia.txt}
+{data/buffer/VALPO_syf_energia.txt}
+{data/buffer/VALPO_epidemic_energia.txt}
+{data/buffer/VALPO_prophet_energia.txt}
+{data/buffer/VALPO_maxprop_energia.txt}
+{data/buffer/VALPO_meta_energia.txt}
+}{fig:energia-buffer-vmm}
+
+
+
+La \ref{fig:piggybacking-buffer-pdm},
+\ref{fig:piggybacking-buffer-WDMM} y
+\ref{fig:piggybacking-buffer-VMM} muestran el almacenamiento adicional
+requerido para enviar el \textit{piggybacking} de los mensajes entregados a los
+nodos para distintos tamaños de \textit{buffers}.
+
+\figuraApendice{Almacenamiento adicional para el \textit{piggybacking} dentro de
+un mensaje para \buffers{} en PDM}
+{
+\graficoProtocolo
+{Bytes para \textit{piggybacking}}
+{Tamaño del \textit{buffer} (megabytes)}
+{data/buffer/PDM_meta_piggyback.txt}
+}{fig:piggybacking-buffer-pdm}
+
+\figuraApendice{Almacenamiento adicional para el \textit{piggybacking} dentro de
+un mensaje para \buffers{}  en WDMM.}
+{
+\graficoProtocolo
+{Bytes para \textit{piggybacking}}
+{Tamaño del \textit{buffer} (megabytes)}
+{data/buffer/WDMM_meta_piggyback.txt}
+}{fig:piggybacking-buffer-WDMM}
+
+
+\figuraApendice{Almacenamiento adicional para el \textit{piggybacking} dentro de
+un mensaje para \buffers{} en VMM.}
+{
+\graficoProtocolo
+{Bytes para \textit{piggybacking}}
+{Tamaño del \textit{buffer} (megabytes)}
+{data/buffer/VALPO_meta_piggyback.txt}
+}{fig:piggybacking-buffer-VMM}
+
+
+
+La \ref{fig:metricas-buffer-pdm}, 
+\ref{fig:metricas-buffer-wdmm} y
+\ref{fig:metricas-buffer-vmm} muestran el almacenamiento adicional requerido
+en los mensajes para transportar los contextos y métricas entre los nodos para
+distintos tamaños de \textit{buffers} en la red.
+
+\figuraApendice{Almacenamiento adicional para las métricas y contextos dentro de
+un mensaje para \buffers{} en PDM.}
+{
+\graficoProtocolo
+{Bytes para métricas y contextos}
+{Tamaño del \textit{buffer} (megabytes)}
+{data/buffer/PDM_meta_mensaje.txt}
+}{fig:metricas-buffer-pdm}
+
+\figuraApendice{Almacenamiento adicional para las métricas y contextos dentro de
+un mensaje para \buffers{} WDMM.}
+{
+\graficoProtocolo
+{Bytes para métricas y contextos}
+{Tamaño del \textit{buffer} (megabytes)}
+{data/buffer/WDMM_meta_mensaje.txt}
+}{fig:metricas-buffer-wdmm}
+
+\figuraApendice{Almacenamiento adicional para las métricas y contextos dentro de
+un mensaje para \buffers{} en VMM.}
+{
+\graficoProtocolo
+{Bytes para métricas y contextos}
+{Tamaño del \textit{buffer} (megabytes)}
+{data/buffer/VALPO_meta_mensaje.txt}
+}{fig:metricas-buffer-vmm}
+

@@ -1,0 +1,42 @@
+\begin{tikzpicture}
+
+  \begin{scope}[
+     xshift=-7.5cm
+    ,yshift=-5cm
+    ,very thick
+    ,node distance=1.6cm
+    ,on grid
+    ,>=stealth'
+    ,block/.style={rectangle,draw,fill=cyan!20}
+    ,comp/.style={circle,draw,fill=orange!40}
+    ]
+
+
+  \node [comp] (centro1) [xshift=-3cm] { Centro de suministros 1 };
+  \node [comp] (centro2) [xshift=3cm] { Centro de suministros 2 }
+    edge [<-]  node[above] {1} (centro1) 
+    ;
+  \node [comp] (centro3) [yshift=-5cm] { Centro de suministros 3 }
+    edge [<-, bend left] node[right] {1} (centro2)
+    edge [<-, dashed] node[left] {2} (centro1)
+    edge [->, bend right, dashed] node[right] {2} (centro2)
+    ;
+
+
+  %\node [comp] (hospital) [yshift=-3cm] { Hospital };
+
+  %\node [block] (evento1) [yshift=-3cm, xshift=-5cm] { Evento aleatorio 1 }
+    %edge [<-, bend right] (hospital)
+    %edge [->, bend left] (hospital)
+    %;
+
+
+  %\node [block] (evento2) [yshift=-3cm, xshift=5cm] { Evento aleatorio 2 }
+    %edge [<-, bend right] (hospital)
+    %edge [->, bend left] (hospital)
+    %;
+
+
+  \end{scope}
+
+\end{tikzpicture}

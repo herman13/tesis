@@ -1,0 +1,34 @@
+\begin{tikzpicture}
+  \begin{umlpackage}{Movement}
+
+    \umlclass[]{HumanValpoMovement}{
+      MapNode home\\
+      DijkstraPathFinder pathFinder\\
+      SimMap  map\\
+      String homeCenter\\
+      double stayProb\\
+      int house\_index\\
+      double returnTime\\
+      double waitTime\\
+      int waypoint\\
+      MapNode lastPosition\\
+      int neighborhood\\
+      double radius
+    }{
+      MapNode getHome()\\
+      Path getPath()\\
+      void findHome()\\
+      MapNode findEvacuationCenter()\\
+      void initwaypoints()\\
+      MapNode findCamino()
+    }
+
+    \umlclass[x=6]{MapBasedMovement}{}{}
+
+    \umlclass[x=-5]{ValpoConfig}{}{}
+
+    \umlinherit[geometry=|-]{HumanValpoMovement}{MapBasedMovement}
+    \umlaggreg[]{HumanValpoMovement}{ValpoConfig}
+
+  \end{umlpackage}
+\end{tikzpicture}

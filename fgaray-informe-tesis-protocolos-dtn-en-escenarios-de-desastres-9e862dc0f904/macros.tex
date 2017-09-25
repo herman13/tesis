@@ -1,0 +1,30 @@
+%\pgfplotsset{cycle list/Dark2}
+%\pgfplotsset{cycle list/Set1}
+\pgfplotsset{cycle list/Set2}
+\newcommand{\colorscheme}{Set2}
+
+
+% Argumentos
+% 1: Archivo entrada
+% 2: Titulo
+% 3: Label x
+% 4: Label y
+\newcommand{\graficoprotocolos}[4]{
+\begin{tikzpicture}
+\begin{axis}[
+    xlabel={#3},
+    ylabel={#4},
+    title=#2,
+    grid=major,
+    legend entries = {Epidemic, MaxProp},
+    legend style = {
+      legend pos = outer north east,
+    },
+    mark = *,
+    cycle multi list=\colorscheme
+  ]
+\pgfplotstableread{#1}\mydata;
+\addplot table [] {\mydata};
+\end{axis}
+\end{tikzpicture}
+}

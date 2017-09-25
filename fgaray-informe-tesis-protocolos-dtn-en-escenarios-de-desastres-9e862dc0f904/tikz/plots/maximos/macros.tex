@@ -1,0 +1,63 @@
+\newcommand{\graficoMaximos}[6]{
+
+\pgfplotsset{cycle list/Dark2}
+\renewcommand{\colorscheme}{Dark2}
+
+\begin{tikzpicture}
+\begin{axis}[
+    ylabel={#1},
+    xlabel={Tiempo (segundos)},
+    ymin=0,
+    xmin=0,
+    legend style = {
+      legend pos = outer north east,
+    },
+    cycle list name=Dark2,
+    width=0.7\textwidth,
+    mark repeat={5}
+]
+
+
+\legend{\textit{Spray and Wait}, \textit{Spray and Focus}, \textit{Epidemic}, \textit{PRoPHET}, \textit{MaxProp}}
+
+\pgfplotstableread{#2}\syw;
+\pgfplotstableread{#3}\syf;
+\pgfplotstableread{#4}\epidemics;
+\pgfplotstableread{#5}\prophet;
+\pgfplotstableread{#6}\maxprop;
+
+
+\addplot+ [
+  %very thick,
+  cycle list name=Dark2,
+  mark=square*
+  ] table []{\syw};
+
+
+\addplot+ [
+  %very thick,
+  cycle list name=Dark2,
+  mark=triangle*,
+  ] table []{\syf};
+
+\addplot+ [
+  %very thick,
+  cycle list name=Dark2,
+  mark=*,
+  ] table []{\epidemics};
+
+\addplot+ [
+  %very thick,
+  cycle list name=Dark2,
+  mark=+,
+  ] table []{\prophet};
+
+\addplot+ [
+  %very thick,
+  cycle list name=Dark2,
+  mark=diamond*,
+  ] table []{\maxprop};
+
+\end{axis}
+\end{tikzpicture}
+}

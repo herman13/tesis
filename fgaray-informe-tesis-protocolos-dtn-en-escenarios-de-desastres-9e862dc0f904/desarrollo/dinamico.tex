@@ -1,0 +1,2258 @@
+En trabajos previos, como el de \textit{MetaRouter}
+\cite{paper_evaluacion_nosotros}, se explora la viabilidad de ejecutar más de un
+protocolo en una red DTN mostrando que es posible reducir el consumo de energía
+dentro de la red. Utilizando este concepto se propone una versión dinámica que
+permita seleccionar automáticamente el protocolo más adecuado en base a un
+criterio establecido sin tener que asignar a priori un protocolo.
+
+El protocolo está construido utilizando el lenguaje de programación Java y
+Scala, este último un lenguaje de programación funcional y orientado a objetos.
+La mezcla entre ambos paradigmas permite una mayor expresividad y abstracción de
+tareas comunes de programación y la reutilización de código mediante la herencia
+de clases del simulador.
+
+Para evitar confusiones de nombres, el \textbf{protocolo híbrido dinámico} es
+aquel meta protocolo que está siendo ejecutado por el dispositivo y que es el
+encargado de tomar la decisión de que protocolo del estado del arte ejecutar,
+mientras que se va a utilizar \textbf{protocolo del estado del arte} o
+\textbf{protocolo actual} para referirse a aquellos protocolos que pueden ser
+seleccionados para la transmisión de mensajes. Para realizar las simulaciones de
+este protocolo se van a utilizar los siguientes protocolos del estado del arte:
+\syw{} \cite{spyropoulos_spray_2005}, \syf{} \cite{spyropoulos_spray_2007},
+\epidemic{} \cite{amin_vahdat_epidemic_2000}, \maxprop{}
+\cite{burgess_maxprop:_2006} o \prophet{} \cite{lindgren_probabilistic_2003}.
+
+
+A continuación se describe un protocolo híbrido dinámico general que puede
+utilizado en distintas redes sin importar cual es el propósito del protocolo
+(maximizar tasa de entrega, minimizar \overhead, minimizar latencia, etc), luego
+se presenta un protocolo híbrido dinámico para escenarios de desastres basado en
+los conceptos de \textit{MetaRouter}.  Este capítulo se divide en una sección de
+diseño donde se explica el funcionamiento interno del protocolo, luego una
+sección de evaluación donde se compara el protocolo con otros del estado del
+arte en distintos escenarios de movilidad y finalmente se presentan las
+conclusiones, problemas y posibles mejoras que se puedan realizar al protocolo.
+
+
+\seccion{Diseño del protocolo híbrido dinámico general}
+
+El protocolo presentado en esta sección permite la creación de una familia de
+protocolos híbridos dinámicos con distintas funciones objetivos a minimizar o
+maximizar para DTN.
+
+Un nodo es un dispositivo móvil o estático que contiene almacenamiento,
+capacidad de procesamiento y conectividad inalámbrica compatible con los nodos
+del resto del escenario como pueden ser \textit{WiFi} o \textit{Bluetooth}.  Se
+entiende por contexto a una n-tupla $(c_1, c_2, ..., c_n)$ de valores numéricos
+que caracterizan el ambiente en el cual se encuentra un nodo. Las métricas de
+evaluación son aquellos valores que ayudan a identificar como un nodo se
+comporta, además, son locales al nodo y no globales como las métricas entregadas
+por \theone{} al finalizar la simulación.
+
+El protocolo híbrido dinámico general es capaz de utilizar el contexto actual en
+el cual se está ejecutando y la retroalimentación de la red en forma de métricas
+para seleccionar aquel protocolo que maximiza o minimiza una función objetivo.
+De esta forma, los nodos son capaces de automáticamente seleccionar aquel
+protocolo más adecuado, de acuerdo a su función, sin requerir de conocimiento
+previo debido a que este es recolectado de las interacciones de los nodos.
+
+
+
+
+\figura{Algoritmo del protocolo híbrido dinámico general.}{
+\begin{algorithm}[H]
+     \SetAlgoLined
+     \While{se ejecuta el protocolo}{
+       \If{se encuentra con un nodo vecino}{
+         agregar métricas y contextos locales a los mensajes locales en el \textit{buffer}\;
+         intercambiar mensajes de acuerdo al protocolo del estado del arte seleccionado\;
+         extraer métricas y contextos de los mensajes recibidos\;
+         actualizar métricas locales\;
+         actualizar contextos locales\;
+         \If{ha vencido el tiempo de cambio de protocolo}
+         {
+            seleccionar el protocolo del estado del arte adecuado para el contexto actual;
+         }
+       }
+     }
+\end{algorithm}
+}{fig:algoritmo}
+
+
+
+En la \ref{fig:algoritmo} se muestran los pasos que sigue el protocolo dinámico
+general cuando se está ejecutando dentro de un dispositivo móvil. Al encontrarse
+el nodo con un vecino, se utiliza la interfaz de red para intercambiar
+los mensajes de acuerdo a las reglas del protocolo seleccionado. Cada uno de los
+mensajes contiene información de cada uno de los nodos por los que ha sido
+transmitido: protocolo ejecutado, métricas del protocolo y contexto en el cual se ha
+ejecutando el protocolo. Cuando se recibe un mensaje desde la red, se le extrae
+esta información para ser almacenada hasta el momento en el cual el nodo debe
+seleccionar un nuevo protocolo. El protocolo híbrido dinámico va guardando pares
+de información de la forma $(c, t)$ que pueden ser representadas en un gráfico
+con el eje $x$ como el eje de los contextos $c$ y el eje $y$ como el eje de las
+métricas $t$, debido a que el desempeño de un protocolo (métrica) es dependiente
+del contexto del nodo en el cual se está ejecutando. En otras palabras, el
+contexto corresponde a la variable independiente y la métrica a la variable
+independiente de un gráfico.
+
+
+El gráfico creado a partir de contextos y métricas permite estimar cual va a
+ser el desempeño de un protocolo en un contexto en particular debido a que es
+posible interpolar valores intermedios y obtener la métrica en ese punto.  La
+técnica a utilizar depende de la calidad de los contextos y métricas que se
+encuentren disponibles: si se tienen contextos y métricas que se puedan calcular
+con precisión entonces una buena interpolación puede entregar un buen estimado,
+en caso contrario, si son poco exactos los contextos y métricas, una
+interpolación más complicada no va a entregar un buen valor estimado debido a
+que está trabajando sobre valores imprecisos. Utilizar una interpolación más
+simple en caso de tener métricas y contextos estimados puede permitir ahorrar
+tiempo de computación y consumo de energía en el dispositivo.
+
+\figura{Gráfico de muestra de la información recolectada dentro de un protocolo
+híbrido dinámico general.}
+{\input{tikz/plots/fuzzy/grafico.tex}}{fig:contextos-grafico}
+
+La \ref{fig:contextos-grafico} muestra la posible información recolectada por un
+protocolo híbrido dinámico, donde en el eje $x$ se representa un contexto y el
+eje $y$ una métrica, para tres protocolos. Además, se muestra como un protocolo
+híbrido dinámico utiliza la interpolación de rectas para estimar valores
+intermedios de las métricas. Este tipo de estructuras se debe construir para
+cada uno de los tipos de pares $(c, t)$ que se implementen en el protocolo
+híbrido dinámico general.
+
+Permitir que en cada instante de la ejecución del protocolo híbrido dinámico 
+seleccione un nuevo protocolo sería ineficiente dado que la cantidad de
+información nueva que recibe el protocolo con solo una interacción no es
+suficiente para llegar a una conclusión sobre que protocolo es el más adecuado,
+es decir, no se debería tomar en cuenta las métricas y contextos de un solo nodo
+en un solo instante de tiempo, se necesita recolectar más información. Es por
+esta razón que se utiliza el tiempo de cambio de protocolo, para limitar la
+cantidad de selecciones de protocolos que se pueden hacer en un instante de
+tiempo definido. Un valor alto del tiempo de cambio de protocolo implica menos
+selecciones de protocolos del estado del arte y un valor pequeño implica más
+selecciones de protocolos lo que hace que el protocolo dinámico sea más agresivo
+en cuanto a su optimización.
+  
+
+El cálculo de contextos y métricas debe ser realizado dentro de una ventana
+deslizante de tiempo en la cual la historia pasada tiene un nulo o bajo peso
+respecto a la historia más reciente. Esto permite que los contextos y métrica
+representen el estado actual del protocolo y del nodo, y no un pasado que puede
+no tener relación con el momento presente de la red. 
+
+
+La selección del protocolo utiliza una función objetivo $f(t_1..t_m)$ donde
+$(t_1..t_m)$ son las métricas utilizadas en el protocolo híbrido dinámico.
+Utilizando el contexto local del dispositivo móvil que quiere seleccionar un
+nuevo protocolo y la interpolación de los puntos del gráfico de contexto versus
+métricas, es posible estimar la métrica que va a obtener un protocolo en el nodo
+actual. Para cada uno de los protocolos que estén disponibles para ser
+seleccionados, se estiman las métricas mediante interpolación para el contexto
+del nodo y se evalúan en la función $f$. Cuando cada protocolo tiene su
+evaluación, se selecciona aquel protocolo que maximice o minimice $f$, dependiendo
+del objetivo, como el protocolo que debería ser ejecutado por el nodo.
+
+Algunas métricas que se pueden utilizar dentro del protocolo son: tasa de
+entrega, copias de los mensajes, latencia de la red, retransmisiones de mensajes
+y tiempo promedio dentro de los \textit{buffers}. En cuando a los contextos,
+algunos de estos pueden ser: densidad de nodos vecinos, tiempo promedio de
+contacto, prioridad de los mensajes y diferencias de recursos de los
+dispositivos (rango y velocidad de la conexión inalámbrica).
+
+
+La distribución de las métricas y contextos se realiza sobre los mismos mensajes
+de usuario que la red está tratando de hacer llegar a los destinos,  mientras
+más mensajes sean transmitidos en la red mejor va a ser la distribución de
+métricas y contextos entre los nodos. En cada uno de los saltos que realiza un
+mensaje de usuario, el nodo que está enviando el mensaje a su vecino agrega sus
+contextos y métricas actuales junto con el protocolo del estado del arte que fue
+utilizado para realizar la transferencia.
+
+El espacio adicional necesario para almacenar la información de contextos y
+métricas en un mensaje se define en función de la cantidad de contextos y
+métricas que utiliza el protocolo dinámico. Asumiendo un identificador entero
+para los protocolos del estado del arte, se necesitarían $\lceil \log_2(p)
+\rceil$ bits para identificarlos en un mensaje, donde $p$ es la cantidad de
+protocolos del estado del arte utilizados. Además, para los contextos y métricas
+se necesitarían un total de $4*c*t$ bytes, asumiendo un número de coma flotante
+de 4 bytes, donde $c$ es la cantidad de contextos que implementa el protocolo
+híbrido dinámico y $t$ es la cantidad de métricas implementadas. Debido a que en
+cada salto se agrega información de los contextos y métricas, el total de
+espacio requerido depende de la cantidad de saltos $h$ que se realicen, quedando
+finalmente el espacio adicional requerido en $(\lceil \frac{\log_2(p)}{8} \rceil
++ 4*c*t)*h$ bytes. En el peor caso que un mensaje sea transmitido por todos los
+nodos de la red se puede considerar $h = n$ donde $n$ es el total de nodos de la
+red.
+
+
+Utilizando los pasos presentados del protocolo híbrido dinámico es posible crear
+una familia de protocolos, cada uno con una serie de contextos, métricas y
+funciones objetivos con el propósito de optimizar algún aspecto de la red. Por
+ejemplo, un protocolo que quiera centrarse en entregar mensajes rápidamente por
+la red utilizaría como métrica la latencia de los mensajes entregados y los
+tiempos de espera en los \textit{buffers} de los nodos. 
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\seccion{Diseño de un protocolo híbrido dinámico para escenarios de desastres}
+
+Debido a que la vida de una DTN depende de la disponibilidad energética que
+tengan los nodos de la red, un protocolo que se quiera ejecutar en un escenario
+de desastre debe tratar de minimizar el consumo de energía proveniente de la
+comunicación de mensajes entre dispositivos dado que la energía eléctrica
+utilizada para recargar los dispositivos puede no estar disponible si la
+infraestructura de la ciudad ha sido dañada como en un terremoto.
+
+A continuación se presenta un protocolo híbrido dinámico para escenarios de
+desastres que minimiza el consumo de energía relacionado con el \overhead{} de
+mensajes de acuerdo a la ecuación (\ref{eq:energia}). Este protocolo híbrido
+dinámico utiliza como contexto la densidad de nodos en el tiempo y los tiempos
+promedio de contacto, los cuales permiten caracterizar la movilidad que tienen
+los nodos dentro de la red: un nodo con una alta movilidad va a tener un tiempo
+promedio de contacto diferente que uno con una baja movilidad, de igual forma
+con la densidad de nodos. Se decide por utilizar el movimiento de los nodos como
+contextos debido a que en el \ref{chp:pasado} se demostró que era importante
+asignar un protocolo distinto a los nodos de acuerdo a como se movían en el
+escenario.
+
+Dado que el objetivo de este protocolo es la reducción del consumo de energía,
+se van a utilizar dos métricas para evaluar el desempeño de la red: tasa de
+entrega y copias de mensajes en el tiempo. La razón de utilizar las copias de
+mensajes es debido a que estas están relacionadas con el consumo de energía como
+se puede ver en la ecuación (\ref{eq:energia}). En cuanto a la tasa de entrega,
+esta también se encuentra relacionada con el consumo de energía debido a su
+relación con el \overhead{} de mensajes, a mayor copia de mensajes en la red,
+entonces mejor tasa de entrega, asumiendo que los \textit{buffers} de los
+dispositivos miembros de la red no se saturan. La mezcla de las dos métricas
+evita situaciones donde un nodo podría seleccionar un protocolo del estado del
+arte que tenga cero copias de mensajes dado que en ese caso también tendría una
+tasa de entrega de cero.
+
+En la \ref{fig:algoritmo-desastre} del \ref{apendice:dinamico-alg} se pueden ver
+los pasos que sigue el protocolo híbrido dinámico en cuanto al cálculo de
+métricas y contextos e intercambio de mensajes. Esta es una versión menos
+genérica que la de la \ref{fig:algoritmo}.
+
+Finalmente, el protocolo híbrido dinámico para escenarios de desastres debe
+tomar estas dos métricas en un contexto particular y equilibrarlas de manera tal
+de reducir el consumo de energía pero sin perjudicar la tasa de entrega en gran
+medida.
+
+
+
+
+
+
+\subseccion{Métricas del protocolo híbrido dinámico}
+\customlabel{sub:metricas}{Sección \arabic{chapter}.\arabic{section}.\arabic{subsection}}
+
+A continuación se explica la forma en que las métricas son calculadas dentro del
+protocolo híbrido dinámico para escenarios de desastres.
+
+La tasa de entrega puede ser calculada de acuerdo a la ecuación
+(\ref{eq:delivery-dinamico}), donde $d$ es la cantidad de mensajes entregados y
+$c$ es la cantidad de mensajes creados en la red. Esta es una métrica que se
+calcula de manera global, pero es posible estimarla localmente en los nodos. La
+estimación no va a ser exacta al valor global dado que la comparación se va a
+hacer con otros valores locales calculados en otros nodos y no con el valor
+global. El valor de $c$ es sencillo de obtener debido a que es la cantidad de
+mensajes que ha recibido el nodo de otros más la cantidad de mensajes que se han
+creado en el mismo nodo. Si este nodo es capaz de enviar todos estos mensajes a
+sus destinos, entonces el nodo tendría una tasa de entrega de $1$, pero en el
+caso que no logre entregar ninguno, entonces tendría un valor de tasa de entrega
+de $0$. Luego, se obtiene el valor de $d$, el cual es la cantidad de mensajes
+que han sido entregados con éxito en sus destinos. Es necesario entonces que
+cuando un mensaje llegue al destino, se notifique al resto de los nodos de la
+red de su llegada, para que puedan actualizar sus valores de $d$ si es que han
+participado de la transmisión de ese mensaje. La solución más directa es la de
+crear un nuevo mensaje y enviarlo de forma epidémica a la red. El problema de
+esta primera aproximación es que se generaría un mayor número de copias de
+mensajes lo que implicaría un mayor consumo de energía relacionado con la
+comunicación. Una alternativa es utilizar los mismos mensajes de la red como
+portadores de meta información para distribuir esta información lo que reduce el
+\overhead{} al costo de que existan partes de la red que no se actualicen,
+perdiendo precisión. Además, existe una paradoja al utilizar
+\textit{piggybacking} para notificar de los mensajes entregados en la red debido
+a que esta técnica funciona mejor mientras más mensajes hay circulando por la
+red dado que hay mayor probabilidad de distribuir la información, pero debido a
+que el objetivo del protocolo híbrido dinámico es reducir el consumo de energía
+de comunicación, va a tender a reducir el \overhead{} de mensajes limitando la
+eficiencia con la cual se distribuyen los mensajes en la red.
+
+
+\begin{equation}
+    \label{eq:delivery-dinamico}
+    t = \frac{d}{c}
+\end{equation}
+
+Cuando un mensaje llega a un nodo que es el destino, el identificador del
+mensaje y los identificadores de los nodos y protocolos utilizados en cada salto
+se guardan para ser distribuidos por la red utilizando
+\textit{piggybacking}. Cada vez que otros mensajes son retransmitidos por este
+nodo, se le agregan los identificadores de los mensajes que han llegado de
+manera de que al ser distribuidos por la red puedan notificar a los nodos de los
+mensajes que han logrado llegar al destino.
+
+La información adicional que se incluye en los mensajes es en el peor caso $m*h$
+entradas, donde $m$ es la cantidad de mensajes totales creados en la red y $h$
+es la cantidad de saltos máxima que puede realizar un mensaje, que en el peor
+caso sería $h = n$ donde $n$ es el total de nodos en la red. Se puede expresar
+la información adicional en bytes como $(\lceil \frac{\log_2(m)}{8} \rceil +
+\lceil \frac{\log_2(n)}{8} \rceil) * m * h$ bytes. Es posible reducir este
+\overhead{} si se utilizan estructuras de datos alternativas como un
+\textit{Bloom Filter}. Un \textit{Bloom Filter} es una estructura de datos
+probabilística que tiene falsos positivos, lo que provocaría sobrestimar la tasa
+de entrega. Es posible reducir la probabilidad de falsos positivos en hasta un
+$1\%$ si es que se utilizan al menos $10$ bits por elemento, es decir, utilizando
+esta estructura un mensaje con \textit{piggybacking} necesitaría $10*m*h$ bits o
+$2*m*h$ bytes para almacenar los mensajes entregados
+\cite{DBLP:conf/esa/BonomiMPSV06}.
+
+
+
+
+El \overhead{} de copias de mensajes se calcula de manera indirecta sin tomar en
+cuenta la cantidad de mensajes que han llegado al destino, esto debido a que se
+quiere que esta métrica sea una forma de medir la cantidad de copias que aporta
+el protocolo dentro de la red. Mientras se ejecuta un protocolo, cada vez que se
+realiza una copia de un mensaje, esta es agregada a un contador donde se guardan
+la cantidad de copias y cuando se cambia el protocolo este contador es guardado
+y reemplazado por el que le corresponde al protocolo recientemente seleccionado
+, así la historia pasada del protocolo continua siendo utilizada y no se borra.
+El problema de utilizar un contador de esta forma es que puede perjudicar a
+protocolos que se ejecuten más que otros: un protocolo que se ejecute más
+tiempo va a generar una cantidad de copias mayor que otro que se ejecute menos,
+a pesar que puede que el segundo protocolo genere más copias si se llega a
+ejecutar el mismo tiempo que el primero. Para evitar esto es que se divide la
+cantidad de copias realizadas por un protocolo por el tiempo que ese protocolo
+ha sido utilizado, razón por la cual esta métrica representa la cantidad de
+copias realizadas por el protocolo en el tiempo. La ecuación
+(\ref{eq:overhead_tiempo}) muestra la forma de calcular esta métrica.
+
+\begin{equation}
+  Overhead = \frac{Copias}{Tiempo}
+  \label{eq:overhead_tiempo}
+\end{equation}
+
+
+El máximo valor que puede tomar el \overhead{} depende del modelo de movilidad y
+del protocolo, por lo tanto es necesario normalizar entre $0$ y $1$ para aplicar
+de forma correcta la función objetivo. El valor máximo de la normalización se
+encuentra mediante simulaciones.
+
+
+
+\subseccion{Contextos}
+
+
+Los contextos implementados en el protocolo son la densidad de nodos vecinos en
+el tiempo y el tiempo promedio de contacto.
+
+La densidad de nodos vecinos en el tiempo se calcula de acuerdo a la cantidad de
+encuentros que tiene el nodo dentro de un intervalo o ventana de tiempo. Cada
+encuentro es guardado como una entrada en una cola FIFO (\textit{first in, first
+out}), la cual contiene información sobre el tiempo de simulación en el cual
+cada encuentro fue efectuado. Para calcular la métrica, primero se eliminan las
+entradas que hayan salido de la ventana de tiempo y por lo tanto son muy
+antiguas como para cuantificar de manera adecuada el contexto actual. Luego se
+cuenta la cantidad que elementos que aún se encuentran en la cola y este número
+es dividido por la cantidad de segundos de la ventana, generando así una tasa de
+nodos vecinos en el tiempo. Un valor alto de este contexto indica que existe una
+gran densidad de nodos vecinos y por lo tanto el nodo tiene una alta
+conectividad.  En la ecuación (\ref{eq:encuentros}) se puede ver la forma de
+calcular este contexto.
+
+\begin{equation}
+  Densidad = \frac{Cantidad \; encuentros}{Tiempo \; ventana \; contextos}
+  \label{eq:encuentros}
+\end{equation}
+
+
+El tiempo promedio de contacto mide de una forma indirecta la rapidez de un
+nodo y por lo tanto es un indicativo de que nodos pueden acceder a distintas
+partes de la red en un corto tiempo. Cada vez que hay un nuevo encuentro se
+guarda el tiempo actual de la simulación y se genera una entrada en una tabla.
+Luego cuando la conexión es cerrada con el nodo vecino, es decir, el encuentro
+termina, se obtiene de la tabla el tiempo en el cual se encontró inicialmente al
+nodo y se calcula la diferencia con el tiempo actual de la simulación. Esta
+diferencia es el tiempo que duró ese contacto, el cual es guardado con el tiempo
+actual de la simulación en una cola FIFO. Cuando se quiere calcular el promedio
+de los tiempos de encuentros, se eliminan aquellos encuentros antiguos de la
+misma forma que con la densidad de encuentros y se calcula el promedio entre
+todos los tiempos. Un valor promedio alto indica que los encuentros tienden a
+ser largos y por lo tanto el nodo se debe mover lento, mientras que un valor
+bajo indica que el nodo se mueve rápidamente. A diferencia del contexto de
+densidad de nodos, el promedio de los tiempos de contactos se puede estimar sin
+que sea necesario terminar el encuentro y, por lo tanto, puede cuantificar
+cuando los nodos se quedan quietos en un punto. En la ecuación (\ref{eq:tiempos})
+se muestra la forma de calcular este contexto donde cada encuentro $i$ tiene un
+tiempo de contacto que es dividido por el total de encuentros $n$.
+
+
+\begin{equation}
+  Tiempo = \frac{\sum^n_i Tiempo\;contacto_i}{n}
+  \label{eq:tiempos}
+\end{equation}
+
+
+Ambos contextos dependen del rango de la tecnología de comunicación inalámbrica
+que se esté utilizando, debido a que los encuentros son detectados con el
+descubrimientos de nuevos pares en la interfaz de red.
+
+
+
+\subseccion{Selección del protocolo a utilizar}
+
+Los nodos participantes de la red generan métricas para el protocolo del estado
+del arte que están ejecutando en el momento y contexto actual. Esta información
+es agregada como datos extra a la información de usuario original del mensaje.
+Debido a que los mensajes saltan de nodo en nodo a lo largo de la red mientras
+buscan sus destinos es que los mensajes van a tener una lista de protocolos,
+métricas y contextos por cada uno de los saltos que ha realizado.
+
+
+
+Al llegar un mensaje con información de evaluaciones a un nodo, el primer paso
+es extraer la información adicional para luego almacenar en el \textit{buffer}
+local el mensaje a la espera de ser transmitido a los vecinos. Esta información
+de evaluaciones es almacenada en una estructura que se asemeja a un gráfico de
+evaluación de métricas, donde se tienen variables independientes o contextos que
+van a alterar el comportamiento de variables dependientes o métricas. Esta
+estructura va a permitir automatizar el proceso de la toma de decisiones que
+utiliza cuando se evalúa un protocolo, es decir, seleccionar el protocolo que
+presente el mejor comportamiento para una situación en particular.
+
+
+Esta estructura puede ser vista a través de un ejemplo en la
+\ref{fig:contextos-grafico}, donde hay tres protocolos: protocolo 1 y 2 tienen 3
+evaluaciones  y el protocolo 3 tiene dos evaluaciones. Cada uno de los puntos
+corresponde al desempeño de un protocolo en un contexto en particular. Por
+ejemplo, el protocolo 2 podría tener una cantidad promedio de nodos vecinos $7$
+(contexto) y para esa cantidad de nodos vecinos habría un nodo que ha encontrado
+que tiene una tasa de entrega de $0.1$ (métrica), por lo tanto esa es la
+información que se dispone para tomar una decisión de que protocolo es mejor en
+ese contexto.
+
+
+Debido a que la posibilidad de que un nodo tenga exactamente el mismo contexto
+que otro es baja, es necesario realizar interpolaciones para calcular valores
+que se encuentren entre los puntos. Un alternativa es la de tratar de interpolar
+un polinomio de grado igual a la cantidad de puntos existentes, pero la ventaja
+de precisión que se lograría con esto no justificaría el costo computacional que
+requiere el cálculo de las constantes del polinomio, dado que se esta diseñando
+el protocolo para que funcione sobre dispositivos móviles que pueden tener bajo
+poder de cómputo. Como alternativa, se va a realizar una interpolación
+utilizando solo rectas, es decir, se toman los puntos que incluyen al contexto
+actual y se genera una recta entre ellos como se muestra en la
+\ref{fig:contextos-grafico} en el caso del protocolo 1 donde se muestran
+las rectas de interpolación que permiten obtener valores intermedios.
+
+Las rectas consisten en dos valores, $m$ y $b$ tal que al reemplazar esos valores
+en la ecuación $y = mx + b$, la recta que se forma pase por los puntos deseados,
+que son los que contienen al contexto que se quiere evaluar.
+
+
+Este proceso de interpolación es realizado para todos los protocolos en todos
+los contextos y para todas las métricas. En el caso del protocolo implementado,
+estos serían $5$ protocolos, $2$ contextos y $2$ métricas dando un total de $20$
+evaluaciones si es que el nodo que realiza la evaluación tiene información de
+evaluaciones de los $5$ protocolos. En este punto cada métrica es agrupada
+por contexto: hay una lista con las métricas obtenidas en el contexto del
+encuentro actual y otra en el contexto del promedio de contacto actual.
+
+
+Estas evaluaciones solamente indican el desempeño de los protocolos, pero no es
+posible tomar una decisión con solo esta información debido a que el \overhead{}
+y la tasa de entrega se miden en unidades distintas y además una es mejor cuando
+es baja (\overhead) y la otra cuando es alta (tasa de entrega).
+
+
+
+\subseccion{Evaluación de la función objetivo}
+
+Para poder utilizar correctamente la ecuación (\ref{eq:normalizar}) es necesario
+normalizar la cantidad de copias entre $0$ y $1$ utilizando la ecuación
+(\ref{eq:normalizar}), donde $O$ es el \overhead{} estimado o la cantidad de
+copias en el tiempo de un protocolo, $mayor$ es el valor máximo que puede tomar
+$O$ obtenido mediante simulaciones y finalmente $ON$ es el valor normalizado que
+puede utilizarse como entrada de la ecuación (\ref{eq:nota}). En caso de no
+existir simulaciones disponibles, se puede aproximar el valor de $mayor$,
+incluso sobrestimando su valor real debido a que lo importante es que este valor
+sea igual dentro de todos los nodos y no su valor absoluto. En caso que el valor
+real supere el valor estimado de $mayor$ se puede tomar la decisión de asignar
+al protocolo un valor de la función objetivo de $0$ debido a que aporta con
+muchas copias de mensajes a la red.
+
+\begin{equation}
+  ON = \frac{O}{mayor}
+  \label{eq:normalizar}
+\end{equation}
+
+
+A cada protocolo del estado del arte se le evalua a través de su función
+objetivo calculada localmente en cada uno de los nodos de acuerdo a la
+información que se ha logrado recolectar de la red en forma de contextos y
+métricas de manera de poder tomar la decisión de que protocolo es el más
+adecuado para ejecutar en el contexto actual del nodo. Este proceso de
+evaluación de la función objetivo debe ser simple de calcular dado que va a ser
+ejecutado en un dispositivo móvil donde los recursos son limitados,
+especialmente la energía.  Debido a esto, se propone la función de la ecuación
+(\ref{eq:nota}) donde se relacionan los valores de la tasa de entrega ($T$) y la
+cantidad de copias en el tiempo creadas por el protocolo ($C$), siendo $T$ y $C$
+valores entre $0$ y $1$, luego de normalizar $C$.
+
+\input{tikz/plots/ecuacion.tex}
+
+
+\begin{equation}
+  f(T, C) = \alpha*T + (1 - \alpha)*(1 - C)
+  \label{eq:nota}
+\end{equation}
+
+Dado que se quiere que un protocolo con una alta tasa de entrega y baja cantidad
+de copias sea el seleccionado, la ecuación debería entregar su valor máximo en
+ese caso, en caso contrario se le debería asignar un valor mínimo al protocolo.
+Adicionalmente, se incluye un parámetro adicional identificado por la letra
+griega $\alpha \in [0, 1]$ que permite variar la importancia que se le da a las
+métricas. 
+
+
+
+\figura{Valores de la ecuación (\ref{eq:nota}) para $\alpha = 0$.}
+{\graficoEcuacion{0}}{fig:valor-0-ecuacion}
+
+\figura{Valores de la ecuación (\ref{eq:nota}) para $\alpha = 0.5$.}
+{\graficoEcuacion{0.5}}{fig:valor-0.5-ecuacion}
+
+\figura{Valores de la ecuación (\ref{eq:nota}) para $\alpha = 1$.}
+{\graficoEcuacion{1.0}}{fig:valor-1-ecuacion}
+
+En la \ref{fig:valor-0-ecuacion}, \ref{fig:valor-0.5-ecuacion} y
+\ref{fig:valor-1-ecuacion} se muestra como varía la ecuación (\ref{eq:nota}) de
+la función objetivo para tres valores de $\alpha$. Se puede ver que para $\alpha
+= 0$ se le evalúa con un valor alto a protocolos con baja cantidad de copias sin
+importar la tasa de entrega, mientras que para un valor de $\alpha = 1$
+solamente importa la tasa de entrega. En el caso de $\alpha = 0.5$, se puede
+como varía frente a cambios tanto de tasa de entrega como de copias de mensajes.
+
+
+
+
+
+\subseccion{Cambio de protocolo y del estado}
+
+La programación orientada a objetos tiene como objetivo la encapsulación del
+estado del programa en objetos para que sea más fácil razonar acerca del
+funcionamiento de este. En el caso de la implementación de un protocolo para el
+simulador \theone, estos son programados mediante la creación de una clase que
+contiene toda la información del nodo correspondiente con la red.
+
+
+Cuando se requiere hacer un cambio de un protocolo a otro es necesario lidiar
+con el estado interno del protocolo para evitar pérdidas de mensajes o de
+métricas. En total hay 12 variables que deben ser copiadas del protocolo
+anterior al seleccionado, entre ellas la más importante es \textit{messages},
+miembro de la clase \textit{ActiveRouter}. Una vez copiadas estas 12 variables
+se puede cambiar el protocolo.
+
+En el caso que el protocolo implemente métricas, como las tablas de probabilidad
+de encuentros de \maxprop, \prophet{} y \syf, simplemente se guarda la instancia
+del protocolo anterior sin copiar esa información dado que no es de interés para
+el nuevo protocolo, pero si es relevante si es que se vuelve a seleccionar el
+protocolo anterior.
+
+El protocolo seleccionado a ser ejecutado a continuación es copiado en una
+variable dentro del protocolo dinámico el cual redirige las llamadas a los
+métodos del protocolo al seleccionado para permitir ejecutar cualquier protocolo
+implementado para \theone.
+
+Protocolos como \maxprop, \syf{} y \prophet{} requieren de tratamiento especial
+debido a que necesitan ser ejecutados parcialmente en todo momento para
+construir sus tablas de probabilidades. Cada vez que un nodo se encuentra con un
+vecino, además de llamar al método correspondiente del protocolo actual, se
+llama además a los métodos de \maxprop, \syf{} y \prophet{} para que puedan
+actualizar sus tablas y puedan utilizar las métricas de probabilidad
+inmediatamente cuando son seleccionados y no tengan que pasar por una fase de
+espera hasta que puedan conocer la red.
+
+
+
+\subseccion{Parámetros internos del protocolo}
+
+A continuación se presenta una lista de los parámetros utilizados para
+configurar el protocolo dinámico.
+
+\begin{itemize}
+  \item \textbf{$\alpha$}: Toma valores entre $[0, 1]$ para darle prioridad a la tasa de
+    entrega o a la cantidad de copias realizadas por un protocolo. Un valor
+    cercano a cero indica que para el protocolo dinámico es más importante la
+    tasa de entrega y un valor cercano a uno hace que sea más importante la
+    cantidad de copias creadas el mensaje.
+  \item \textbf{Máximo de copias de mensajes en el tiempo}: Este parámetro se
+    utiliza para normalizar la cantidad de copias de mensajes para que se pueda
+    utilizar la función objetivo. Se mide en cantidad de mensajes en el tiempo
+    ($\frac{mensajes}{tiempo}$).
+  \item \textbf{Tiempo de la ventana de métricas}: Definida en segundos, se
+    utiliza para limitar la cantidad de información y, por lo tanto, uso de
+    memoria en el nodo. Además, cumple la función de descartar la información
+    más antigua que puede no ser válida en todos los instantes de la red.
+  \item \textbf{Tiempo de la ventana de contextos}: Al igual que la ventana de
+    métricas, la ventana de contextos se define en segundos y se utiliza para
+    evitar tener información antigua en el cálculo de un contexto. En caso de un
+    cambio de movimiento, esta ventana permite recalcular el nuevo contexto al
+    descartar información pasada.
+  \item \textbf{Tiempo de cambio de protocolo}: El tiempo mínimo que debe
+    esperar un nodo antes de cambiar el protocolo actual por uno distinto. Esto
+    evita la pérdida de mensajes (en caso de ser un tiempo bajo) y reduce la
+    cantidad de cálculos que debe hacer el nodo en cada instante de tiempo. Se
+    mide en segundos y su valor máximo es el tiempo de simulación, es decir,
+    durante toda la simulación no hay cambios de protocolos.
+\end{itemize}
+
+
+
+
+
+
+
+\seccion{Experimentos}
+
+Antes de comenzar a comparar el protocolo dinámico con otros del estado del arte
+es necesario encontrar los parámetros adecuados para poder realizar una
+comparación con la versión del protocolo dinámico que reduzca el \overhead{} de
+mensajes. Existen cuatro parámetros que deben ser encontrados de manera tal de
+poder lograr que el protocolo dinámico entregue el mejor desempeño en cuanto a
+la tasa de entrega y consumo de energía. Estos parámetros son: tiempo de cambio
+de protocolo, tamaño de la ventana de contextos y tamaño de la ventana de las
+métricas, todos ellos utilizando la misma unidad de medida, segundos. Además hay
+otros dos parámetros que afectan el desempeño del protocolo: valor máximo tasa
+de entrega y valor máximo \overhead.
+
+Inicialmente los parámetros se encuentran configurados de acuerdo a lo que dicta
+la intuición, por ejemplo, un modelo de movilidad con cambios de movimientos
+cortos tendría que tener una ventana de contextos lo suficientemente pequeña
+como para poder identificar esos cambios e inmediatamente descartar la historia
+pasada, de igual forma el tiempo de cambio de protocolo debería ser del orden de
+esta ventana para permitir seleccionar inmediatamente un protocolo que se adapte
+mejor a la situación del momento en el nodo.
+
+Los experimentos de los parámetros se basan en los anteriores, es decir, cuando
+se encuentra el parámetro que entrega el mejor desempeño de acuerdo a tasa de
+entrega y \overhead, este es utilizado en los experimentos posteriores.
+
+Una vez encontrados los parámetros que minimizan el \overhead{} y maximizan la
+tasa de entrega, se van a hacer pruebas de escalabilidad del protocolo en cuanto
+a tamaño del \textit{buffer}, cantidad de nodos en la red, tamaño de mensajes
+y cantidad de mensajes por minuto.
+
+Los modelos de movilidad utilizados son \textit{Post-Disaster Mobiliy Model}
+(PDM) \cite{uddin_post-disaster_2009}, \textit{Working Day Mobility Model}
+(WDMM) \cite{ekman_working_2008} y  \textit{Valparaíso Mobility Model} (VMM),
+este último definido en el \ref{chp:movilidad}. Se utiliza PDM debido a que es
+un modelo de movilidad muy utilizado en las publicaciones para probar nuevos
+protocolos DTN y con su versión modificada, VMM, permite además probar el
+protocolo en un escenario de desastre en una ciudad chilena. En el caso de WDMM,
+este modelo de movilidad se utiliza para analizar el uso del protocolo híbrido
+dinámico en otras situaciones donde los diferentes movimientos de los nodos de
+la red son importantes.
+
+
+\subseccion{Configuraciones de los experimentos}
+
+Los experimentos para encontrar los parámetros tienen las siguientes
+configuraciones:
+
+\tabla{Configuración de las simulaciones para encontrar los parámetros del protocolo dinámico.}{
+\pgfplotstabletypeset[
+  columns/A/.style={column name=Configuración, string type},
+  columns/B/.style={column name=PDM, string type},
+  columns/C/.style={column name=VMM, string type},
+  columns/D/.style={column name=WDMM, string type},
+  every even row/.style={
+  before row={\rowcolor[gray]{0.9}}},
+  every head row/.style={ before row=\toprule,after row=\midrule},
+  every last row/.style={ after row=\bottomrule},
+  row sep=\\,
+  col sep=&
+]{
+A & B & C & D\\
+Tiempo a simular & 80000s & 80000s & 80000s \\
+Nodos totales                         & 330   & 270                   & 160                   \\
+Nodos personas                        & 200   & 200                   & 150                   \\
+Cambio de protocolo                   & 5000s & 5000s                 & 200s                  \\
+Tamaño ventana contextos              & 5000s & 5000s                 & 200s                  \\
+Tamaño ventana métricas               & 5000s & 5000s                 & 15000s                \\
+Intervalo de generación de mensajes   & 120s  & 120s                  & 120s                   \\
+}
+}{tbl:parametros-normalizar}
+{Elaboración propia, (2017)}
+
+
+La cantidad de nodos totales y de personas estan basadas en las configuraciones
+propuestas en cada una de las publicaciones que definen los respectivos modelos
+de movilidad. El tiempo de cambio de protocolo, el tamaño de la ventana de
+contextos y el tamaño de la ventana de métricas están basados en simulaciones
+realizadas cuando se estaba implementado el protocolo en el simulador,
+encontrando que son valores que en un principio entregan un buen
+\textit{trade-off} para PDM y VMM. En el caso de WDMM, los valores de $200s$ del
+cambio de protocolo y de la ventana de contextos es debido a que se observaron
+algunos movimientos en el simulador encontrando que estos ocurrían en pequeños
+intervalos de tiempo de $200s$ o menos dentro de las oficinas. El tamaño de la
+ventana de métricas para WDMM está basado en las latencias encontradas en la red
+debido a que el protocolo debe guardar la información que recibe hasta que
+obtenga una nueva desde otro punto de la red. Finalmente, los intervalos de
+generación de mensajes se basan en los propuestos por PDM para su escenario de
+movilidad.
+
+
+
+Además se utilizan las siguientes \textit{seeds} para inicializar los
+generadores de números aleatorios: 6339674 como \textit{seed} del modelo de
+movilidad, 6477208 como \textit{seed} de la red y 1864168 como \textit{seed} del
+generador de mensajes. Por si solos estos números no tienen ningún significado
+especial dado que solamente se utilizan como \textit{seed} la generación de
+números aleatorios.
+
+
+Inicialmente a los nodos se les asigna un protocolo de manera
+\textit{round-robin} de los 5 del estado del arte mencionados anteriormente:
+\maxprop, \syw, \syf, \prophet{} y \epidemic.
+
+
+El generador de mensajes utilizados en las simulaciones es de todos entre todos,
+es decir, cualquier nodo puede generar un mensaje con destino cualquier nodo de
+la red. Se utiliza esta forma de generar los mensajes debido a que en una
+situación de desastre las personas afectadas necesitan comunicarse con
+familiares o autoridades y autoridades con personas.
+
+
+En cuanto a las pruebas de escalabilidad, se utilizan los siguientes parámetros
+luego de realizar los experimentos de la \ref{sec:evaluacion}:
+
+
+
+\tabla{Configuración de las simulaciones para pruebas de escalabilidad.}{
+\pgfplotstabletypeset[
+  columns/A/.style={column name=Configuración, string type},
+  columns/B/.style={column name=PDM, string type},
+  columns/C/.style={column name=VMM, string type},
+  columns/D/.style={column name=WDMM, string type},
+  every even row/.style={
+  before row={\rowcolor[gray]{0.9}}},
+  every head row/.style={ before row=\toprule,after row=\midrule},
+  every last row/.style={ after row=\bottomrule},
+  row sep=\\,
+  col sep=&
+]{
+A & B & C & D\\
+Tiempo a simular & 80000s & 80000s & 80000s \\
+Nodos totales                         & 330   & 270                   & 160                   \\
+Nodos personas                        & 200   & 200                   & 150                   \\
+Cambio de protocolo                   & 7000s & 5000s                 & 5000s                  \\
+Tamaño ventana contextos              & 5000s & 10000s                & 1500s                  \\
+Tamaño ventana métricas               & 5000s & 25000s                & 5000s                \\
+Intervalo de generación de mensajes   & 120s  & 120s                  & 120s                   \\
+Valor de normalización del \overhead  & 400   & 400                   & 400                   \\
+}
+}{tbl:parametros-escalabilidad}
+{Elaboración propia, (2017)}
+
+
+Adicionalmente se utiliza un $\alpha = 0.2$ en PDM, $\alpha = 0.2$ en VMM, y
+$\alpha = 0.8$ en WDMM.
+
+
+
+Todos los nodos de la red utilizan una interfaz \textit{Bluetooth} 4.0 con un
+rango de comunicación de 100 metros y una velocidad de comunicación de 1 Mbps
+por segundo. Se utiliza \textit{Bluetooth} en vez de \textit{WiFi} debido a que
+está enfocado a comunicar dispositivos móviles con un bajo consumo de energía.
+
+
+\subseccion{Entorno de ejecución}
+
+
+Las simulaciones se ejecutaron en un computador con 32 núcleos Xeon E5-2650
+corriendo a $2.6$ GHz en un sistema operativo \textit{GNU/Linux Ubuntu 14.04.5
+LTS} y \textit{kernel 3.13.0-100-generic} con un total de 125 GB de RAM. En el
+\ref{apendice:dinamico} se pueden ver las características del procesador con
+mayor detalle en la tabla \ref{tbl:cpuinfo}. 
+
+
+
+
+
+
+
+
+\seccion{Experimentos de ajuste de parámetros}
+\customlabel{sec:evaluacion}{Subcapítulo \arabic{chapter}.\arabic{section}}
+
+
+\subseccion{Máximos de tasa de entrega y copias de mensajes}
+
+
+A continuación se presentan los resultados de los experimentos ejecutados para
+obtener los valores máximos para normalizar tanto la tasa de entrega como el
+\overhead{} en dos escenarios de movilidad: \textit{Post-Disaster Mobility
+Model} (PDM), \textit{Working Day Mobility Model} (WDMM) y el modelo creado de
+Valparaíso (VMM). Estas simulaciones utilizan $\alpha = 0.5$ dado que es el
+punto medio entre la información utilizada para seleccionar el protocolo.
+
+
+
+\input{tikz/plots/maximos/macros.tex}
+
+
+
+\figura{Máximo de la tasa de entrega estimada en el protocolo dinámico en PDM.}
+{
+\graficoMaximos{Tasa de entrega}
+{data/maximos/delivery_PDM_1syw.txt}
+{data/maximos/delivery_PDM_1syf.txt}
+{data/maximos/delivery_PDM_1epidemic.txt}
+{data/maximos/delivery_PDM_1prophet.txt}
+{data/maximos/delivery_PDM_1maxprop.txt}
+}{fig:tasa-entrega-maximo-pdm}
+
+
+\figura{Máximo de la tasa de entrega estimada en el protocolo dinámico en WDMM.}
+{
+\graficoMaximos{Tasa de entrega}
+{data/maximos/delivery_wdmm_1syw.txt}
+{data/maximos/delivery_wdmm_1syf.txt}
+{data/maximos/delivery_wdmm_1epidemic.txt}
+{data/maximos/delivery_wdmm_1prophet.txt}
+{data/maximos/delivery_wdmm_1maxprop.txt}
+}{fig:tasa-entrega-maximo-wdmm}
+
+
+
+\figura{Máximo de la tasa de entrega estimada en el protocolo dinámico en VMM.}
+{
+\graficoMaximos{Tasa de entrega}
+{data/maximos/delivery_valpo_1syw.txt}
+{data/maximos/delivery_valpo_1syf.txt}
+{data/maximos/delivery_valpo_1epidemic.txt}
+{data/maximos/delivery_valpo_1prophet.txt}
+{data/maximos/delivery_valpo_1maxprop.txt}
+}{fig:tasa-entrega-maximo-vmm}
+
+Los gráficos de la \ref{fig:tasa-entrega-maximo-pdm},
+\ref{fig:tasa-entrega-maximo-wdmm}, \ref{fig:tasa-entrega-maximo-vmm} muestran
+el máximo de todas las tasas de entregas de todos los nodos de la red en un
+isntante de tiempo. Debido a la forma de calcular la tasa de entrega siempre va
+a tomar valores entre $0$ y $1$, lo que es confirmado por estos experimentos.
+
+
+\figura{Máximo de la cantidad de copias estimada en el protocolo dinámico en PDM.}
+{
+\graficoMaximos{Copias de mensajes por hora}
+{data/maximos/overhead_PDM_1syw.txt}
+{data/maximos/overhead_PDM_1syf.txt}
+{data/maximos/overhead_PDM_1epidemic.txt}
+{data/maximos/overhead_PDM_1prophet.txt}
+{data/maximos/overhead_PDM_1maxprop.txt}
+}{fig:copias-maximo-pdm}
+
+
+\figura{Máximo de la cantidad de copias estimada en el protocolo dinámico en WDMM.}
+{
+\graficoMaximos{Copias de mensajes por hora}
+{data/maximos/overhead_wdmm_1syw.txt}
+{data/maximos/overhead_wdmm_1syf.txt}
+{data/maximos/overhead_wdmm_1epidemic.txt}
+{data/maximos/overhead_wdmm_1prophet.txt}
+{data/maximos/overhead_wdmm_1maxprop.txt}
+}{fig:copias-maximo-wdmm}
+
+
+
+\figura{Máximo de la cantidad de copias estimada en el protocolo dinámico en VMM.}
+{
+\graficoMaximos{Copias de mensajes por hora}
+{data/maximos/overhead_valpo_2syw.txt}
+{data/maximos/overhead_valpo_1syf.txt}
+{data/maximos/overhead_valpo_1epidemic.txt}
+{data/maximos/overhead_valpo_1prophet.txt}
+{data/maximos/overhead_valpo_1maxprop.txt}
+}{fig:copias-maximo-vmm}
+
+La forma de calcular la cantidad de copias no entrega un valor acotado y como se
+puede varía en el tiempo y entre modelo de movilidad. En los modelos de
+movilidad PDM y WDMM, se obtiene una cantidad de copias por hora máxima similar
+de $350$ en el tiempo mientras que VMM llega hasta los $400$.  Se decide en base
+a estos resultados utilizar $400$ como valor máximo de la normalización para los
+tres modelos de movilidad. En caso que un protocolo supere en valor máximo de
+$400$, se va a considerar como un protocolo con un alto \overhead{} asignándole
+un valor de $0$.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subseccion{Valores de $\alpha$}
+
+A continuación se muestran los resultados obtenidos de las simulaciones para
+encontrar que valor de $\alpha$ es el que entrega el mejor desempeño.
+
+
+\input{tikz/plots/alpha/macros.tex}
+
+\figura{Tasa de entrega para distintos valores de $\alpha$ en PDM.}
+{
+\graficoAlphaDelivery{Tasa de entrega}
+{data/alpha/PDM_meta_delivery.txt}
+}{fig:tasa-entrega-alpha-pdm}
+
+\figura{\textit{Overhead} para distintos valores de $\alpha$ en PDM.}
+{
+\graficoAlpha{\# mensajes (\overhead)}
+{data/alpha/PDM_meta_overhead.txt}
+}{fig:overhead-alpha-pdm}
+
+
+\figura{Tasa de entrega para distintos valores de $\alpha$ en WDMM.}
+{
+\graficoAlphaDelivery{Tasa de entrega}
+{data/alpha/WDMM_meta_delivery.txt}
+}{fig:tasa-entrega-alpha-wdmm}
+
+\figura{\textit{Overhead} para distintos valores de $\alpha$ en WDMM.}
+{
+\graficoAlpha{\# mensajes (\overhead)}
+{data/alpha/WDMM_meta_overhead.txt}
+}{fig:overhead-alpha-wdmm}
+
+
+\figura{Tasa de entrega para distintos valores de $\alpha$ en VMM.}
+{
+\graficoAlphaDelivery{Tasa de entrega}
+{data/alpha/VALPO_meta_delivery.txt}
+}{fig:tasa-entrega-alpha-vmm}
+
+\figura{\textit{Overhead} para distintos valores de $\alpha$ en VMM.}
+{
+\graficoAlpha{\# mensajes (\overhead)}
+{data/alpha/VALPO_meta_overhead.txt}
+}{fig:overhead-alpha-vmm}
+
+
+La \ref{fig:tasa-entrega-alpha-pdm} y \ref{fig:overhead-alpha-pdm} muestran los
+resultados de las simulaciones para PDM. Se puede ver que a medida que aumenta
+el valor de $\alpha$, la tasa de entrega aumenta pero también el \overhead{},
+esto es debido a la relación que existe entre ambas métricas: para obtener una
+alta tasa de entrega es necesario realizar una mayor cantidad de copias de los
+mensajes para aumentar la probabilidad de encontrar a su destino. Para
+seleccionar que $\alpha$ es el valor adecuado, una inspección de los resultados
+de la tasa de entrega indica que entre $\alpha = 0$ y $\alpha =0.8$ esta se
+mantiene cerca de $0.6$ con un aumento en $\alpha = 0.2$. En cuanto al
+\overhead, este se dispara a partir de $\alpha = 0.6$ pero alcanza su menor
+valor en $0.2$. Utilizando como apoyo una función objetivo $f(T, C) = 0.5*T +
+0.5*(1 - C)$, donde se le da igual importancia a ambas métricas, se pueden unir
+las dos en un solo gráfico para facilitar su análisis. Esta función se grafica
+en la \ref{fig:nota-alpha-pdm} donde el valor máximo es aquel que maximiza la
+tasa de entrega y minimiza el \overhead{} en igual medida ($\alpha = 0.5$).
+Debido a estos resultados se decide utilizar un valor de $\alpha = 0.2$ para el
+resto de las simulaciones en el modelo de movilidad PDM.
+
+
+En WDMM en la \ref{fig:tasa-entrega-alpha-pdm} y \ref{fig:overhead-alpha-pdm}
+tiene una tasa de entrega constante, a pesar de las variaciones en \overhead.
+Una causa de estos resultados es la información que puede tener un nodo puede no
+ser suficiente debido al bajo \overhead{} obtenido lo que indica que existen
+pocos mensajes para transportar las métricas y contextos de la red. Utilizando
+la misma función que en PDM, se genera la \ref{fig:nota-alpha-wdmm} donde
+finalmente se decide utilizar un $\alpha = 0.8$ que maximiza la tasa de entrega
+pero minimiza el \overhead.
+
+
+Para VMM, existe un aumento de la tasa de entrega en $\alpha = 0.2$ y luego en
+$\alpha = 0.9$ y $\alpha = 1$. En los valores altos de $\alpha$ existe un
+aumento del \overhead, por lo que se decide utilizar $\alpha = 0.2$. Esto puede
+ser corroborado en la \ref{fig:nota-alpha-vmm} donde se grafica la función
+objetivo utilizada en el análisis de PDM.
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newpage
+\subseccion{Tamaño de la ventana de métricas}
+
+
+\input{tikz/plots/tamano_ventana/macros.tex}
+
+
+\figura{Tasa de entrega para distintos tamaños de ventanas de métricas en PDM.}
+{
+\graficoTamanoVentanaDelivery{Tasa de entrega}
+{data/ventana_historia/PDM_meta_delivery.txt}
+}{fig:tasa-entrega-ventana-metricas-pdm}
+
+
+\figura{\textit{Overhead} para distintos tamaños de ventanas de métricas en PDM.}
+{
+\graficoTamanoVentana{\# mensajes (\overhead)}
+{data/ventana_historia/PDM_meta_overhead.txt}
+}{fig:overhead-ventana-metricas-pdm}
+
+
+\figura{Tasa de entrega para distintos tamaños de ventanas de métricas en WDMM.}
+{
+\graficoTamanoVentanaDelivery{Tasa de entrega}
+{data/ventana_historia/WDMM_meta_delivery.txt}
+}{fig:tasa-entrega-ventana-metricas-wdmm}
+
+\figura{\textit{Overhead} para distintos tamaños de ventanas de métricas en WDMM.}
+{
+\graficoTamanoVentana{\# mensajes (\overhead)}
+{data/ventana_historia/WDMM_meta_overhead.txt}
+}{fig:overhead-ventana-metricas-wdmm}
+
+
+\figura{Tasa de entrega para distintos tamaños de ventanas de métricas en VMM.}
+{
+\graficoTamanoVentanaDelivery{Tasa de entrega}
+{data/ventana_historia/VALPO_meta_delivery.txt}
+}{fig:tasa-entrega-ventana-metricas-vmm}
+
+\figura{\textit{Overhead} para distintos tamaños de ventanas de métricas en VMM.}
+{
+\graficoTamanoVentana{\# mensajes (\overhead)}
+{data/ventana_historia/VALPO_meta_overhead.txt}
+}{fig:overhead-ventana-metricas-vmm}
+
+
+El tamaño de la ventana de las métricas define que tan antiguo es el historial
+que un nodo puede mantener, por lo tanto una gran ventana implica que se tiene
+mayor información para tomar decisiones, pero al costo de que esta información
+esté desactualizada o un mayor tiempo de ejecución debido a que se deben revisar
+más entradas en el protocolo. Además, mientras más información se incluye dentro
+del cálculo de los contextos, mayor ruido existe debido a que hay información
+pasada que afecta el cálculo del contexto actual.
+
+
+En el caso de PDM, \ref{fig:tasa-entrega-ventana-metricas-pdm} y
+\ref{fig:overhead-ventana-metricas-pdm}, se logra la máxima tasa de entrega
+cuando no se tiene ninguna información pero al costo de un alto \overhead. Esto
+está relacionado dado que mientras más copias de mensajes hay en la red, mayor
+probabilidad de encontrar el destino. Si no se tiene ninguna información del
+desempeño de la red entonces no es posible seleccionar ningún protocolo aparte
+del que le fue asignado en un principio. A partir de los $10000$ segundos de
+ventana, la tasa de entrega se mantiene constante, al igual que el \overhead, lo
+que implica que mayor información no va a ayudar a mejorar el desempeño del
+protocolo, al menos en este modelo de movilidad. Es por esta razón que para PDM
+se selecciona un tamaño de ventana de $5000$ segundos para las siguientes
+simulaciones.
+
+
+Los resultados de WDMM se encuentran en la
+\ref{fig:tasa-entrega-ventana-metricas-wdmm} y en la
+\ref{fig:overhead-ventana-metricas-wdmm}. En el caso de la tasa de entrega, los
+resultados son constantes menos para un valor de $0$ segundos de tamaño de la
+ventana de métricas. El gráfico del \overhead{} se corresponde con el de la tasa
+de entrega debido a que mayor cantidad de copias ayuda a tener una mayor tasa de
+entrega. En el caso de este modelo de movilidad, se utiliza una ventana de
+$5000$ segundos debido al bajo \overhead{} obtenido en ese punto.
+
+
+
+Para el modelo de movilidad de VMM, existe un comportamiento similar a los
+casos anteriores con la diferencia que se puede ver una mejora en la tasa de
+entrega a partir de los $25000$ segundos comparado con los tamaños anteriores,
+incluso con un \overhead{} relativamente bajo si se compara con los obtenidos en
+los tiempos anteriores. Para ayudar al análisis, se pueden ver la
+\ref{fig:nota-ventana-metricas-wdmm} donde se unen ambas métricas asignándole un
+valor. Se puede ver que el \textit{trade-off} para un $alpha = 0.5$ más alto se
+encuentra en $250000$, por lo tanto este es el valor seleccionado para las
+próximas simulaciones.
+
+
+Para PDM y WDMM, se pueden ver el valor de la función objetivo
+\ref{fig:nota-ventana-metricas-pdm} y en la \ref{fig:nota-ventana-metricas-wdmm}
+que corroboran el tamaño de ventana seleccionado.
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newpage
+\subseccion{Tamaño de la ventana de contextos}
+
+
+\input{tikz/plots/ventana_contextos/macros.tex}
+
+
+\figura{Tasa de entrega para distintos tamaños de ventanas de contextos en PDM.}
+{
+\graficoVentanaContextoDelivery{Tasa de entrega}
+{data/ventana_contextos/PDM_meta_delivery.txt}
+}{fig:tasa-entrega-ventana-contexto-pdm}
+
+
+\figura{\textit{Overhead} para distintos tamaños de ventanas de contextos en PDM.}
+{
+\graficoVentanaContexto{\# mensajes (\overhead)}
+{data/ventana_contextos/PDM_meta_overhead.txt}
+}{fig:overhead-ventana-contexto-pdm}
+
+
+\figura{Tasa de entrega para distintos tamaños de ventanas de contextos en WDMM.}
+{
+\graficoVentanaContextoDelivery{Tasa de entrega}
+{data/ventana_contextos/WDMM_meta_delivery.txt}
+}{fig:tasa-entrega-ventana-contextos-wdmm}
+
+\figura{\textit{Overhead} para distintos tamaños de ventanas de contextos en WDMM.}
+{
+\graficoVentanaContexto{\# mensajes (\overhead)}
+{data/ventana_contextos/WDMM_meta_overhead.txt}
+}{fig:overhead-ventana-contextos-wdmm}
+
+
+\figura{Tasa de entrega para distintos tamaños de ventanas de contextos en VMM.}
+{
+\graficoVentanaContextoDelivery{Tasa de entrega}
+{data/ventana_contextos/VALPO_meta_delivery.txt}
+}{fig:tasa-entrega-ventana-contextos-vmm}
+
+\figura{\textit{Overhead} para distintos tamaños de ventanas de contextos en VMM.}
+{
+\graficoVentanaContexto{\# mensajes (\overhead)}
+{data/ventana_contextos/VALPO_meta_overhead.txt}
+}{fig:overhead-ventana-contextos-vmm}
+
+
+
+
+El tamaño de la ventana de contextos limita la cantidad de información que se
+utiliza para calcular los contextos de los nodos. Por ejemplo, cuando un nodo
+quiere saber su densidad de nodos, utiliza los encuentros pasados para realizar
+el cálculo, por lo tanto utilizar un tamaño pequeño permite tener contextos
+actualizados con los últimos cambios de movimientos.
+
+
+Para PDM, la \ref{fig:tasa-entrega-ventana-contexto-pdm} y la
+\ref{fig:overhead-ventana-contexto-pdm} muestran los resultados de tasa de
+entrega y \overhead{} para varios tamaños de ventanas de contextos. En este
+caso, un valor alto de los contextos evita que el protocolo se pueda adaptar a
+cambios rápidos de movimiento, por eso la bajada de la tasa de entrega aún
+cuando el \overhead{} se mantiene constante. Debido al \overhead{} menor en
+$5000$ segundos y a la alta tasa de entrega en ese punto, se escoge un tamaño de
+ventana de contextos de $5000$ segundos.
+
+
+Para el modelo de movilidad WDMM, los resultados son menos concluyentes. La tasa
+de entrega es constante para todos los tamaños de ventanas de contextos mientras
+que el \overhead{} también podría considerarse constante. Esto quiere decir que
+no es tan relevante este parámetro para este modelo de movilidad. Para ayudar a
+seleccionar un valor, se utilizaron los valores de la función objetivo de la 
+\ref{fig:nota-ventana-contextos-wdmm} siendo $15000$ una nota ligeramente más
+grande que el resto.
+
+
+En VMM la \ref{fig:tasa-entrega-ventana-contextos-vmm} y la
+\ref{fig:overhead-ventana-contextos-vmm} se puede ver que la tasa de entrega y
+el \overhead{} varían respecto al tamaño de la ventana de contextos, siendo
+$10000$ segundos el tamaño que maximiza la tasa de entrega minimizando el
+\overhead. Esto se puede ver también en la \ref{fig:nota-ventana-contextos-pdm}
+donde se grafican los valores de la función objetivo obtenidos por el protocolo. 
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subseccion{Tiempo de cambio de protocolo}
+
+El tiempo de cambio de protocolo indica por al menos cuanto tiempo un nodo
+debe quedarse con su selección de protocolo para evitar problemas de
+fluctuaciones. 
+
+Por ejemplo, un nodo podría seleccionar en un tiempo $T$ el protocolo $P_1$,
+luego en $T + x$ un protocolo $P_2$ y posteriormente en $T + 2x$ nuevamente
+$P_1$, donde $x$ es el tiempo de cambio de protocolo. En caso que este valor sea
+muy pequeño, entonces se reduce la oportunidad para que el protocolo $P_2$ pueda
+mejorar el desempeño de la red. Además, con un tiempo de cambio de protocolo
+pequeño se favorece el uso de óptimos locales debido a que un cambio de
+protocolo estaría dado por información particular que haya llegado al nodo en un
+espacio de tiempo corto en vez de esperar a tener mayor cantidad de información
+de otros sectores de la red.
+
+Una consecuencia de este valor que no tiene relevancia para una posible
+implementación del protocolo es el tiempo de ejecución del simulador. Un valor
+bajo de tiempo de cambio de protocolo implica mayor cambio y copia de estado de
+un protocolo a otro lo que puede provocar diferencias de hasta $17$ horas como
+en el caso de VMM. Estos tiempos de ejecución se pueden ver en la
+\ref{tbl:tiempos-cambio-pdm}, en la \ref{tbl:tiempos-cambio-wdmm} y en la
+\ref{tbl:tiempos-cambio-vmm} para los tres modelos de movilidad.
+
+
+En este caso, en vez de escoger el valor del tiempo de cambio de protocolo que
+minimice el \overhead{} y maximice la tasa de entrega en igual medida
+($0.5*entrega + 0.5*overhead$), se van a escoger valores que tengan mayor
+\overhead{} y mayor tasa de entrega de manera que el protocolo sea más
+competitivo al ser comparado con protocolos del estado del arte. Otra
+motivación para escoger valores que no necesariamente minimizan el \overhead{} de
+mensajes es la reducción del tiempo de simulación.
+
+A continuación, se presentan los resultados experimentales obtenidos por varios
+valores del tiempo de cambio de protocolo para PDM, WDMM y VMM, respecto a tasa
+de entrega y \overhead{} de mensajes. En el caso de PDM y VMM se simuló hasta un
+tiempo de cambio de protocolo de $12000$ segundos debido a que presentan una
+mayor variabilidad en sus resultados por lo que un mayor rango de la variable
+puede entregar mayor información, caso contrario al de WDMM.
+
+
+\input{tikz/plots/tiempo_cambio_router/macros.tex}
+
+
+
+\figura{Tasa de entrega para distintos tiempos de cambio de protocolo en PDM.}
+{
+\graficoTiempoCambioDeliverySmooth{Tasa de entrega}
+{data/tiempo_cambio_router/PDM_meta_delivery.txt}
+{data/tiempo_cambio_router/datos_delivery_smooth_pdm.txt}
+}{fig:tasa-entrega-tiempo-cambio-pdm}
+
+
+\figura{\textit{Overhead} para distintos tiempos de cambio de protocolo en PDM.}
+{
+\graficoTiempoCambioSmooth{\# mensajes (\overhead)}
+{data/tiempo_cambio_router/PDM_meta_overhead.txt}
+{data/tiempo_cambio_router/datos_overhead_smooth_pdm.txt}
+}{fig:overhead-tiempo-cambio-pdm}
+
+En PDM, la \ref{fig:tasa-entrega-tiempo-cambio-pdm} y la
+\ref{fig:overhead-tiempo-cambio-pdm} muestran los resultados de tasa de entrega
+y \overhead{} de mensajes. A diferencia de los parámetros anteriores, el tiempo
+de cambio de protocolo afecta en gran medida estas métricas: la tasa de entrega
+se mueve de $0.56$ hasta un máximo de $0.71$, mientras que el \overhead{} se
+mueve de $154$ a $315$ copias de mensajes.
+
+De acuerdo a los valores de la función objetivo en la
+\ref{fig:nota-tiempo-cambio-pdm}, se debería escoger un tiempo de cambio de
+protocolo de $5000$ dado que es el que minimiza el \overhead{} y maximiza la
+tasa de entrega, pero para seleccionar un valor que tenga una tasa de entrega
+más alta se puede hacer una analogía con el costo beneficio de una inversión,
+donde el beneficio es la tasa de entrega y el costo es el \overhead{} o lo que
+se paga para obtener una cierta tasa de entrega.
+
+A la tasa de entrega y \overhead{} se le aplica una función de interpolación y
+suavizado implementada en R llamada \textit{smooth.spline} que ayuda a
+visualizar la pendiente o razón con la cual crecen estas métricas. En la
+\ref{tbl:costo-beneficio-pdm} se muestra la tasa de entrega y \overhead{} de la
+función \textit{smooth.spline}.  Esta tabla ayuda a ver en que porcentaje se
+está dispuesto gastar más \overhead{} para obener un correspondiente aumento de
+beneficio de tasa de entrega, usando como costo inicial \overhead{} más bajo.
+Por ejemplo, con un aumento de \overhead{} de $5.6\%$, se logra un aumento de
+la tasa de entrega de $1.5\%$. En base a esta tabla se utiliza un costo de
+$61.57\%$  debido a que con ese aumento se puede lograr hasta un $17\%$ mejor
+tasa de entrega. A partir de $61\%$, el costo de \overhead{} se dispara
+existiendo una diferencia de $100$ mensajes con un $72\%$ de aumento respecto al
+\overhead{} inicial. Finalmente, se utiliza un tiempo de cambio de protocolo de
+$7000$ segundos.
+
+\tabla{Tabla de beneficio/costo del tiempo de cambio de protocolo en PDM.}{
+\begin{center}
+\pgfplotstabletypeset[
+  columns/A/.style={column name=Tasa de entrega (Beneficio)},
+  columns/B/.style={column name=\textit{Overhead} (Costo)},
+  columns/C/.style={column name=\% $\Delta$ Tasa de entrega},
+  columns/D/.style={column name=\% $\Delta$ \textit{Overhead}},
+  every even row/.style={
+  before row={\rowcolor[gray]{0.9}}},
+  every head row/.style={ before row=\toprule,after row=\midrule},
+  every last row/.style={ after row=\bottomrule},
+  row sep=\\,
+  col sep=&
+]{
+A & B & C & D\\
+0.538720 & 147.981908 & 0.000000 & 0.000000 \\
+0.547052 & 156.266192 & 1.546721 & 5.598173 \\
+0.563718 & 172.835001 & 4.640421 & 16.794683 \\
+0.580389 & 189.403647 & 7.734818 & 27.991083 \\
+0.597063 & 205.969975 & 10.830033 & 39.185916 \\
+0.613741 & 222.531929 & 13.925926 & 50.377794 \\
+0.630421 & 239.088027 & 17.022158 & 61.565714 \\
+0.647103 & 255.635979 & 20.118725 & 72.748130 \\
+0.663787 & 272.174685 & 23.215763 & 83.924298 \\
+0.680474 & 288.703317 & 26.313234 & 95.093657 \\
+0.697160 & 305.222328 & 29.410614 & 106.256516 \\
+0.713844 & 321.734858 & 32.507604 & 117.414995 \\
+0.730527 & 338.244454 & 35.604299 & 128.571491 \\
+}
+\end{center}
+}{tbl:costo-beneficio-pdm}
+{Elaboración propia, (2017)}
+
+
+
+
+
+
+\figura{Tasa de entrega para distintos tiempos de cambio de protocolo en WDMM.}
+{
+\graficoTiempoCambioDelivery{Tasa de entrega}
+{data/tiempo_cambio_router/WDMM_meta_delivery.txt}
+}{fig:tasa-entrega-tiempo-cambio-wdmm}
+
+\figura{\textit{Overhead} para distintos tiempos de cambio de protocolo en WDMM.}
+{
+\graficoTiempoCambio{\# mensajes (\overhead)}
+{data/tiempo_cambio_router/WDMM_meta_overhead.txt}
+}{fig:overhead-tiempo-cambio-wdmm}
+
+
+Los resultados de la \ref{fig:tasa-entrega-tiempo-cambio-wdmm} y 
+\ref{fig:overhead-tiempo-cambio-wdmm} son menos concluyentes para WDMM. No se
+aprecia una variación de la tasa de entrega ni del \overhead{} de mensajes, por
+lo tanto se utiliza un tiempo de cambio de protocolo de $5000$ segundos para
+mantener a las simulaciones por debajo de una hora de ejecución, como se puede
+ver en la \ref{tbl:tiempos-cambio-wdmm}.
+
+
+
+
+\figura{Tasa de entrega para distintos tiempos de cambio de protocolo en VMM.}
+{
+\graficoTiempoCambioDeliverySmooth{Tasa de entrega}
+{data/tiempo_cambio_router/VALPO_meta_delivery.txt}
+{data/tiempo_cambio_router/datos_delivery_smooth_vmm.txt}
+}{fig:tasa-entrega-tiempo-cambio-vmm}
+
+\figura{\textit{Overhead} para distintos tiempos de cambio de protocolo en VMM.}
+{
+\graficoTiempoCambioSmooth{\# mensajes (\overhead)}
+{data/tiempo_cambio_router/VALPO_meta_overhead.txt}
+{data/tiempo_cambio_router/datos_overhead_smooth_vmm.txt}
+}{fig:overhead-tiempo-cambio-vmm}
+
+La \ref{fig:tasa-entrega-tiempo-cambio-vmm} y
+\ref{fig:overhead-tiempo-cambio-vmm} muestran los resultados de varios valores
+de tiempos de cambio de protocolo en el escenario de movilidad VMM. Se puede ver
+que existe un alto costo de \overhead{} a medida que aumenta la tasa de entrega
+cuando se utiliza un tiempo de cambio de protocolo alto. En este caso la tasa de
+entrega toma valores desde los $0.53$ hasta los $0.75$ mientras que el
+\overhead{} va desde $93.49$ hasta $605.78$.
+
+
+El mismo análisis de PDM se realiza con VMM en la \ref{tbl:costo-beneficio-vmm},
+donde la diferencia con PDM es que es más costoso en términos de
+\overhead{} aumentar la tasa de entrega. Por ejemplo, para lograr un aumento de
+$34\%$ en la tasa de entrega hay que utilizar $452\%$ más \overhead{} en VMM,
+mientras que en PDM un aumento de $128\%$ basta para lograr una mejora similar.
+
+Utilizando un \overhead{} $294$, es decir, un aumento de $214\%$, se puede
+obtener una tasa de entrega de $0.62$. Si bien, este aumento de \overhead{} es
+significativamente más alto, en las siguientes simulaciones de comparación con
+los protocolos del estado del arte se puede ver que sigue siendo menor respecto
+a ellos. Finalmente, se escoge un tiempo de cambio de protocolo de $5000$, que
+de acuerdo a la \ref{tbl:tiempos-cambio-vmm}, tiene un tiempo de ejecución de
+las simulaciones de $13$ horas contra las $24$ de escoger un tiempo de cambio de
+protocolo de $500$ segundos.
+
+
+
+
+\tabla{Tabla de beneficio/costo del tiempo de cambio de protocolo en VMM.}{
+\begin{center}
+\pgfplotstabletypeset[
+  columns/A/.style={column name=Tasa de entrega (Beneficio)},
+  columns/B/.style={column name=\textit{Overhead} (Costo)},
+  columns/C/.style={column name=\% $\Delta$ Tasa de entrega},
+  columns/D/.style={column name=\% $\Delta$ \textit{Overhead}},
+  every even row/.style={
+  before row={\rowcolor[gray]{0.9}}},
+  every head row/.style={ before row=\toprule,after row=\midrule},
+  every last row/.style={ after row=\bottomrule},
+  row sep=\\,
+  col sep=&
+]{
+A & B & C & D\\
+0.530055 & 93.498792 & 0.000000 & 0.000000 \\
+0.539657 & 115.837321 & 1.811528 & 23.891783 \\
+0.558863 & 160.512988 & 5.434847 & 71.673862 \\
+0.578071 & 205.182109 & 9.058701 & 119.448940 \\
+0.597281 & 249.835526 & 12.682692 & 167.207222 \\
+0.616488 & 294.462381 & 16.306314 & 214.937095 \\
+0.635690 & 339.053051 & 19.929068 & 262.628267 \\
+0.654887 & 383.599276 & 23.550695 & 310.271905 \\
+0.674077 & 428.098710 & 27.171027 & 357.865496 \\
+0.693257 & 472.556392 & 30.789599 & 405.414433 \\
+0.712428 & 516.982971 & 34.406418 & 452.930105 \\
+0.731592 & 561.390484 & 38.021905 & 500.425384 \\
+0.750753 & 605.789500 & 41.636765 & 547.911577 \\
+}
+\end{center}
+}{tbl:costo-beneficio-vmm}
+{Elaboración propia, (2017)}
+
+
+
+
+La mayor tasa de entrega y \overhead{} cuando se tiene un alto tiempo de cambio
+de protocolo se puede explicar debido a que no se le permite al protocolo
+dinámico minimizar el \overhead{} de manera agresiva, lo que eleva sus niveles
+respecto a tiempos de cambio de protocolo menores. Con un alto \overhead{}
+existen más copias de mensajes en la red lo que aumentan la probabilidad de que
+un mensaje sea entregado, es decir, aumenta la tasa de entrega.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+\seccion{Experimentos para comparar con protocolos del estado del arte}
+
+A continuación se presentan los resultados de los experimentos para comparar la
+escalabilidad del protocolo dinámico con los protocolos del estado del arte.
+
+\input{tikz/plots/macros.tex}
+\subseccion{Tamaños de mensajes}
+
+
+Se realizaron experimentos para analizar como el nuevo protocolo dinámico escala
+respecto  protocolos del estado del arte con distintos tamaños de mensajes
+desde 1 kilobyte, suficiente para enviar mensajes de texto, hasta 4 megabytes,
+tamaño de una imagen pequeña.
+
+\newcommand{\mensajes}{distintos tamaños de mensajes}
+
+\figura{Tasa de entrega para \mensajes{} en PDM.}
+{
+\graficoDeliveryProtocolosTamano
+{Tamaño de mensaje (kilobytes)}
+{data/tamano_mensaje/PDM_syw_delivery.txt}
+{data/tamano_mensaje/PDM_syf_delivery.txt}
+{data/tamano_mensaje/PDM_epidemic_delivery.txt}
+{data/tamano_mensaje/PDM_prophet_delivery.txt}
+{data/tamano_mensaje/PDM_maxprop_delivery.txt}
+{data/tamano_mensaje/PDM_meta_delivery.txt}
+}{fig:tasa-entrega-tamano-mensajes-pdm}
+
+
+\figura{\textit{Overhead} de mensajes para \mensajes{} en PDM.}
+{
+\graficoProtocolosTamano
+{\# mensajes (\overhead)}
+{Tamaño de mensaje (kilobytes)}
+{data/tamano_mensaje/PDM_syw_overhead.txt}
+{data/tamano_mensaje/PDM_syf_overhead.txt}
+{data/tamano_mensaje/PDM_epidemic_overhead.txt}
+{data/tamano_mensaje/PDM_prophet_overhead.txt}
+{data/tamano_mensaje/PDM_maxprop_overhead.txt}
+{data/tamano_mensaje/PDM_meta_overhead.txt}
+}{fig:overhead-tamano-mensaje-pdm}
+
+
+
+\figura{Tasa de entrega para \mensajes{} en WDMM.}
+{
+\graficoDeliveryProtocolosTamano
+{Tamaño de mensaje (kilobytes)}
+{data/tamano_mensaje/WDMM_syw_delivery.txt}
+{data/tamano_mensaje/WDMM_syf_delivery.txt}
+{data/tamano_mensaje/WDMM_epidemic_delivery.txt}
+{data/tamano_mensaje/WDMM_prophet_delivery.txt}
+{data/tamano_mensaje/WDMM_maxprop_delivery.txt}
+{data/tamano_mensaje/WDMM_meta_delivery.txt}
+}{fig:tasa-entrega-tamano-mensajes-wdmm}
+
+
+\figura{\textit{Overhead} de mensajes para \mensajes{} en WDMM.}
+{
+\graficoProtocolosTamano
+{\# mensajes (\overhead)}
+{Tamaño de mensaje (kilobytes)}
+{data/tamano_mensaje/WDMM_syw_overhead.txt}
+{data/tamano_mensaje/WDMM_syf_overhead.txt}
+{data/tamano_mensaje/WDMM_epidemic_overhead.txt}
+{data/tamano_mensaje/WDMM_prophet_overhead.txt}
+{data/tamano_mensaje/WDMM_maxprop_overhead.txt}
+{data/tamano_mensaje/WDMM_meta_overhead.txt}
+}{fig:overhead-tamano-mensaje-wdmm}
+
+
+\figura{Tasa de entrega para \mensajes{}  en VMM.}
+{
+\graficoDeliveryProtocolosTamano
+{Tamaño de mensaje (kilobytes)}
+{data/tamano_mensaje/VALPO_syw_delivery.txt}
+{data/tamano_mensaje/VALPO_syf_delivery.txt}
+{data/tamano_mensaje/VALPO_epidemic_delivery.txt}
+{data/tamano_mensaje/VALPO_prophet_delivery.txt}
+{data/tamano_mensaje/VALPO_maxprop_delivery.txt}
+{data/tamano_mensaje/VALPO_meta_delivery.txt}
+}{fig:tasa-entrega-tamano-mensajes-vmm}
+
+
+\figura{\textit{Overhead} de mensajes para \mensajes{} en VMM.}
+{
+\graficoProtocolosTamano
+{\# mensajes (\overhead)}
+{Tamaño de mensaje (kilobytes)}
+{data/tamano_mensaje/VALPO_syw_overhead.txt}
+{data/tamano_mensaje/VALPO_syf_overhead.txt}
+{data/tamano_mensaje/VALPO_epidemic_overhead.txt}
+{data/tamano_mensaje/VALPO_prophet_overhead.txt}
+{data/tamano_mensaje/VALPO_maxprop_overhead.txt}
+{data/tamano_mensaje/VALPO_meta_overhead.txt}
+}{fig:overhead-tamano-mensaje-vmm}
+
+
+La \ref{fig:tasa-entrega-tamano-mensajes-pdm},
+\ref{fig:tasa-entrega-tamano-mensajes-wdmm} y 
+\ref{fig:tasa-entrega-tamano-mensajes-vmm} muestran las tasas de entrega de los
+protocolos del estado del arte junto con el protocolo dinámico en los modelos de
+movilidad PDM, WDMM y VMM. En la \ref{fig:overhead-tamano-mensaje-pdm},
+\ref{fig:overhead-tamano-mensaje-wdmm} y \ref{fig:overhead-tamano-mensaje-vmm}
+se muestran los resultados del \overhead{} promedio generado por cada uno de los
+protocolos para varios tamaños de mensajes. 
+
+Se puede ver que el que tiene el mejor desempeño de todos los protocolos es
+\maxprop, protocolo que además no sufre ningún cambio frente a los cambios de
+tamaños de mensajes en los modelos de movilidad PDM y VMM. Junto con \syf,
+\epidemic{} y \prophet{}, superan en cuanto a tasa de entrega al protocolo
+híbrido dinámico debido a que su función es maximizar la tasa de entrega sin
+tomar en cuenta el \overhead{} generado, incluso, debido a la relación que
+existe entre el \overhead{} y la tasa de entrega, a mayor \overhead{}, mejor
+tasa de entrega. En los gráficos de \overhead{} se puede ver que los protocolos
+que tienen buena tasa de entrega en PDM y VMM además son los que más generan
+copias de mensajes en la red. El protocolo híbrido dinámico, con mensajes de
+$1000$ kilobytes o menos, tiene un \overhead{} mayor que \epidemic{} y
+\prophet{} en el caso de PDM sin presentar una mejor tasa de entrega que estos
+protocolos para estos tamaños de mensajes indicando que el protocolo dinámico,
+para PDM, es mejor utilizarlo cuando los mensajes de la red sean de un tamaño
+superior a $1000$ kilobytes. Mismo análisis puede ser realizado para el caso de
+VMM donde \epidemic{} y \prophet{} para mensajes con un tamaño menor a $1000$
+kilobytes tienen mejor desempeño que para el protocolo dinámico.
+
+En el modelo de movilidad WDMM, la \ref{fig:tasa-entrega-tamano-mensajes-wdmm}
+y la \ref{fig:overhead-tamano-mensaje-wdmm} muestran que el protocolo híbrido
+dinámico es menos competitivo en este escenario de movilidad que en los otros
+dos modelos de moviliad. En general, \prophet{} y \syf{} son mejores opciones de
+protocolos para este escenario dado que obtienen mejor tasa de entrega con un
+menor \overhead. A pesar de esto, \syf{} es el protocolo más lento del modelo de
+movilidad como se puede ver en la \ref{fig:latencia-tamano-wdmm}.
+
+Para tamaños de mensajes superiores a $1000$ kilobytes, el protocolo dinámico
+continua teniendo una tasa de entrega inferior a \epidemic, \prophet, \syf{} y
+\maxprop, pero al mismo tiempo tiene un menor \overhead. Este es el
+\textit{trade-off} que se busca con el protocolo híbrido dinámico, reducir el
+\overhead{} que está directamente relacionado con el consumo de energía.
+
+Respecto al efecto que tiene el tamaño de mensaje en los protocolos, un tamaño
+de mensaje menor permite que un nodo pueda transportar una mayor cantidad de
+mensajes y transmitirlos de un nodo a otro más rapidamente que mensajes de
+mayor tamaño, razón por la cual existe un aumento de la tasa para mensajes
+pequeños.
+
+En la figura \ref{fig:energia-tamano-pdm}, \ref{fig:energia-tamano-WDMM} y
+\ref{fig:energia-tamano-vmm} se muestran los resultados del consumo de energía
+de los protocolos que está directamente relacionado con el \overhead{} de
+mensajes.
+
+
+
+
+
+
+
+
+
+
+
+\subseccion{Densidad de personas}
+
+
+Para analizar como afecta la densidad de personas, se realizaron experimentos
+con $25\%$, $50\%$, $75\%$ y $100\%$ de las personas participantes en la red
+original.
+
+
+
+
+
+\figura{Tasa de entrega para distintas densidades de nodos en PDM.}
+{
+\graficoDeliveryProtocolos
+{Densidad de personas (\%)}
+{data/personas/PDM_syw_delivery.txt}
+{data/personas/PDM_syf_delivery.txt}
+{data/personas/PDM_epidemic_delivery.txt}
+{data/personas/PDM_prophet_delivery.txt}
+{data/personas/PDM_maxprop_delivery.txt}
+{data/personas/PDM_meta_delivery.txt}
+}{fig:tasa-entrega-densidad-pdm}
+
+
+\figura{\textit{Overhead} de mensajes para distintas densidades de personas en PDM.}
+{
+\graficoProtocolos
+{\# mensajes (\overhead)}
+{Densidad de personas (\%)}
+{data/personas/PDM_syw_overhead.txt}
+{data/personas/PDM_syf_overhead.txt}
+{data/personas/PDM_epidemic_overhead.txt}
+{data/personas/PDM_prophet_overhead.txt}
+{data/personas/PDM_maxprop_overhead.txt}
+{data/personas/PDM_meta_overhead.txt}
+}{fig:overhead-densidad-pdm}
+
+
+\figura{Tasa de entrega para distintas densidades de personas en WDMM.}
+{
+\graficoDeliveryProtocolos
+{Densidad de personas (\%)}
+{data/personas/WDMM_syw_delivery.txt}
+{data/personas/WDMM_syf_delivery.txt}
+{data/personas/WDMM_epidemic_delivery.txt}
+{data/personas/WDMM_prophet_delivery.txt}
+{data/personas/WDMM_maxprop_delivery.txt}
+{data/personas/WDMM_meta_delivery.txt}
+}{fig:tasa-entrega-densidad-wdmm}
+
+
+\figura{\textit{Overhead} de mensajes para distintas densidades de personas en WDMM.}
+{
+\graficoProtocolos
+{\# mensajes (\overhead)}
+{Densidad de personas (\%)}
+{data/personas/WDMM_syw_overhead.txt}
+{data/personas/WDMM_syf_overhead.txt}
+{data/personas/WDMM_epidemic_overhead.txt}
+{data/personas/WDMM_prophet_overhead.txt}
+{data/personas/WDMM_maxprop_overhead.txt}
+{data/personas/WDMM_meta_overhead.txt}
+}{fig:overhead-densidad-wdmm}
+
+
+\figura{Tasa de entrega para distintas densidades de personas en VMM.}
+{
+\graficoDeliveryProtocolos
+{Densidad de personas (\%)}
+{data/personas/VALPO_syw_delivery.txt}
+{data/personas/VALPO_syf_delivery.txt}
+{data/personas/VALPO_epidemic_delivery.txt}
+{data/personas/VALPO_prophet_delivery.txt}
+{data/personas/VALPO_maxprop_delivery.txt}
+{data/personas/VALPO_meta_delivery.txt}
+}{fig:tasa-entrega-densidad-vmm}
+
+
+\figura{\textit{Overhead} de mensajes para distintas densidades de personas en VMM.}
+{
+\graficoProtocolos
+{\# mensajes (\overhead)}
+{Densidad de personas (\%)}
+{data/personas/VALPO_syw_overhead.txt}
+{data/personas/VALPO_syf_overhead.txt}
+{data/personas/VALPO_epidemic_overhead.txt}
+{data/personas/VALPO_prophet_overhead.txt}
+{data/personas/VALPO_maxprop_overhead.txt}
+{data/personas/VALPO_meta_overhead.txt}
+}{fig:overhead-densidad-vmm}
+
+
+Para PDM, la \ref{fig:tasa-entrega-densidad-pdm} y
+\ref{fig:overhead-densidad-pdm} muestran los resultados de las simulaciones para
+distintos porcentajes de densidades de personas. Se puede ver que el protocolo
+híbrido dinámico obtiene una buena tasa de entrega, y bajo \overhead{} para
+todas las densidades obteniendo un buen \textit{trade-off} respecto a los
+protocolos del estado del arte exceptuando el caso de \syf{} donde con un  20\%
+de personas se obtiene mejor tasa de entrega con un mismo \overhead, lo que
+quiere decir que la reducción de consumo de energía que realiza el protocolo
+híbrido dinámico perjudica en mayor medida a la tasa de entrega que la realizada
+por \syf. En el resto de las densidades la mejora de \overhead{} si es
+significativa respecto al resto de los protocolos.  Estos resultados indican que
+para PDM el protocolo quiere más de 50 (25\%) de personas en la simulación o 5
+personas por vecindario para funcionar de manera correcta.
+
+Para el caso de WDMM, la \ref{fig:tasa-entrega-densidad-wdmm} y la
+\ref{fig:overhead-densidad-wdmm} muestran los resultados de tasa de entrega y
+\overhead, pero nuevamente el protocolo dinámico es menos competitivo en WDMM
+con una tasa de entrega menor que \maxprop{} y \syf{}. Esto se puede explicar
+debido a la falta de información que tiene el protocolo para tomar la decisión
+de que protocolo seleccionar y al estrecho margén de mejora: en PDM y VMM,
+existen diferencias entre las tasas de entrega de los protocolos, mientras que
+en WDMM no hay mucha distancia en el desempeño de tasa de entrega. Para bajas
+densidades de personas se logra superar al resto de los protocolos y equiparar
+el \overhead{} de \prophet{}, pero sin lograr mejorar la tasa de entrega lo que
+indica que el protocolo dinámico funciona en pequeñas redes. En este escenario
+de movilidad nuevamente \syf{} es el protocolo más lento de acuerdo a la
+\ref{fig:latencia-densidad-vmm} lo que dependiendo de la aplicación que se le
+quiera dar a la red puede hacer de este protocolo no adecuado si es que se
+necesitan bajas latencias.
+
+
+El modelo de movilidad VMM, al ser una variación de PDM, se obtienen resultados
+parecidos en la \ref{fig:tasa-entrega-densidad-vmm} y la
+\ref{fig:overhead-densidad-vmm}. El protocolo dinámico un dempeño menor en cuato
+a tasa de entrega pero con un \overhead{} menor, logrando un buen
+\textit{trade-off} entre consumo de energía y tasa de entrega.
+
+
+La \ref{fig:energia-personas-pdm}, \ref{fig:energia-personas-WDMM} y
+\ref{fig:energia-personas-vmm} muestran los resultados de consumo de energía
+que se relacionan con los gráficos de \overhead.
+
+
+
+
+\subseccion{Generación de mensajes}
+
+Para medir como reaccionan los protocolos frente a redes con un alto flujo de
+mensajes, se varía la cantidad de tiempo que pasa entre mensaje generado. Por
+ejemplo, un tiempo de generación de mensajes de 30 quiere decir que cada 30
+segundos se genera un mensaje.
+
+
+
+\figura{Tasa de entrega para distintos tiempos de generación de mensajes en PDM.}
+{
+\graficoDeliveryProtocolos
+{Segundos por mensaje generado}
+{data/generacion_mensajes/PDM_syw_delivery.txt}
+{data/generacion_mensajes/PDM_syf_delivery.txt}
+{data/generacion_mensajes/PDM_epidemic_delivery.txt}
+{data/generacion_mensajes/PDM_prophet_delivery.txt}
+{data/generacion_mensajes/PDM_maxprop_delivery.txt}
+{data/generacion_mensajes/PDM_meta_delivery.txt}
+}{fig:tasa-entrega-generacion-pdm}
+
+\figura{\textit{Overhead} de mensajes para distintos tiempos de generación de
+mensajes en PDM.}
+{
+\graficoProtocolos
+{\# mensajes (\overhead)}
+{Segundos por mensaje generado}
+{data/generacion_mensajes/PDM_syw_overhead.txt}
+{data/generacion_mensajes/PDM_syf_overhead.txt}
+{data/generacion_mensajes/PDM_epidemic_overhead.txt}
+{data/generacion_mensajes/PDM_prophet_overhead.txt}
+{data/generacion_mensajes/PDM_maxprop_overhead.txt}
+{data/generacion_mensajes/PDM_meta_overhead.txt}
+}{fig:overhead-generacion-pdm}
+
+
+\figura{Tasa de entrega para distintos tiempos de generación de mensajes en WDMM.}
+{
+\graficoDeliveryProtocolos
+{Segundos por mensaje generado}
+{data/generacion_mensajes/WDMM_syw_delivery.txt}
+{data/generacion_mensajes/WDMM_syf_delivery.txt}
+{data/generacion_mensajes/WDMM_epidemic_delivery.txt}
+{data/generacion_mensajes/WDMM_prophet_delivery.txt}
+{data/generacion_mensajes/WDMM_maxprop_delivery.txt}
+{data/generacion_mensajes/WDMM_meta_delivery.txt}
+}{fig:tasa-entrega-generacion-wdmm}
+
+\figura{\textit{Overhead} de mensajes para distintos tiempos de generación de
+mensajes en WDMM.}
+{
+\graficoProtocolos
+{\# mensajes (\overhead)}
+{Segundos por mensaje generado}
+{data/generacion_mensajes/WDMM_syw_overhead.txt}
+{data/generacion_mensajes/WDMM_syf_overhead.txt}
+{data/generacion_mensajes/WDMM_epidemic_overhead.txt}
+{data/generacion_mensajes/WDMM_prophet_overhead.txt}
+{data/generacion_mensajes/WDMM_maxprop_overhead.txt}
+{data/generacion_mensajes/WDMM_meta_overhead.txt}
+}{fig:overhead-generacion-wdmm}
+
+\figura{Tasa de entrega para distintos tiempos de generación de mensajes en VMM.}
+{
+\graficoDeliveryProtocolos
+{Segundos por mensaje generado}
+{data/generacion_mensajes/VALPO_syw_delivery.txt}
+{data/generacion_mensajes/VALPO_syf_delivery.txt}
+{data/generacion_mensajes/VALPO_epidemic_delivery.txt}
+{data/generacion_mensajes/VALPO_prophet_delivery.txt}
+{data/generacion_mensajes/VALPO_maxprop_delivery.txt}
+{data/generacion_mensajes/VALPO_meta_delivery.txt}
+}{fig:tasa-entrega-generacion-vmm}
+
+\figura{\textit{Overhead} de mensajes para distintos tiempos de generación de
+mensajes en VMM.}
+{
+\graficoProtocolos
+{\# mensajes (\overhead)}
+{Segundos por mensaje generado}
+{data/generacion_mensajes/VALPO_syw_overhead.txt}
+{data/generacion_mensajes/VALPO_syf_overhead.txt}
+{data/generacion_mensajes/VALPO_epidemic_overhead.txt}
+{data/generacion_mensajes/VALPO_prophet_overhead.txt}
+{data/generacion_mensajes/VALPO_maxprop_overhead.txt}
+{data/generacion_mensajes/VALPO_meta_overhead.txt}
+}{fig:overhead-generacion-vmm}
+
+
+En general los tres modelos de movilidad presentan las mismas curvas en los
+gráficos. Esto es debido a que al existir una mayor cantidad de mensajes, existe
+una mayor competencia por los recursos de la red, tanto de ancho de banda de
+comunicación como espacio dentro de los \textit{buffers}.
+
+
+En PDM, \ref{fig:tasa-entrega-generacion-pdm} y
+\ref{fig:overhead-generacion-pdm}, se puede ver como a medida que más mensajes
+existen en la red, menor es la tasa de entrega causando que el \overhead{}
+también baje debido a que su valor es calculado respecto a los mensajes
+entregados a los destinos. A pesar que el \overhead{} disminuye, existe un
+aumento del consumo de energía debido a que aumenta la cantidad de mensajes que
+son transmitidos entre nodos como se puede ver en la
+\ref{fig:energia-generacion-pdm}, mostrando que a pesar de la relación que
+existe entre \overhead{} y consumo de energía, la dependencia del \overhead{} de
+la tasa de entrega, como se muestra en la ecuación (\ref{eq:overhead}), puede
+llevar a conclusiones equivocadas y es necesario presentar ambos gráficos
+juntos, especialmente cuando la curva del \overhead{} y de la energía tienen
+forma diferente.
+
+En términos de consumo de energía y tasa de entrega, se logra un
+\textit{trade-off} significativo entre $30$ segundos por mensaje y $120$
+segundos por mensaje logrando tener un consumo menor que los protocolos del
+estado del arte en ese rango. En el caso de $1$ segundos por mensaje, todos los
+nodos tienen una baja tasa de entrega debido a la saturación de los
+\textit{buffers} causando que muchos mensajes sean descartados para hacer
+espacio a mensajes nuevos, como se puede ver en la
+\ref{fig:descartados-generacion-pdm}.
+
+En el caso de WDMM, la \ref{fig:tasa-entrega-generacion-wdmm} y la
+\ref{fig:overhead-generacion-wdmm} muestran que nuevamente el protocolo híbrido
+dinámico tiene un peor resultado que \syf{} en tasa de entrega y en \overhead,
+pero tiene una alta lantencia de acuerdo a la
+\ref{fig:latencia-generacion-wdmm}.  Si se mira el gráfico del consumo de
+energía en la \ref{fig:energia-generacion-WDMM} se puede ver que el consumo de
+energía se dispara cuando hay muchos mensajes en la red, ocurriendo el mismo
+fenómeno que en PDM donde los mensajes son descartados por la saturación de los
+\textit{buffers} de los protocolos, como se puede ver en la
+\ref{fig:descartados-generacion-WDMM}.
+
+
+
+En VMM los resultados son similares a los de PDM. La
+\ref{fig:tasa-entrega-generacion-vmm} y \ref{fig:overhead-generacion-vmm}
+muestra que el protocolo dinámico presenta una ventaja en cuanto al consumo de
+energía y se obtienen tasas de entrega cercanas a las de los protocolos del
+estado del arte. Nuevamente, la razón de la baja tasa de entrega cuando se
+genera un mensaje por segundo es debido a la alta cantidad de mensajes que son
+descartados en los \textit{buffers} para hacer espacio a nuevos mensajes
+\ref{fig:descartados-generacion-vmm}. En la \ref{fig:energia-generacion-vmm} se
+pueden ver los resultados de la energía donde se muestra el aumento de cuando
+una alta cantidad de mensajes circulan en la red, causado por la necesidad de
+retransmitir mensajes descartados.
+
+
+
+\subseccion{Tamaños de los \textit{buffers}}
+
+Para analizar que tan bien administra un protocolo el \textit{buffer} de los
+dispositivos sobre los cual se está ejecutando, es que se realizan pruebas con
+distintos tamaños de \textit{buffer}.
+
+
+\newcommand{\buffers}{distintos tamaños de \textit{buffer}}
+
+\figura{Tasa de entrega para \buffers{} en PDM.}
+{
+\graficoDeliveryProtocolos
+{Tamaño del \textit{buffer} (megabytes)}
+{data/buffer/PDM_syw_delivery.txt}
+{data/buffer/PDM_syf_delivery.txt}
+{data/buffer/PDM_epidemic_delivery.txt}
+{data/buffer/PDM_prophet_delivery.txt}
+{data/buffer/PDM_maxprop_delivery.txt}
+{data/buffer/PDM_meta_delivery.txt}
+}{fig:tasa-entrega-buffer-pdm}
+
+\figura{\textit{Overhead} de mensajes para \buffers{} en PDM.}
+{
+\graficoProtocolos
+{\# mensajes (\overhead)}
+{Tamaño del \textit{buffer} (megabytes)}
+{data/buffer/PDM_syw_overhead.txt}
+{data/buffer/PDM_syf_overhead.txt}
+{data/buffer/PDM_epidemic_overhead.txt}
+{data/buffer/PDM_prophet_overhead.txt}
+{data/buffer/PDM_maxprop_overhead.txt}
+{data/buffer/PDM_meta_overhead.txt}
+}{fig:overhead-buffer-pdm}
+
+
+\figura{Tasa de entrega para \buffers{} en WDMM.}
+{
+\graficoDeliveryProtocolos
+{Tamaño del \textit{buffer} (megabytes)}
+{data/buffer/WDMM_syw_delivery.txt}
+{data/buffer/WDMM_syf_delivery.txt}
+{data/buffer/WDMM_epidemic_delivery.txt}
+{data/buffer/WDMM_prophet_delivery.txt}
+{data/buffer/WDMM_maxprop_delivery.txt}
+{data/buffer/WDMM_meta_delivery.txt}
+}{fig:tasa-entrega-buffer-wdmm}
+
+\figura{\textit{Overhead} de mensajes para \buffers{} en WDMM.}
+{
+\graficoProtocolos
+{\# mensajes (\overhead)}
+{Tamaño del \textit{buffer} (megabytes)}
+{data/buffer/WDMM_syw_overhead.txt}
+{data/buffer/WDMM_syf_overhead.txt}
+{data/buffer/WDMM_epidemic_overhead.txt}
+{data/buffer/WDMM_prophet_overhead.txt}
+{data/buffer/WDMM_maxprop_overhead.txt}
+{data/buffer/WDMM_meta_overhead.txt}
+}{fig:overhead-buffer-wdmm}
+
+\figura{Tasa de entrega para \buffers{} en VMM.}
+{
+\graficoDeliveryProtocolos
+{Tamaño del \textit{buffer} (megabytes)}
+{data/buffer/VALPO_syw_delivery.txt}
+{data/buffer/VALPO_syf_delivery.txt}
+{data/buffer/VALPO_epidemic_delivery.txt}
+{data/buffer/VALPO_prophet_delivery.txt}
+{data/buffer/VALPO_maxprop_delivery.txt}
+{data/buffer/VALPO_meta_delivery.txt}
+}{fig:tasa-entrega-buffer-vmm}
+
+\figura{\textit{Overhead} de mensajes para \buffers{} en VMM.}
+{
+\graficoProtocolos
+{\# mensajes (\overhead)}
+{Tamaño del \textit{buffer} (megabytes)}
+{data/buffer/VALPO_syw_overhead.txt}
+{data/buffer/VALPO_syf_overhead.txt}
+{data/buffer/VALPO_epidemic_overhead.txt}
+{data/buffer/VALPO_prophet_overhead.txt}
+{data/buffer/VALPO_maxprop_overhead.txt}
+{data/buffer/VALPO_meta_overhead.txt}
+}{fig:overhead-buffer-vmm}
+
+
+La \ref{fig:tasa-entrega-buffer-pdm} y 
+\ref{fig:overhead-buffer-pdm} muestran los resultados de los protocolos en el
+modelo de movilidad PDM. Se puede ver que \maxprop{} mantiene una tasa de
+entrega constante al igual que \syw, mientras los otros protocolos, incluyendo
+el híbrido dinámico, sufren una caída de su tasa de entrega. En cuando al
+protocolo híbrido dinámico, su comportamiento es similar al de los demás
+protocolos del estado del arte mostrando una caída de la tasa de entrega para
+\textit{buffers} menores a $128$ megabytes. A pesar de esto, la cantidad de
+copias de mensajes y el consumo de energía, como se puede ver en la
+\ref{fig:energia-buffer-pdm}, es superior para todos los protocolos menos para
+\syw, el protocolo que menos cantidad de copias genera. La baja tasa de entrega
+en los protocolos se debe a que con un \textit{buffer} pequeño es necesario
+descartar mensaje para hacer espacio a nuevo, causando que los mensajes se
+pierdan. Esta es la misma razón por la cual hay un mayor consumo de energía con
+un \textit{buffer} pequeño, dado que se necesita volver a retransmitir aquellos
+mensajes que fueron descartados. En la \ref{fig:energia-buffer-pdm} se puede ver
+el consumo de energía los nodos donde se ve el efecto que tiene la retransmisión
+de mensajes en esta métrica.
+
+
+En el caso de WDMM, en la \ref{fig:tasa-entrega-buffer-wdmm} y
+\ref{fig:overhead-buffer-wdmm} se puede ver que todos los protocolos son
+afectados por el uso de un \textit{buffer} más pequeño. En el caso de \syf, este
+protocolo obtiene un mejor \textit{trade-off} respecto al costo de obtener una
+buena tasa de entrega al utilizar más copias de mensajes. A pesar de esto,
+\syf{} es el protocolo con mayor latencia de acuerdo a la
+\ref{fig:latencia-buffer-pdm}.
+
+Para VMM, la \ref{fig:tasa-entrega-buffer-vmm} y la
+\ref{fig:overhead-buffer-vmm} muestran que para un \textit{buffer} de 64
+megabytes, el protocolo híbrido dinámico tiene mejor tasa de entrega y mejor
+\overhead{} que \prophet{} y \epidemic. Respecto a \maxprop{} y \syf, ambos
+protocolos tienen un \overhead{} a pesar de tener una alta tasa de entrega. En
+la \ref{fig:energia-buffer-vmm} se puede ver que el protocolo híbrido dinámico
+logra reducir significativamente el consumo de energía en la red, cambiando
+\overhead{} por tasa de entrega.
+
+
+En el caso de \syw, en todas las simulaciones de tamaños de \textit{buffer}
+mantiene un desempeño constante. Esto se explica por la poca cantidad de copias
+de mensajes que genera debido a su limitación de la inundación de la red.
+
+
+
+\subseccion{Análisis de los resultados de WDMM}
+
+En WDMM, el protocolo dinámico obtiene un desempeño menor que en PDM y VMM,
+donde algunos protocolos del estado del arte tienen mejor tasa de entrega y un
+\overhead{} de mensajes más bajo que el protocolo dinámico. Analizando la
+\ref{fig:overhead-generacion-wdmm} se puede ver que el protocolo híbrido
+dinámico obtiene un \overhead{} o inferior que los protocolos del estado del
+arte, exceptuando \syw, lo que quiere decir que en ese punto el protocolo
+funciona correctamente logrando seleccionar un protocolo del estado del arte
+para reducir la cantidad de copias de mensajes.
+
+Para poder encontrar la razón de los resultados, hay que comparar las
+diferencias entre el protocolo que se selecciona cuando cada 1 segundo se genera
+un mensaje, cuando cada 30 segundos se genera un mensaje y cuando cada 120
+segundos se genera un mensaje.
+
+
+\figura{Protocolo del estado del arte seleccionados por el protocolo híbrido
+dinámico en el tiempo de simulación en WDMM para 1 segundo por mensaje generado.}
+{
+\graficoProtocolosTiempo
+{\% de nodos que han seleccionado el protocolo}
+{Tiempo de simulación (segundos)}
+{data/protocolos/PERSONA_syw_routers_true_nodos_wdmm1.txt}
+{data/protocolos/PERSONA_syf_routers_true_nodos_wdmm1.txt}
+{data/protocolos/PERSONA_epidemic_routers_true_nodos_wdmm1.txt}
+{data/protocolos/PERSONA_prophet_routers_true_nodos_wdmm1.txt}
+{data/protocolos/PERSONA_maxprop_routers_true_nodos_wdmm1.txt}
+}{fig:seleccion-generacion-wdmm-1}
+
+
+\figura{Protocolo del estado del arte seleccionados por el protocolo híbrido
+dinámico en el tiempo de simulación en WDMM para 30 segundos por mensaje generado.}
+{
+\graficoProtocolosTiempo
+{\% de nodos que han seleccionado el protocolo}
+{Tiempo de simulación (segundos)}
+{data/protocolos/PERSONA_syw_routers_true_nodos_wdmm30.txt}
+{data/protocolos/PERSONA_syf_routers_true_nodos_wdmm30.txt}
+{data/protocolos/PERSONA_epidemic_routers_true_nodos_wdmm30.txt}
+{data/protocolos/PERSONA_prophet_routers_true_nodos_wdmm30.txt}
+{data/protocolos/PERSONA_maxprop_routers_true_nodos_wdmm30.txt}
+}{fig:seleccion-generacion-wdmm-30}
+
+
+\figura{Protocolo del estado del arte seleccionados por el protocolo híbrido
+dinámico en el tiempo de simulación en WDMM para 120 segundos por mensaje generado.}
+{
+\graficoProtocolosTiempo
+{\% de nodos que han seleccionado el protocolo}
+{Tiempo de simulación (segundos)}
+{data/protocolos/PERSONA_syw_routers_true_nodos_wdmm120.txt}
+{data/protocolos/PERSONA_syf_routers_true_nodos_wdmm120.txt}
+{data/protocolos/PERSONA_epidemic_routers_true_nodos_wdmm120.txt}
+{data/protocolos/PERSONA_prophet_routers_true_nodos_wdmm120.txt}
+{data/protocolos/PERSONA_maxprop_routers_true_nodos_wdmm120.txt}
+}{fig:seleccion-generacion-wdmm-120}
+
+
+
+La \ref{fig:seleccion-generacion-wdmm-1}, la
+\ref{fig:seleccion-generacion-wdmm-30} y la
+\ref{fig:seleccion-generacion-wdmm-120} muestran el porcentaje de nodos que han
+seleccionado un protocolo en particular del estado del arte durante la
+simulación.  Se puede ver que para un mensaje generado cada $1$ segundo
+(\ref{fig:seleccion-generacion-wdmm-1}) el protocolo es capaz de decidirse por
+un protocolo y seleccionarlo, incluso seleccionado más de uno: \syf{} y \syw. En
+el caso de mensajes generados cada $30$ segundos, la situación es completamente
+diferente, en la \ref{fig:seleccion-generacion-wdmm-30}, a lo largo de la
+simulación no hay ningún consenso por parte del protocolo híbrido dinámico para
+seleccionar cual podría ser un buen protocolo del estado del arte en esa
+situación. Lo mismo ocurre para la generación de un mensaje cada 120 segundos en
+la \ref{fig:seleccion-generacion-wdmm-120}. Entonces, el protocolo tiene un mal
+rendimiento debido a que no es capaz de utilizar la información que tiene para
+decidirse por un protocolo del estado del arte.
+
+
+
+La información utilizada dentro del protocolo híbrido dinámico se obtiene al
+seleccionar un nodo persona de la red para extraerle las métricas. La
+\ref{fig:delivery-generacion-wdmm-1}, \ref{fig:delivery-generacion-wdmm-30} y
+\ref{fig:delivery-generacion-wdmm-120} muestran como el protocolo dinámico
+estima la tasa de entrega en WDMM, mientras que en la
+\ref{fig:delivery-generacion-pdm-1}, la \ref{fig:delivery-generacion-pdm-30} y
+la \ref{fig:delivery-generacion-pdm-120} se muestran los valores estimados de la
+tasa de entrega en el escenario de movilidad PDM.
+
+
+
+\figura{Tasa de entrega estimada por el protocolo híbrido dinámico en el tiempo
+de simulación en WDMM para 1 segundo por mensaje generado.}
+{
+\graficoEstimacio
+{Tasa de entrega estimada}
+{Tiempo de simulación (segundos)}
+{data/protocolos/delivery_wdmm_1syw.txt}
+{data/protocolos/delivery_wdmm_1syf.txt}
+{data/protocolos/delivery_wdmm_1epidemic.txt}
+{data/protocolos/delivery_wdmm_1prophet.txt}
+{data/protocolos/delivery_wdmm_1maxprop.txt}
+}{fig:delivery-generacion-wdmm-1}
+
+
+\figura{Tasa de entrega estimada por el protocolo híbrido dinámico en el tiempo
+de simulación en PDM para 1 segundo por mensaje generado.}
+{
+\graficoEstimacio
+{Tasa de entrega estimada}
+{Tiempo de simulación (segundos)}
+{data/protocolos/delivery_pdm_1syw.txt}
+{data/protocolos/delivery_pdm_1syf.txt}
+{data/protocolos/delivery_pdm_1epidemic.txt}
+{data/protocolos/delivery_pdm_1prophet.txt}
+{data/protocolos/delivery_pdm_1maxprop.txt}
+}{fig:delivery-generacion-pdm-1}
+
+
+\figura{Tasa de entrega estimada por el protocolo híbrido dinámico en el tiempo
+de simulación en WDMM para 30 segundos por mensaje generado.}
+{
+\graficoEstimacio
+{Tasa de entrega estimada}
+{Tiempo de simulación (segundos)}
+{data/protocolos/delivery_wdmm_30syw.txt}
+{data/protocolos/delivery_wdmm_30syf.txt}
+{data/protocolos/delivery_wdmm_30epidemic.txt}
+{data/protocolos/delivery_wdmm_30prophet.txt}
+{data/protocolos/delivery_wdmm_30maxprop.txt}
+}{fig:delivery-generacion-wdmm-30}
+
+
+\figura{Tasa de entrega estimada por el protocolo híbrido dinámico en el tiempo
+de simulación en PDM para 30 segundos por mensaje generado.}
+{
+\graficoEstimacio
+{Tasa de entrega estimada}
+{Tiempo de simulación (segundos)}
+{data/protocolos/delivery_pdm_30syw.txt}
+{data/protocolos/delivery_pdm_30syf.txt}
+{data/protocolos/delivery_pdm_30epidemic.txt}
+{data/protocolos/delivery_pdm_30prophet.txt}
+{data/protocolos/delivery_pdm_30maxprop.txt}
+}{fig:delivery-generacion-pdm-30}
+
+
+\figura{Tasa de entrega estimada por el protocolo híbrido dinámico en el tiempo
+de simulación en WDMM para 120 segundos por mensaje generado.}
+{
+\graficoEstimacio
+{Tasa de entrega estimada}
+{Tiempo de simulación (segundos)}
+{data/protocolos/delivery_wdmm_120syw.txt}
+{data/protocolos/delivery_wdmm_120syf.txt}
+{data/protocolos/delivery_wdmm_120epidemic.txt}
+{data/protocolos/delivery_wdmm_120prophet.txt}
+{data/protocolos/delivery_wdmm_120maxprop.txt}
+}{fig:delivery-generacion-wdmm-120}
+
+\figura{Tasa de entrega estimada por el protocolo híbrido dinámico en el tiempo
+de simulación en PDM para 120 segundos por mensaje generado.}
+{
+\graficoEstimacio
+{Tasa de entrega estimada}
+{Tiempo de simulación (segundos)}
+{data/protocolos/delivery_pdm_120syw.txt}
+{data/protocolos/delivery_pdm_120syf.txt}
+{data/protocolos/delivery_pdm_120epidemic.txt}
+{data/protocolos/delivery_pdm_120prophet.txt}
+{data/protocolos/delivery_pdm_120maxprop.txt}
+}{fig:delivery-generacion-pdm-120}
+
+
+Si se comparan los gráficos entre ellos para un intervalo de generación de
+mensajes, se puede ver que en PDM es más sencillo identificar aquel protocolo
+que tiene una mayor tasa de entrega en el escenario, mientras que en las
+estimaciones de WDMM, no es tan claro cual es el protocolo del estado del arte
+que debería seleccionar el protocolo híbrido dinámico. Las malas estimaciones
+están relacionadas con la paradoja explicada en la \ref{sub:metricas}, donde se
+requiere de que existan mensajes para poder distribuir la información de 
+\textit{piggybacking} para estimar la tasa de entrega. La otra razón de que WDMM
+le afecta más una mala estimación de la tasa de entrega que a PDM o VMM es
+debido a que se utilizó un valor de $\alpha = 0.8$, lo que quiere decir que para
+la toma de decisiones es más importante la tasa de entrega que la cantidad de
+copias estimadas.
+
+Otro factor que hay que tomar en cuenta respecto a la tasa de entrega es el
+margen de mejora. Si se revisan los gráficos de resultados de la tasa de entrega
+de WDMM, se puede ver que no existen grandes diferencias como en PDM y WDMM
+entre los diferentes protocolos del estado del arte, limitando las opciones que
+tiene un protocolo híbrido dinámico para poder mejorar el desempeño de la red.
+
+Finalmente, la movilidad que existe en WDMM es diferente si se compara con PDM o
+VMM, como se puede ver en el \ref{sec:evaluacion-movilidad}. En estos dos
+últimos modelos de movilidad existe un solo gran cambio de movimiento que ocurre
+al momento de evacuar la ciudad, mientras que en WDMM los cambios son más
+sutiles, incluso al moverse desde los hogares al lugar de trabajo, donde se
+mueven solamente dentro de las oficinas.  
+
+Estos dos factores, la baja cantidad de mensajes que se encuentran en la
+simulación, ya sean creados o en forma de copias, y la diferencia entre los
+modelos de movilidad causa que existan problemas en la distribución de las
+métricas y contextos.
+
+A pesar de que el protocolo híbrido dinámico no sea capaz de seleccionar un
+protocolo adecuado en el escenario de movilidad WDMM, existe una ventaja
+respecto a \syf, protocolo que siempre logra tener mejor tasa de entrega y menor
+\overhead{} que el protocolo dinámico, y esta ventaja es la latencia de la red.
+La latencia de la red es mayor para la mayoría de las pruebas que se realizaron
+en WDMM llegando a ser el protocolo más lento para transmitir mensajes en ese
+escenario de movilidad.
+
+
+\subseccion{Latencia y escenarios de desastres}
+
+En el \ref{apendice:dinamico} se pueden ver los gráficos de la latencia de la
+red en cada uno de los experimentos anteriores. Si bien, es importante que el
+protocolo sea capaz de entregar los mensajes rápidamente, dependiendo del
+escenario otras métricas pueden ser más importantes. Para una autoridad es
+importante poder entregar mensajes de seguridad o información de manera rápida,
+lo que quiere decir que se debe priorizar la latencia y la tasa de entrega para
+maximizar la cantidad de usuarios que reciban los mensajes. Para poder soportar
+este caso de uso es, es necesaría una modificación al protocolo híbrido dinámico
+donde se consideren mensajes con prioridad y se aplique una nueva función
+objetivo para que el protocolo híbrido dinámico pueda maximizarla.
+
+
+Para los experimentos realizados en este trabajo, las fuentes y destinos de los
+mensajes podían ser cualquier nodo de la red sin ninguna prioridad que los
+hiciera especiales, razón por la cual todos son tratados de la misma forma por
+el protocolo híbrido dinámico y no se considera la latencia de la red. De
+cualquier forma, las latencias que se presentan en el \ref{apendice:dinamico} se
+encuentran dentro de un rango razonable debido a que corresponden a
+aproximadamente un $15$\% del tiempo total de simulación en el caso de los
+escenarios de desastres y en un $25$\% del tiempo total de simulación en WDMM.
+
+
+
+
+
+% La falta de información
+
+\seccion{Conclusiones del protocolo híbrido dinámico}
+
+El protocolo híbrido dinámico es una versión del protocolo híbrido estático que
+no asume cual es el mejor protocolo para una movilidad y para obtener una
+reducción en el consumo de energía. El protocolo híbrido dinámico para
+escenarios de desastres es capaz de lograr un \textit{trade-off} aceptable entre
+la tasa de entrega y el \overhead{} que permite la construcción de redes DTN más
+longevas, especialmente en escenarios de desastres.
+
+A pesar de que en el modelo de movilidad \textit{Working Day Mobility Model}
+los resultados no presentan una mejora respecto a otros protocolos del estado
+del arte, en \textit{Valparaíso Mobility Model} si hay una ventaja de utilizar
+el nuevo protocolo dinámico respecto a las soluciones anteriores, lo que
+demuestra que en el caso de un desastre natural en una ciudad chilena el nuevo
+protocolo puede reducir el consumo de energía.
+
+Una posible mejora en caso que los mensajes de la red utilicen prioridades,
+un protocolo híbrido dinámico podría tener más de una función objetivo, una por
+cada nivel de prioridad de manera tal de poder aplicar el protocolo más adecuado
+para el tipo de mensaje. Un mensaje prioritario podría tener una función objetivo
+que minimice la latencia sin preocuparse del \overhead{} generado.
+
+
+Además, el protocolo general del protocolo híbrido dinámico general entrega un
+\textit{framework} para que se implementen otros protocolos con otras funciones
+objetivos para tratar de maximizar o minimizar otras métricas de redes con
+propósitos diferentes a los de escenarios de desastres.
+

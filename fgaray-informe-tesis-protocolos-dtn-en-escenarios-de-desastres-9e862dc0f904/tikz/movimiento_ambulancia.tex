@@ -1,0 +1,31 @@
+\begin{tikzpicture}
+
+  \begin{scope}[
+     xshift=-7.5cm
+    ,yshift=-5cm
+    ,very thick
+    ,node distance=1.6cm
+    ,on grid
+    ,>=stealth'
+    ,block/.style={rectangle,draw,fill=cyan!20}
+    ,comp/.style={circle,draw,fill=orange!40}
+    ]
+
+
+  \node [comp] (hospital) [yshift=-3cm] { Hospital };
+
+  \node [block] (evento1) [yshift=-3cm, xshift=-5cm] { Evento aleatorio 1 }
+    edge [<-, bend right] node[below] {1}  (hospital)
+    edge [->, bend left] node[above] {2} (hospital)
+    ;
+
+
+  \node [block] (evento2) [yshift=-3cm, xshift=5cm] { Evento aleatorio 2 }
+    edge [<-, bend right] node[above] {3} (hospital)
+    edge [->, bend left] node[below] {4} (hospital)
+    ;
+
+
+  \end{scope}
+
+\end{tikzpicture}

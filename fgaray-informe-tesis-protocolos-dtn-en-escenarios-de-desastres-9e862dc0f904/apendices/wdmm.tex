@@ -1,0 +1,72 @@
+
+\newcommand{\graficoMovilidadWdmm}[2]{
+
+\pgfplotsset{cycle list/Dark2}
+\renewcommand{\colorscheme}{Dark2}
+
+\begin{tikzpicture}
+\begin{axis}[
+    ylabel={#1},
+    xlabel={Tiempo (segundos)},
+    ymin=0,
+    xmin=0,
+    legend style = {
+      legend pos = outer north east,
+    },
+    cycle list name=Dark2,
+    width=0.7\textwidth,
+    mark repeat={5}
+]
+
+%\legend{WDMM}
+
+\pgfplotstableread{#2}\wdmm;
+
+
+\addplot+ [
+  cycle list name=Dark2,
+  ] table []{\wdmm};
+
+ 
+\end{axis}
+\end{tikzpicture}
+}
+
+
+Debido a que el modelo de movilidad basado en Valparaíso se creó con el objetivo
+de evaluar el protocolo DTN dinámico, solo se realizaron experimentos de $80000$
+segundos para mostrar el comportamiento en el mismo rango de tiempo que los
+realizados en las pruebas del protocolo. Sin embargo, el modelo de movilidad
+Working Day Mobility Model (WDMM) tiene un comportamiento que no se logra
+visualizar en un tiempo tan corto. A continuación en la
+\ref{fig:coeficiente-wdmm}, la \ref{fig:densidad-wdmm}, la
+\ref{fig:densidad-maximo-wdmm} y la \ref{fig:varianza-wdmm},   se presentan
+resultados experimentales  del modelo de movilidad WDMM para $345600$ segudos o
+4 días para las métricas utilizadas en el \ref{chp:movilidad}.
+
+En general, se pueden ver como las distintas métricas de evaluación del modelo
+de movilidad varian a medida que avanza el día de $24$ horas ($86400$ segundos).
+
+
+\figuraApendice{Coeficiente de clustering en $4$ días en WDMM.}{
+\graficoMovilidadWdmm{Coeficiente de \textit{Clustering}}
+{data/movilidad/wdmm_full_clustering.txt}
+}{fig:coeficiente-wdmm}
+
+
+\figuraApendice{Densidad de nodos promedio en $4$ días en WDMM.}{
+\graficoMovilidadWdmm{Densidad de nodos (Promedio)}
+{data/movilidad/wdmm_full_densidad.txt}
+}{fig:densidad-wdmm}
+
+
+\figuraApendice{Densidad de nodos máxima en $4$ días en WDMM.}{
+\graficoMovilidadWdmm{Densidad de nodos (Máximo)}
+{data/movilidad/wdmm_full_densidad_maxima.txt}
+}{fig:densidad-maximo-wdmm}
+
+
+\figuraApendice{Varianza de la densidad de nodos en $4$ días en WDMM.}{
+\graficoMovilidadWdmm{Densidad de nodos (Varianza)}
+{data/movilidad/wdmm_full_varianza.txt}
+}{fig:varianza-wdmm}

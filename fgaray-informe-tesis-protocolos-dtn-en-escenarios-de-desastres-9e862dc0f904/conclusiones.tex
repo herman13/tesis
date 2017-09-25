@@ -1,0 +1,113 @@
+% Hablar que los protocolos seleccionados se pueden usar en otros contextos
+
+
+En este trabajo se propusieron dos protocolos híbridos para DTN en situaciones
+de desastres orientados a la reducción del consumo de energía, uno asignando de
+forma estática los protocolos a los nodos y otro que es capaz de seleccionar
+automáticamente el protocolo a ejecutar dependiendo del desempeño de la red.
+Además, se propuso un nuevo protocolo orientado a la seguridad en escenarios de
+desastres que permite el intercambio de métricas de la red con no repudio en
+escenarios de desastres.
+
+Para permitir la correcta evaluación del protocolo híbrido dinámico se propuso
+además una adaptación del modelo \textit{Post-Disaster Mobility Model} a la
+ciudad de Valparaíso utilizando información proporcionada por la Oficina
+Nacional de Emergencias sobre los movimientos que ocurren en un desastre natura
+en Chile.
+
+
+\seccion{Objetivos del trabajo}
+
+En cuanto a los objetivos específicos se puede decir que:
+
+\begin{enumerate}
+    \item \textbf{Elaborar un estado del arte sobre redes tolerantes a disrupciones,
+      modelos de movilidad y modelos de energía para dispositivos móviles}: Fue
+      cumplido en el \ref{chp:arte} donde se presentaron los últimos trabajos
+      relacionados con redes DTN.
+    \item \textbf{Adaptar el modelo de movilidad \textit{Post-Disaster Mobility
+    Model} (PDM) \cite{uddin_post-disaster_2009}  a Chile}: Fue cumplido en el
+    \ref{chp:movilidad} donde se presentaron los parámetros y movimientos que se
+    deberían realizar en PDM para asemejarse más a un escenario chileno.
+    \item \textbf{Diseñar un protocolo para redes tolerantes a
+      disrupciones que se adapte las decisiones de enrutamiento en base a la
+      movilidad de los dispositivos móviles participantes}: Fue cumplido en el
+      \ref{chp:pasado} donde se hizo una exploración de como un protocolo
+      híbrido podría mejorar el consumo de energía en un dispositivo móvil,
+      luego en el \ref{chp:dinamico} se presenta la forma en la que un protocolo
+      puede adaptarse y tomar la decisión de que protocolo utilizar en una red
+      y escenario. Finalmente, como el diseño de un protocolo de comunicación debe
+      abordar el problema de la seguridad, en el \ref{chp:seguridad} se presenta
+      un protocolo que permite el no repudio de las métricas de los protocolos y
+      mitigar ataques de denegación de servicio.
+    \item \textbf{Implementar el protocolo en el simulador de redes tolerantes a
+      disrupciones \textit{The One}}: Se cumplió en el \ref{chp:pasado},
+      \ref{chp:dinamico} y \ref{chp:seguridad}, donde cada uno de los protocolos
+      fue implementado en el simulador.
+    \item \textbf{Evaluar el rendimiento del protocolo híbrido respecto a los protocolos
+      del estado del arte en diferentes modelos de movilidad}: Fue cumplido en el
+      \ref{chp:pasado}, \ref{chp:dinamico} y \ref{chp:seguridad} en sus
+      respectivas secciones acompañando los resultados de análisis. Además, el
+      \ref{chp:movilidad} permite evaluar el desempeño del protocolo híbrido
+      dinámico en un escenario más parecido al chileno.
+\end{enumerate}
+
+
+El objetivo general "Crear un protocolo de redes tolerante a disrupciones  para
+dispositivos móviles en escenarios de desastre" se cumplió completamente con la
+creación del protocolo híbrido estático, el protocolo híbrido dinámico y el
+protocolo de seguridad, los tres para escenarios de desastres y diseñados para
+reducir el consumo de energía.
+
+
+\seccion{Problemas encontrados}
+
+El tamaño de las simulaciones que se querían realizar funcionan bien para
+ciertos protocolos DTN y modelos de movilidad menos exigentes los tiempos de
+simulación son manejables, de entre $1$ a $3$ horas para \textit{Working Day
+Mobility Model} \cite{ekman_working_2008}, pero cuando se quieren hacer
+simulaciones más complejas como con \textit{Post-Disaster Mobility Model}
+\cite{uddin_post-disaster_2009}, algunas simulaciones pueden llegar a tardar
+$24$ horas. Este excesivo tiempo de simulación hace difícil depurar los
+protocolos implementados y utilizar una metodología de desarrollo iterativa. Una
+solución a este problema habría sido el uso de \textit{Mocking} que permite
+imitar el comportamiento del simulador en una escala más pequeña para realizar
+mejores pruebas unitarias en un tiempo menor. A pesar de la posibilidad de crear
+clases \textit{Mock} para probar los protocolos, aún persiste el problema del
+tiempo total de las simulaciones que limitan la cantidad de experimentos que se
+puedan realizar, especialmente en cuanto al tamaño de la simulación y cantidad
+de participantes.
+
+
+
+Así mismo, se trató de utilizar simulaciones paralelas de granularidad fina para
+reducir los tiempos de simulación al paralelizar secciones del código que
+resultaban costosas de ejecutar. Luego de invertir un tiempo significativo en
+ese proyecto se llegó a la conclusión que la arquitectura del simulador requería
+de mayores modificaciones para permitir la paralelización y seguir manteniendo
+el determinismo de los resultados.
+
+
+
+\seccion{Trabajo futuro}
+
+
+Una mejora que podría ser aplicada al protocolo híbrido dinámico es agregar
+métricas y contextos adicionales dependiendo de la función objetivo que se
+quiera optimizar. Explorar métricas como la latencia para el caso de que los
+mensajes tengan prioridades o propósitos específicos como distribuir rápidamente
+los mensajes por la red desde autoridades hacia personas también es algo que
+debería probarse.
+
+
+El modelo de movilidad de Valparaíso (VMM) basado en \textit{Post-Disaster
+Mobility Model} no ha sido comparado con el movimiento real, solamente se ha
+utilizado información de documentos y fuentes oficiales de la Oficina Nacional
+de Emergencias, por lo que en el futuro se podrían recolectar trazas mediante el
+uso de dispositivos móviles cuando se hacen los simulacros de evacuación y poder
+mejorar el modelo de movilidad.
+
+El protocolo de seguridad, como fue presentado, es independiente de los
+protocolos híbridos por lo que sería interesante mezclar ambas soluciones en una
+sola implementación y realizar simulaciones para ver su comportamiento como
+conjunto.

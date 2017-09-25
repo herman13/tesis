@@ -1,0 +1,15 @@
+\begin{tikzpicture} 
+
+  \umlstateinitial[name=init, x=-11, y=0.25]{Inicial}
+  \umlbasicstate[name=mov, x=-6]{Movimiento Vecindario}
+  \umlbasicstate[name=evacuacion, x=2]{Evacuación}
+  \umlbasicstate[name=espera, x=2, y=-4]{Espera}
+  \umlbasicstate[name=retorno, x=-6, y=-4]{Retorno}
+
+  \umltrans[arg=Terremoto, pos=0.5]{init}{mov} 
+  \umltrans[arg=Alarma de evacuación, pos=0.5]{mov}{evacuacion} 
+  \umltrans[arg=Llegada a lugar seguro, pos=0.5]{evacuacion}{espera}
+  \umltrans[arg=Se levanta alarma, pos=0.5]{espera}{retorno}
+  \umltrans[arg=Llegada al vecindario, pos=0.5]{retorno}{mov}
+
+\end{tikzpicture}

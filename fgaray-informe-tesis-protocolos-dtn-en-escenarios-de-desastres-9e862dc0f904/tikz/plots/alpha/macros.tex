@@ -1,0 +1,71 @@
+\newcommand{\graficoAlphaDelivery}[2]{
+
+\pgfplotsset{cycle list/Dark2}
+\renewcommand{\colorscheme}{Dark2}
+
+\begin{tikzpicture}
+\begin{axis}[
+    ylabel={#1},
+    xlabel={$\alpha$},
+    ymin=0,
+    ymax=1,
+    xmin=0,
+    xmax=1,
+    grid=major,
+    legend style = {
+      legend pos = outer north east,
+    },
+    cycle list name=Dark2,
+    width=0.7\textwidth,
+    mark repeat={5}
+]
+
+
+\pgfplotstableread{#2}\data;
+
+
+\addplot+ [
+  very thick,
+  cycle list name=Dark2,
+  %mark=square*
+  ] table []{\data};
+
+\end{axis}
+\end{tikzpicture}
+}
+
+
+\newcommand{\graficoAlpha}[2]{
+
+\pgfplotsset{cycle list/Dark2}
+\renewcommand{\colorscheme}{Dark2}
+
+\begin{tikzpicture}
+\begin{axis}[
+    ylabel={#1},
+    xlabel={$\alpha$},
+    ymin=0,
+    xmin=0,
+    xmax=1,
+    grid=major,
+    legend style = {
+      legend pos = outer north east,
+    },
+    cycle list name=Dark2,
+    width=0.7\textwidth,
+    mark repeat={5}
+]
+
+
+\pgfplotstableread{#2}\data;
+
+
+\addplot+ [
+  very thick,
+  cycle list name=Dark2,
+  %mark=square*
+  ] table []{\data};
+
+\end{axis}
+\end{tikzpicture}
+}

@@ -1,0 +1,73 @@
+DTN:
+- Delay-Tolerant netorking: An approach to interplanetary Internet
+- A Delay-Tolerant network architecture for challenged internets
+- Are smartphones suited for DTN networking? 
+
+
+
+Protocolos:
+- Epidemic Routing for Partially-Connected Ad Hoc Networks
+- Spray and wait: an efficient routing scheme for intermittently connected mobile networks
+- Spray and Focus: Efficient Mobility-Assisted Routing for Heterogeneous and Correlated Mobility
+- Probabilistic routing in intermittently connected networks
+- MaxProp: Routing for Vehicle-Based Disruption-Tolerant Networks
+
+
+Modelo de movilidad:
+- A post-disaster mobility model for Delay Tolerant Networking
+- Modeling mobility in disaster area scenarios
+- Human mobility in MANET Disaster Area Simulation - A realistic apporach
+- Working Day Movement Model
+
+
+Protocolos en desastres
+- Robust reliability-aware Buffer Management for DTN Multicast in Disaster
+  Scenarios.
+- Message Relay Decision Algorithm to improve Message Delivery Ration in
+  DTN-based Wireless Disaster Information Systems
+- Receiver-Triggered Handshake Protocol for DTN in Disaster Area
+- Energy-Efficient fordwarding mechanism for wireless oportunistc netowkrs in
+  emergency scenarios.
+- DirMove: Direction of movement based routing in DTN architecture for
+  post-disaaster scenario.
+- A human mobility based knowledge sharing approach for post disaster need assessment using DTN
+- Best-effort delivery of emergency messages in post-disaster scenario with content-based filtering and Priority-enhanced PRoPHET over DTN
+- Exploring an energy efficient framerok supporting disaster management services
+  in post disaster relief operation
+
+
+Protocolos y redes híbridas
+- A hybrid MANET-DTN routing scheme for emergency response scenarios
+- Routing in hybrid Delay Tolerant Networks
+- A contex-aware method decoupled from protocol for adapting routing process in
+  DTN.
+- A Hybrid Type DTN Routing Method Using Delivery Predictability and Maximum Number of Replication
+
+
+
+
+Protocolos Context-aware
+- Context-aware oportunistic networking in multihop cellular networks.
+- Optimal energy-aware epidemic routing in DTN
+
+
+
+
+Energía
+Ver la mejora de TTR, ahi hay algunos trabajos que hablan del consumo de energía.
+- Modeling and improving the energy pergormance of GPS Receivers for mobile
+  Applications
+- Intercontact Routing for Energy Constrained Disaster Response Networks
+
+
+Simulaciones:
+- The One Simulator for DTN Protocolo Evaluation
+- Evaluating opportunistic networks in disasters scenarios
+- A Simulation System Based on ONE and SUMO Simulators: Performance Evaluation of First Contact, Prophet and Spray-and-Wait DTN Protocols
+
+
+Aplicaciones:
+- DTN MapEx: Disaster Area Mapping through Distributed Computing over a Delay Tolerant Network
+
+
+Buscar en el survey la tabla de comparación de protocolos.

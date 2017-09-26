@@ -1,0 +1,16 @@
+\begin{tikzpicture}
+  \begin{umlpackage}{Routing}
+
+    \umlclass[]{MetaRouter}{
+      clusterRouter : ActiveRouter \\
+      carrierRouter : ActiveRouter 
+    }{
+      isCarrier() : boolean
+    }
+
+    \umlclass[y=-3]{ActiveRouter}{}{}
+
+    \umlinherit[geometry=-|]{MetaRouter}{ActiveRouter}
+
+  \end{umlpackage}
+\end{tikzpicture}

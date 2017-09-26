@@ -1,0 +1,14 @@
+Para la evaluación del protocolo se utilizó el modelo de movilidad PDM
+\cite{uddin_post-disaster_2009} en la ciudad de Helsinki, pero para entregar
+resultados más cercanos a Chile se adaptó este modelo de movilidad a la ciudad
+de Valparaíso.
+
+El mapa de las calles fue obtenido con la ayuda de Open Street Maps
+\cite{open_street_map} donde es posible descargar un archivo $.osm$ con toda la
+información de las calles del área seleccionada en el mapa, en este caso,
+Valparaíso. Una vez obtenido el $.osm$, se puede transformar este archivo a un
+formato compatible con \textit{The ONE} llamado \textit{WTK} (\textit{Well-known
+text}) con la ayuda de \textit{osm2wtk} \cite{osm2wtk}, sin embargo, no fue
+posible utilizar el programa en su forma original debido al tamaño de la ciudad
+a convertir y a que el programa estaba pensado para pequeñas áreas de poco
+tamaño.

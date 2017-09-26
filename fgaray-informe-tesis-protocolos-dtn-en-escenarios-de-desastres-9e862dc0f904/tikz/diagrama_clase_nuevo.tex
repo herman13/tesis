@@ -1,0 +1,57 @@
+\begin{tikzpicture}
+  \begin{umlpackage}{Routing}
+
+    \umlclass[]{ProtocoloDinamico}{
+    }{
+    }
+
+    \umlclass[type=interface, y=-2]{Contexto}{
+    }{
+    }
+
+
+    \umlclass[y=-5, x=-2]{Encuentros}{
+    }{
+    }
+
+
+    \umlclass[y=-5, x=2.5]{TiemposContacto}{
+    }{
+    }
+
+
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+    \umlclass[x=-5]{Inference}{
+    }{
+    }
+
+
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+    \umlclass[x=5]{MessageContext}{
+    }{
+    }
+
+
+    \umlclass[x=5, y=-3]{HopMetric}{
+    }{
+    }
+
+
+    \umlinherit[geometry=-|]{Encuentros}{Contexto}
+    \umlinherit[geometry=-|]{TiemposContacto}{Contexto}
+
+
+    \umlaggreg[]{ProtocoloDinamico}{Inference}
+    \umlaggreg[]{ProtocoloDinamico}{MessageContext}
+
+
+    \umlaggreg[]{MessageContext}{HopMetric}
+
+
+    \umlaggreg[]{MessageContext}{Contexto}
+
+
+  \end{umlpackage}
+\end{tikzpicture}

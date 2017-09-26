@@ -1,0 +1,53 @@
+En el código B.1 se precisan los centros definidos en forma de x e y de acuerdo
+a las coordenadas entregadas por \textit{Open Jump} las que deben ser
+transformadas al punto de referencia de \theone.
+
+
+
+\codigo{Coordenadas de los 12 vecindarios de la forma x,y.}
+{\inputminted[linenos,frame=lines]{text}{the-one/src/neighborhoods.txt}}{cod:coordenadas-vecindarios}
+
+\codigo{Coordenadas de los 11 centros de evacuación de la forma x,y.}
+{\inputminted[linenos,frame=lines]{text}{the-one/src/evacuation_centers.txt}}{cod:coordenadas-evacuacion}
+
+
+
+A continuación, en el Código B.3, el Código B.4, el Código B.5 y el Código B.6
+se listan las coordenadas definidas en el mismo lenguaje Java.
+
+
+
+\begin{minted}[linenos,frame=lines,breaklines]{java}
+List<MapNode> mainreliefcenter = new ArrayList<>();
+mainreliefcenter.add(map.getNodeByCoordAprox(new Coord(5763.432764222565, 5686.559510415252)));
+nodes.put("mainreliefcenter", mainreliefcenter);
+\end{minted}
+\codigoEnviroment{Coordenada del centro de coordinación de rescate.}{cod:coordenadas-relief}
+
+
+\begin{minted}[linenos,frame=lines,breaklines]{java}
+List<MapNode> reliefcenter_SUPLY = new ArrayList<>();
+reliefcenter_SUPLY.add(map.getNodeByCoordAprox(new Coord(3909.503382142025, 6328.019076615119)));
+reliefcenter_SUPLY.add(map.getNodeByCoordAprox(new Coord(6312.195861318405, 6372.513381785052)));
+reliefcenter_SUPLY.add(map.getNodeByCoordAprox(new Coord(4862.423084531423, 5326.897210291627)));
+reliefcenter_SUPLY.add(map.getNodeByCoordAprox(new Coord(3820.514771802159, 5860.828872330822)));
+reliefcenter_SUPLY.add(map.getNodeByCoordAprox(new Coord(3490.515341791823, 6242.738325039414)));
+nodes.put("reliefcenter_SUPLY", reliefcenter_SUPLY);
+\end{minted}
+\codigoEnviroment{Coordenadas de los centros de suministros.}{cod:coordenadas-relief}
+
+
+\begin{minted}[linenos,frame=lines,breaklines]{java}
+List<MapNode> police = new ArrayList<>();
+police.add(map.getNodeByCoordAprox( new Coord(3212.425934479739, 6980.602219107471)));
+nodes.put("police", police);
+\end{minted}
+\codigoEnviroment{Coordenada del centro de policía.}{cod:coordenadas-police}
+
+
+\begin{minted}[linenos,frame=lines,breaklines]{java}
+List<MapNode> medical = new ArrayList<>();
+medical.add(map.getNodeByCoordAprox( new Coord(5492.759074438806, 5690.267369179413)));
+nodes.put("medical", medical);
+\end{minted}
+\codigoEnviroment{Coordenada del centro médico/hospital.}{cod:coordenadas-hospital}

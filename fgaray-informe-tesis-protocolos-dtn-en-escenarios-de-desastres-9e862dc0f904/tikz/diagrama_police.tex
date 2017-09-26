@@ -1,0 +1,24 @@
+\begin{tikzpicture}
+  \begin{umlpackage}{Movement}
+
+    \umlclass[x=2]{PoliceMovement}{
+      MapNode home\\
+      DijkstraPathFinder pathFinder\\
+      List<MapNode> targets\\
+      private int nextTarget\\
+      private SimMap map
+    }{
+      MapNode getHome()\\
+      Path getPath()\\
+      List<MapNode> getTargets()
+    }
+
+    \umlclass[y=-5, x=2]{MapBasedMovement}{}{}
+
+    \umlclass[x=-3]{ValpoConfig}{}{}
+
+    \umlinherit[geometry=-|]{PoliceMovement}{MapBasedMovement}
+    \umlaggreg[]{PoliceMovement}{ValpoConfig}
+
+  \end{umlpackage}
+\end{tikzpicture}

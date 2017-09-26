@@ -1,0 +1,3 @@
+[submodule "the-one"]
+	path = the-one
+	url = git@bitbucket.org:fgaray/the-one.git

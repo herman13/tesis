@@ -1,0 +1,30 @@
+\newcommand{\graficoEcuacion}[1]{
+\pgfplotsset{cycle list/Dark2}
+\renewcommand{\colorscheme}{Dark2}
+
+\begin{tikzpicture}
+\begin{axis}[
+    xlabel={Tasa de entrega},
+    ylabel={Copias de mensajes},
+    zlabel={Nota},
+    xmin=0, xmax=1,
+    ymin=0, ymax=1,
+    legend style = {
+      legend pos = outer north east,
+    },
+    cycle list name=Dark2,
+    width=0.7\textwidth
+]
+
+\addplot3+[
+  cycle list name=Dark2,
+  mesh,
+  scatter,
+  samples = 10,
+  domain=0:1
+  ]
+  {#1*x + (1 - #1)*(1 - y)};
+ 
+\end{axis}
+\end{tikzpicture}
+}

@@ -1,0 +1,30 @@
+\begin{tikzpicture}
+  [
+    level distance = 1.5cm,
+    every node/.style = { shape = rectangle, draw, fill = orange!40}, 
+    level 1/.style = {sibling distance = 3cm},
+    level 2/.style = {
+      grow=down,
+      text width = 10em,
+      align = center,
+      edge from parent path={(\tikzparentnode.south) |- (\tikzchildnode)},
+    },
+  ]
+
+  \node {Protocolos DTN}
+    [edge from parent fork down]
+    child { node {Determinístico}
+      child { node [xshift=-60pt] (primero) { \textit{Space-time} }}
+      child { node [below of = primero] (segundo) { \textit{Tree} }}
+      child { node [below of = segundo] (tercero) { \textit{Modified Short Path} }}
+    }
+    child { node {Estocástico}
+      child { node [xshift=60pt] (primero2) { \textit{Epidemic} }}
+      child { node [below of = primero2] (segundo2) { Predictivo }}
+      child { node [below of = segundo2] (tercero2) { \textit{Model Based Routing} }}
+      child { node [below of = tercero2] (cuarto2) { Control de movimiento }}
+      child { node [below of = cuarto2] (quinto2) { \textit{Coding} }}
+    }
+  ;
+
+\end{tikzpicture}

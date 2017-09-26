@@ -1,0 +1,68 @@
+\pgfplotsset{cycle list/Dark2}
+\renewcommand{\colorscheme}{Dark2}
+
+\begin{tikzpicture}
+\begin{axis}[
+    xlabel={Contexto},
+    ylabel={Métrica},
+    xmin=0, xmax=10,
+    ymin=0, ymax=1,
+    legend style = {
+      legend pos = outer north east,
+    },
+    width=0.7\textwidth,
+	  scatter/classes={
+      a={mark=square*,blue},
+      b={mark=triangle*,red},
+      c={mark=o,draw=black}
+    }
+]
+
+\legend{Protocolo 1,Protocolo 2,Protocolo 3}
+
+\addplot+[
+  scatter,
+  very thick,
+  color=blue,
+  mark=square*
+  ]
+    table[meta=label] {
+      x y label
+      1 0.2 a
+      5 0.3 a
+      6 0.5 a
+    };
+
+
+\addplot+[
+  scatter,
+  only marks,
+  very thick,
+  color=red,
+  mark=triangle*
+  ]
+    table[meta=label] {
+      x y label
+      3 0.4 b
+      4 0.5 b
+      7 0.1 b
+    };
+
+
+\addplot+[
+  scatter,
+  only marks,
+  very thick,
+  color=black,
+  mark=o
+  ]
+    table[meta=label] {
+      x y label
+      3 1 c
+      10 0.1 c
+    };
+
+ 
+\end{axis}
+\end{tikzpicture}
+

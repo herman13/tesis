@@ -1,0 +1,165 @@
+\pgfplotsset{cycle list/Dark2}
+\renewcommand{\colorscheme}{Dark2}
+
+\begin{tikzpicture}
+\begin{axis}[
+    xlabel={\% de nodos maliciosos},
+    ylabel={Tasa de entrega},
+    xmin=0, xmax=90,
+    ymin=0, ymax=0.45,
+    legend style = {
+      legend pos = outer north east,
+    },
+    cycle list name=Dark2,
+    %font=\large
+]
+
+\legend{
+  $\beta = 0.0$,
+  $\beta = 0.1$,
+  $\beta = 0.2$,
+  $\beta = 0.4$,
+  $\beta = 0.6$,
+  $\beta = 0.8$,
+  $\beta = 1.0$,
+}
+
+
+\addplot+[
+  cycle list name=Dark2,
+  mark=square*,
+  very thick
+  ]
+    coordinates {
+      (0,   0.09)
+      (10,  0.09)
+      (20,  0.09)
+      (30,  0.09)
+      (40,  0.09)
+      (50,  0.09)
+      (60,  0.09)
+      (70,  0.09)
+      (80,  0.09)
+      (90,  0.09)
+    };
+
+
+\addplot+[
+  cycle list name=Dark2,
+  mark=triangle*,
+  very thick
+  ]
+    coordinates {
+      (0,   0.28)
+      (10,  0.27)
+      (20,  0.24)
+      (30,  0.21)
+      (40,  0.20)
+      (50,  0.165)
+      (60,  0.145)
+      (70,  0.135)
+      (80,  0.115)
+      (90,  0.1)
+    };
+
+
+\addplot+[
+  cycle list name=Dark2,
+  mark=*,
+  very thick
+  ]
+    coordinates {
+      (0,   0.26)
+      (10,  0.24)
+      (20,  0.22)
+      (30,  0.19)
+      (40,  0.18)
+      (50,  0.15)
+      (60,  0.14)
+      (70,  0.12)
+      (80,  0.1)
+      (90,  0.09)
+    };
+
+\addplot+[
+  cycle list name=Dark2,
+  mark=+,
+  very thick
+  ]
+    coordinates {
+      (0,   0.26)
+      (10,  0.235)
+      (20,  0.215)
+      (30,  0.18)
+      (40,  0.16)
+      (50,  0.14)
+      (60,  0.125)
+      (70,  0.11)
+      (80,  0.1)
+      (90,  0.09)
+    };
+
+
+
+\addplot+[
+  cycle list name=Dark2,
+  mark=triangle*,
+  every mark/.append style={rotate=270},
+  very thick
+  ]
+    coordinates {
+      (0,   0.27)
+      (10,  0.235)
+      (20,  0.2)
+      (30,  0.16)
+      (40,  0.14)
+      (50,  0.135)
+      (60,  0.12)
+      (70,  0.1)
+      (80,  0.09)
+      (90,  0.09)
+    };
+
+
+\addplot+[
+  cycle list name=Dark2,
+  mark=triangle*,
+  every mark/.append style={rotate=90},
+  very thick
+  ]
+    coordinates {
+      (0,   0.28)
+      (10,  0.235)
+      (20,  0.20)
+      (30,  0.153)
+      (40,  0.135)
+      (50,  0.13)
+      (60,  0.115)
+      (70,  0.1)
+      (80,  0.09)
+      (90,  0.09)
+    };
+
+
+\addplot+[
+  cycle list name=Dark2,
+  mark=triangle*,
+  every mark/.append style={rotate=180},
+  very thick
+  ]
+    coordinates {
+      (0,   0.35)
+      (10,  0.3)
+      (20,  0.26)
+      (30,  0.21)
+      (40,  0.19)
+      (50,  0.17)
+      (60,  0.15)
+      (70,  0.14)
+      (80,  0.12)
+      (90,  0.1)
+    };
+
+ 
+\end{axis}
+\end{tikzpicture}

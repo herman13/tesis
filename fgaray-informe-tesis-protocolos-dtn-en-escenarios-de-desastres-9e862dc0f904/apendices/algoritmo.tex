@@ -1,0 +1,80 @@
+
+\figuraApendice{Algoritmo del protocolo híbrido dinámico para escenarios de desastres.}{
+\fontsize{8}{9}
+\arial
+\selectfont
+\begin{algorithm}[H]
+     \SetAlgoLined
+     \textit{copiasGeneradas} := 0\;
+     \textit{encuentros} := []\;
+     \textit{tiemposDeEncuentro} := []\;
+     \textit{valorEncuentros} := 0\;
+     \textit{valorTiempos} := 0\;
+     \textit{tiempoDeEjecuciónDelProtocolo} := 0\;
+     \textit{métricaCopias} = 0\;
+     \textit{entregados} = 0\;
+     \textit{mensajesPiggybacking} := []\;
+     \textit{pares} := []\;
+     \While{se ejecuta el protocolo}{
+       \If{se encuentra con un nodo vecino}{
+         agregar contextos, métricas y \textit{mensajesPiggybacking} a los mensajes locales del \textit{buffer}\;
+         intercambiar mensajes de acuerdo al \textit{protocoloSeleccionado}\;
+         \For{\textit{m} \textbf{en} mensajes enviados}{
+          \textit{copiasGeneradas} := \textit{copiasGeneradas} + 1\;
+         }
+         \For{\textit{m} \textbf{en} mensajes recibidos}{
+           \If{\textit{m} contiene \textit{piggyback} de un mensaje que hemos enviado}{
+              \textit{entregados} := \textit{entregados} + 1\;
+           }
+           \If{somos destino de \textit{m}}{
+              mensajesPiggybacking.agregar(m);
+           }
+           extraer pares $(c, t)$ y guardarlos en \textit{pares} con el \textit{tiempoActual}\;
+         }
+         \textit{encuentros}.agregar(\textit{tiempoActual})\;
+         \textit{tiemposDeEncuentro}.agregar((\textit{tiempoActual}, tiempo de interacción con el vecino))\;
+         
+         \For{\textit{e} \textbf{en} \textit{encuentros}}{
+           \If{\textit{tiempoActual} - \textit{e} > ventana de los contextos}{
+              eliminar \textit{e} de \textit{encuentros}\;
+           }
+         }
+
+         \For{\textit{t} \textbf{en} \textit{tiemposDeEncuentro}}{
+           \If{\textit{tiempoActual} - \textit{t} > ventana de los contextos}{
+              eliminar \textit{t} de \textit{tiemposDeEncuentro}\;
+           }
+         }
+
+         \textit{valorEncuentros} := tamaño(\textit{encuentros}) / ventana de los contextos\;
+         \textit{valorTiempos} := tamaño(\textit{tiemposDeEncuentro}) / ventana de los contextos\;
+
+         \textit{métricaCopias} := \textit{copiasGeneradas} / \textit{tiempoDeEjecuciónDelProtocolo}\; 
+         \textit{métricaEntrega} := entregados / \textit{copiasGeneradas}\;
+
+         \If{\textit{tiempoDeEjecuciónDelProtocolo} > tiempo de cambio de protocolo}
+         {
+           \For{\textit{par} \textbf{en} \textit{pares}}{
+             \If{\textit{tiempoActual} - \textit{timestamp} de \textit{par} < ventana métricas}{
+               eliminar \textit{par} de \textit{pares}\;
+             }
+           }
+
+           \textit{protocoloSeleccionado} := seleccionar(\textit{valorEncuentros}, \textit{valorTiempos}, \textit{pares})\;
+
+           \If{\textit{protocoloSeleccionado} $\neq$ \textit{protocoloActual}}{
+            \textit{tiempoDeEjecuciónDelProtocolo} := 0\;
+            guardar \textit{métricaCopias} y \textit{métricaEntrega}\;
+            mover estado de \textit{protocoloActual} a \textit{protocoloSeleccionado}\;
+            obtener \textit{métricaCopias} y \textit{métricaEntrega} pasadas del \textit{protocoloSeleccionado}\;
+           }
+         }
+         \textit{tiempoDeEjecuciónDelProtocolo} := \textit{tiempoDeEjecuciónDelProtocolo} + 1 \;
+       }
+     }
+\end{algorithm}
+\fontsize{10}{11}
+\arial
+\selectfont
+}{fig:algoritmo-desastre}
+

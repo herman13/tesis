@@ -1,0 +1,48 @@
+\newcommand{\graficoMovilidad}[4]{
+
+\pgfplotsset{cycle list/Dark2}
+\renewcommand{\colorscheme}{Dark2}
+
+\begin{tikzpicture}
+\begin{axis}[
+    ylabel={#1},
+    xlabel={Tiempo (segundos)},
+    ymin=0,
+    xmin=0,
+    legend style = {
+      legend pos = outer north east,
+    },
+    cycle list name=Dark2,
+    width=0.7\textwidth,
+    mark repeat={5}
+]
+
+\legend{PDM, WDMM, Valparaíso}
+
+\pgfplotstableread{#2}\pdm;
+\pgfplotstableread{#3}\wdmm;
+\pgfplotstableread{#4}\valpo;
+
+
+\addplot+ [
+  %very thick,
+  cycle list name=Dark2,
+  mark=square*
+  ] table []{\pdm};
+
+\addplot+ [
+  %very thick,
+  cycle list name=Dark2,
+  mark=triangle*,
+  ] table []{\wdmm};
+
+\addplot+ [
+  %very thick,
+  cycle list name=Dark2,
+  mark=*,
+  ] table []{\valpo};
+
+ 
+\end{axis}
+\end{tikzpicture}
+}

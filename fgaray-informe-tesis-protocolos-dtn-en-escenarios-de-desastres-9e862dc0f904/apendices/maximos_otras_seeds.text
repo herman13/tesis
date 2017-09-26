@@ -1,0 +1,73 @@
+
+\figura{Máximo de la tasa de entrega estimada en el protocolo dinámico en PDM.}
+{
+\graficoMaximos{Tasa de entrega}
+{data/maximos/delivery_PDM_1syw.txt}
+{data/maximos/delivery_PDM_1syf.txt}
+{data/maximos/delivery_PDM_1epidemic.txt}
+{data/maximos/delivery_PDM_1prophet.txt}
+{data/maximos/delivery_PDM_1maxprop.txt}
+}{fig:tasa-entrega-maximo-pdm}
+
+
+\figura{Máximo de la tasa de entrega estimada en el protocolo dinámico en WDMM.}
+{
+\graficoMaximos{Tasa de entrega}
+{data/maximos/delivery_wdmm_1syw.txt}
+{data/maximos/delivery_wdmm_1syf.txt}
+{data/maximos/delivery_wdmm_1epidemic.txt}
+{data/maximos/delivery_wdmm_1prophet.txt}
+{data/maximos/delivery_wdmm_1maxprop.txt}
+}{fig:tasa-entrega-maximo-wdmm}
+
+
+
+\figura{Máximo de la tasa de entrega estimada en el protocolo dinámico en VMM.}
+{
+\graficoMaximos{Tasa de entrega}
+{data/maximos/delivery_valpo_1syw.txt}
+{data/maximos/delivery_valpo_1syf.txt}
+{data/maximos/delivery_valpo_1epidemic.txt}
+{data/maximos/delivery_valpo_1prophet.txt}
+{data/maximos/delivery_valpo_1maxprop.txt}
+}{fig:tasa-entrega-maximo-vmm}
+
+Los gráficos de la \ref{fig:tasa-entrega-maximo-pdm},
+\ref{fig:tasa-entrega-maximo-wdmm}, \ref{fig:tasa-entrega-maximo-vmm} muestran
+el máximo de todas las tasas de entregas de todos los nodos de la red en un
+isntante de tiempo. Debido a la forma de calcular la tasa de entrega siempre va
+a tomar valores entre $0$ y $1$, lo que es confirmado por estos experimentos.
+
+
+\figura{Máximo de la cantidad de copias estimada en el protocolo dinámico en PDM.}
+{
+\graficoMaximos{Copias de mensajes por hora}
+{data/maximos/overhead_PDM_1syw.txt}
+{data/maximos/overhead_PDM_1syf.txt}
+{data/maximos/overhead_PDM_1epidemic.txt}
+{data/maximos/overhead_PDM_1prophet.txt}
+{data/maximos/overhead_PDM_1maxprop.txt}
+}{fig:tasa-entrega-maximo-pdm}
+
+
+\figura{Máximo de la cantidad de copias estimada en el protocolo dinámico en WDMM.}
+{
+\graficoMaximos{Copias de mensajes por hora}
+{data/maximos/overhead_wdmm_1syw.txt}
+{data/maximos/overhead_wdmm_1syf.txt}
+{data/maximos/overhead_wdmm_1epidemic.txt}
+{data/maximos/overhead_wdmm_1prophet.txt}
+{data/maximos/overhead_wdmm_1maxprop.txt}
+}{fig:tasa-entrega-maximo-wdmm}
+
+
+
+\figura{Máximo de la cantidad de copias estimada en el protocolo dinámico en VMM.}
+{
+\graficoMaximos{Copias de mensajes por hora}
+{data/maximos/overhead_valpo_1syw.txt}
+{data/maximos/overhead_valpo_1syf.txt}
+{data/maximos/overhead_valpo_1epidemic.txt}
+{data/maximos/overhead_valpo_1prophet.txt}
+{data/maximos/overhead_valpo_1maxprop.txt}
+}{fig:tasa-entrega-maximo-vmm}

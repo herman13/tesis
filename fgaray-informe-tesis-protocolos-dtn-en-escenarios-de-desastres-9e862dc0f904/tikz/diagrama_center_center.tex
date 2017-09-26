@@ -1,0 +1,20 @@
+\begin{tikzpicture}
+  \begin{umlpackage}{Movement}
+
+    \umlclass[x=2]{CenterToCenter}{
+      MapNode home\\
+      DijkstraPathFinder pathFinder\\
+      SimMap  map
+    }{
+      Path getPath()
+    }
+
+    \umlclass[y=-4, x=2]{MapBasedMovement}{}{}
+
+    \umlclass[x=-3]{ValpoConfig}{}{}
+
+    \umlinherit[geometry=-|]{CenterToCenter}{MapBasedMovement}
+    \umlaggreg[]{CenterToCenter}{ValpoConfig}
+
+  \end{umlpackage}
+\end{tikzpicture}
